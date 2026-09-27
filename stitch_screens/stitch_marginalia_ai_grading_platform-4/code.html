@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-surface": "#1f1b15", "inverse-surface": "#353029", "on-tertiary-fixed-variant": "#374c2e", "on-error": "#ffffff", "on-primary-fixed": "#3a0b00", "surface-container-highest": "#ebe1d7", "on-tertiary-container": "#1c3116", "secondary": "#7d5719", "surface-container": "#f7ece2", "tertiary-container": "#819a76", "on-error-container": "#93000a", "tertiary-fixed": "#d0eac1", "error": "#ba1a1a", "surface-variant": "#ebe1d7", "tertiary-fixed-dim": "#b4cea7", "primary-fixed": "#ffdbd0", "outline": "#8f7067", "error-container": "#ffdad6", "on-background": "#1f1b15", "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "on-secondary-fixed": "#291800", "primary": "#ae3200", "on-primary-container": "#561400", "inverse-on-surface": "#faefe5", "inverse-primary": "#ffb59e", "surface-tint": "#ae3200", "surface-dim": "#e2d8cf", "primary-container": "#fe5d26", "on-tertiary-fixed": "#0c2007", "on-primary-fixed-variant": "#852400", "surface-bright": "#fff8f4", "on-surface-variant": "#5b4139", "background": "#fff8f4", "secondary-container": "#ffcc83", "surface-container-high": "#f1e6dd", "on-primary": "#ffffff", "outline-variant": "#e3beb4", "primary-fixed-dim": "#ffb59e", "surface-container-low": "#fcf2e8", "tertiary": "#4e6544", "on-secondary-container": "#795416", "surface": "#fff8f4", "secondary-fixed-dim": "#f0be76", "secondary-fixed": "#ffddb1", "on-secondary-fixed-variant": "#624001" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "gutter": "1.5rem", "gutter-lg": "2rem", "space-md": "1rem", "margin-desktop": "3rem", "gutter-sm": "1rem", "margin-mobile": "1rem", "margin": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "body-lg": [ "\"Source Serif 4\"" ], "code-inline": [ "JetBrains Mono" ], "headline-md": [ "\"Source Serif 4\"" ], "label-md": [ "Plus Jakarta Sans" ], "body-md": [ "\"Source Serif 4\"" ], "headline-sm": [ "\"Source Serif 4\"" ], "display-lg-mobile": [ "\"Source Serif 4\"" ], "headline-lg": [ "\"Source Serif 4\"" ], "label-sm": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "\"Source Serif 4\"" ], "annotation-note": [ "\"Source Serif 4\"" ], "body-sm": [ "\"Source Serif 4\"" ], "display-lg": [ "\"Source Serif 4\"" ], "label-lg": [ "Plus Jakarta Sans" ] }, "fontSize": { "body-lg": [ "18px", { "lineHeight": "30px", "fontWeight": "400" } ], "code-inline": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" } ], "body-md": [ "16px", { "lineHeight": "26px", "fontWeight": "400" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "fontWeight": "600" } ], "display-lg-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" } ], "headline-lg-mobile": [ "26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "annotation-note": [ "13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" } ], "body-sm": [ "14px", { "lineHeight": "22px", "fontWeight": "400" } ], "display-lg": [ "44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-lg"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><img alt="Marginalia Leaf &amp; Pen Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VhWJxPqTbBrUQR56LyEQrEJnk9IFSGfv6FtWqTQxN5MMcEB9pnsTQHfMvxqpXxp5OtL4_vUmIY9HXLhmQk32OaJrGXovPMDGMAH4U2zTHlXaahUrm2m1jOX2AE21LJ5HKc1Lb_lENltvT6hbexMyjSPgVGuL_kDlMz1S4TGSloskbntWKP0wwi0FFxF57qJp2Hic7J7uJr_giRXtBnj-OpoNKdKWC6BCEV7z_UZeJTHbEfNPJ7p1UJCA"/><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Marginalia</span></div><div class="inline-flex items-center self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">AP Literature &amp; Comp</div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-label-md rounded"><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span>Dashboard</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rubric-builder" href="#"><span class="material-symbols-outlined text-[18px]">tune</span>Rubric Builder</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="submit-essay" href="#"><span class="material-symbols-outlined text-[18px]">edit_note</span>Submit Essay</a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm transition-colors bg-primary-container text-on-primary font-label-md rounded" data-path="feedback-report" href="#"><span class="material-symbols-outlined text-[18px]">rate_review</span>Feedback Report</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="material-symbols-outlined text-[18px]">insights</span>Analytics</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="lms-settings" href="#"><span class="material-symbols-outlined text-[18px]">sync_alt</span>LMS Settings</a></nav></div><div class="flex flex-col gap-space-md pt-space-md bg-surface-container-low"><div class="flex items-center justify-between p-space-xs rounded bg-surface-container"><span class="font-label-sm text-label-sm text-on-surface-variant px-space-xs">Grading Ambience</span><div class="flex items-center bg-surface-container-highest p-0.5 rounded"><button class="px-space-xs py-0.5 rounded font-label-sm text-label-sm bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(0,0,0,0.05)]" type="button">Day</button><button class="px-space-xs py-0.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface" type="button">Night</button></div></div><div class="flex items-center gap-space-sm p-space-xs rounded bg-surface-container"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJCTfUmOKhg3N1bi3gWV3OipbOGMBcwDigVRtn3hOyB850MjRI30RUfaL173bnw7BTSYRZqexFt6WWj2B5Y1O-e_Ty_r12q1tZtVOq9kzUsN5c-AFElHZGeuhK6urjeJB8ppzOjYPoLTDf7AST0Rl6vgliHqDlZH4f1MywR_60OeEXztahYtlnIq_3HD_tKJ-vj_K2FsG7QlPKgNyN1sGSobNAuyFrc6InetCr3CPS_aEm5D6-DnSk"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Ms. Claire Holloway</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Westlake High School</span></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter"><div class="flex items-center gap-space-md w-full max-w-lg"><div class="relative w-full flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-on-surface-variant text-[20px]">search</span><input class="w-full pl-9 pr-space-md py-space-xs rounded bg-surface-container-low text-on-surface placeholder:text-on-surface-variant font-label-md text-label-md focus:outline-none focus:bg-surface-container" placeholder="Search students, rubrics, or essays..." type="text"/></div></div><div class="flex items-center gap-space-lg"><div class="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-tertiary-container"></span><span>Google Classroom • Synced 12m ago</span></div><div class="flex items-center gap-space-sm"><button class="p-space-xs text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJCTfUmOKhg3N1bi3gWV3OipbOGMBcwDigVRtn3hOyB850MjRI30RUfaL173bnw7BTSYRZqexFt6WWj2B5Y1O-e_Ty_r12q1tZtVOq9kzUsN5c-AFElHZGeuhK6urjeJB8ppzOjYPoLTDf7AST0Rl6vgliHqDlZH4f1MywR_60OeEXztahYtlnIq_3HD_tKJ-vj_K2FsG7QlPKgNyN1sGSobNAuyFrc6InetCr3CPS_aEm5D6-DnSk"/></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="w-full bg-surface-container-high/40 p-gutter lg:p-margin-desktop">
+<div class="max-w-[1360px] mx-auto flex flex-col gap-space-xl">
+<!-- Top Overview Header -->
+<section class="flex flex-col xl:flex-row xl:items-center justify-between gap-space-lg bg-surface-container-lowest p-gutter lg:p-space-xl rounded-xl shadow-[0_4px_20px_rgba(31,27,21,0.06)] relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-64 h-64 rounded-full bg-primary/5 pointer-events-none blur-2xl"></div>
+<div class="flex flex-col gap-space-sm max-w-3xl">
+<div class="flex flex-wrap items-center gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-space-sm py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+              AP Lit Period 3
+            </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">schedule</span>
+              Submitted Oct 18, 2024 at 2:15 PM
+            </span>
+<span class="text-on-surface-variant font-label-sm text-label-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">tag</span>
+              Essay ID: #APL-24-JV88
+            </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+            Feedback Report: Julian Vance — <span class="italic font-normal">The Great Gatsby Analysis</span>
+</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant max-w-2xl">
+            Formal analytical critique covering structural progression, thematic continuity, and mechanical rigor in accordance with the AP Literature scoring guidelines.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row items-start sm:items-center gap-space-lg shrink-0">
+<!-- Grade Circle Badge -->
+<div class="relative flex items-center justify-center p-space-sm">
+<svg class="w-28 h-28 transform -rotate-12" viewbox="0 0 120 120">
+<circle class="text-primary-container opacity-85" cx="60" cy="60" fill="none" r="52" stroke="currentColor" stroke-dasharray="14 4 10 3 12 5" stroke-width="2.5"></circle>
+<circle class="text-primary opacity-60" cx="60" cy="60" fill="none" r="48" stroke="currentColor" stroke-dasharray="6 3 24 4" stroke-width="1.5"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
+<span class="font-headline-lg text-headline-lg text-primary tracking-tight font-bold leading-none">91</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">/ 100 (A-)</span>
+<span class="font-annotation-note text-annotation-note text-primary font-medium tracking-tight mt-0.5">Top Quintile</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-space-xs w-full sm:w-auto">
+<button class="inline-flex items-center justify-center gap-space-xs px-space-md py-space-sm rounded bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:brightness-105 active:translate-y-0.5 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]">publish</span>
+              Push Grade to Google Classroom
+            </button>
+<div class="flex items-center gap-space-xs">
+<button class="flex-1 inline-flex items-center justify-center gap-space-xs px-space-md py-space-xs rounded bg-surface-container-low text-on-surface hover:bg-surface-container transition-colors font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[17px]">picture_as_pdf</span>
+                Export Annotated PDF
+              </button>
+<button class="p-space-xs rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors" title="Print Manuscript" type="button">
+<span class="material-symbols-outlined text-[18px]">print</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Rubric Diagnostic Bands -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-space-md">
+<!-- Criterion 1 -->
+<div class="flex flex-col justify-between p-space-md rounded-lg bg-surface-container-lowest shadow-[0_2px_8px_rgba(31,27,21,0.03)] gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Thesis &amp; Argument</span>
+<span class="font-code-inline text-code-inline text-tertiary font-medium">24 / 25</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full" style="width: 96%"></div>
+</div>
+<p class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+            Exemplary line of reasoning
+          </p>
+</div>
+<!-- Criterion 2 -->
+<div class="flex flex-col justify-between p-space-md rounded-lg bg-surface-container-lowest shadow-[0_2px_8px_rgba(31,27,21,0.03)] gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Textual Evidence &amp; Synthesis</span>
+<span class="font-code-inline text-code-inline text-secondary font-medium">32 / 35</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 91%"></div>
+</div>
+<p class="font-label-sm text-label-sm text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_stories</span>
+            Strong integration of quotes
+          </p>
+</div>
+<!-- Criterion 3 -->
+<div class="flex flex-col justify-between p-space-md rounded-lg bg-surface-container-lowest shadow-[0_2px_8px_rgba(31,27,21,0.03)] gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Organization &amp; Flow</span>
+<span class="font-code-inline text-code-inline text-secondary font-medium">17 / 20</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 85%"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1 truncate" title="Solid topic sentences; paragraph 3 needs smoother pivot">
+<span class="material-symbols-outlined text-[14px]">swap_calls</span>
+            Paragraph 3 needs pivot tuning
+          </p>
+</div>
+<!-- Criterion 4 -->
+<div class="flex flex-col justify-between p-space-md rounded-lg bg-surface-container-lowest shadow-[0_2px_8px_rgba(31,27,21,0.03)] gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Voice, Style &amp; Mechanics</span>
+<span class="font-code-inline text-code-inline text-tertiary font-medium">18 / 20</span>
+</div>
+<div class="w-full h-2 rounded-full bg-surface-container overflow-hidden">
+<div class="h-full bg-tertiary-container rounded-full" style="width: 90%"></div>
+</div>
+<p class="font-label-sm text-label-sm text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+            High academic register
+          </p>
+</div>
+</section>
+<!-- Key Diagnostic Cards: Strengths vs Opportunities -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+<!-- Strengths Card -->
+<div class="flex flex-col gap-space-sm p-space-lg rounded-xl bg-surface-container-low shadow-[0_2px_12px_rgba(31,27,21,0.04)] relative">
+<div class="flex items-center gap-space-xs text-secondary">
+<span class="material-symbols-outlined text-[20px]">thumb_up</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Demonstrated Strengths</h2>
+</div>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-container mt-2 shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Nuanced Identity Curation</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Julian formulates an articulate stance detailing how Gatsby treats social respectability as an engineered stage performance rather than simple social climbing.</p>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-secondary-container mt-2 shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Symbolic Polysemy</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Skillful textual analysis connecting the dock's green light to the siren-like quality of Daisy Buchanan's voice ("full of money").</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Areas to Improve Card -->
+<div class="flex flex-col gap-space-sm p-space-lg rounded-xl bg-surface-container-low shadow-[0_2px_12px_rgba(31,27,21,0.04)] relative">
+<div class="flex items-center gap-space-xs text-primary">
+<span class="material-symbols-outlined text-[20px]">edit_attributes</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target Areas for Revision</h2>
+</div>
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<div class="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container mt-2 shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Expletive Pronoun Syntactical Ambiguity</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Clarify ambiguous pronoun references in paragraph 2 ("In doing this, it demonstrates..."). Replace empty fillers with the direct symbolic agent.</p>
+</div>
+</div>
+<div class="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container mt-2 shrink-0"></span>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Critique of Narrative Reliability</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Julian takes Nick Carraway's moral superiority at face value. Interrogate Nick's selective omissions in the East Egg garden scene.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Signature Visual: Annotated Manuscript on Ruled Notebook Canvas -->
+<section class="flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[22px]">history_edu</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Annotated Manuscript (Draft 2)</h2>
+</div>
+<div class="hidden sm:flex items-center gap-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 teacher notes attached</span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Word count: 1,420</span>
+</div>
+</div>
+<!-- Ruled Paper Desk Container -->
+<div class="relative bg-[#FAEDCA] p-4 md:p-8 lg:p-12 rounded-2xl shadow-[0_8px_30px_rgba(31,27,21,0.08)] overflow-hidden">
+<!-- Background Ruled Desk Visual Pattern -->
+<div class="absolute inset-0 opacity-15 pointer-events-none" style="background-image: repeating-linear-gradient(0deg, #5b4139 0px, #5b4139 1px, transparent 1px, transparent 32px);"></div>
+<!-- Document Sheet (heavy cotton white paper with left margin guide) -->
+<div class="relative max-w-5xl mx-auto bg-surface-container-lowest rounded-sm shadow-[0_4px_24px_rgba(43,38,32,0.12)] p-6 md:p-12 lg:p-16">
+<!-- Red left margin guide line -->
+<div class="hidden md:block absolute left-20 top-0 bottom-0 w-[1px] bg-red-300 opacity-60 pointer-events-none"></div>
+<!-- Essay Content & Margin Annotations Flex Container -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
+<!-- Essay Body Column -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg text-on-surface md:pl-8">
+<header class="flex flex-col pb-space-sm">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Julian Vance • AP English Literature</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Teacher: Ms. Claire Holloway</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mt-space-sm">The Gilded Mirage: Fabricated Identity and Commodification in Fitzgerald's West Egg</h3>
+</header>
+<p class="font-body-lg text-body-lg text-on-surface leading-loose">
+                  Throughout F. Scott Fitzgerald's 1925 masterpiece, the American Dream undergoes relentless deconstruction. Rather than portraying Gatsby as an authentic visionary, the novel posits that his fortune and personal history are commodified artifacts constructed to mimic hereditary privilege.
+                </p>
+<!-- Paragraph 2 with highlights -->
+<p class="font-body-lg text-body-lg text-on-surface leading-loose">
+                  The geography of Long Island serves as an external projection of class antagonism. While East Egg glistens with careless aristocratic indifference, West Egg acts as a loud carnival of imitation. 
+                  
+                  <!-- Highlight 1: Sage Positive Note -->
+<mark class="bg-tertiary-fixed text-on-surface px-1 py-0.5 rounded cursor-pointer transition-colors hover:bg-tertiary-fixed-dim relative inline">
+                    Fitzgerald establishes the green light not merely as an aspirational beacon, but as an indictment of Gatsby's tragic reduction of love to material conquest.
+                  </mark>
+                  
+                  Daisy is never simply a long-lost romance; she represents the physical embodiment of the unattainable past that Gatsby insists on purchasing through bootlegger profits.
+                </p>
+<!-- Paragraph 3 with highlights -->
+<p class="font-body-lg text-body-lg text-on-surface leading-loose">
+<!-- Highlight 2: Burnt Orange Syntax revision note -->
+<mark class="bg-primary-fixed text-on-surface px-1 py-0.5 rounded cursor-pointer transition-colors hover:bg-primary-fixed-dim relative inline">
+                    In doing this, it demonstrates how Gatsby was trapped in his own constructed mythology.
+                  </mark>
+                  His lavish weekend galas do not invite human connection; they are elaborate bait traps designed to catch Daisy's distant gaze across the bay.
+                </p>
+<!-- Paragraph 4 with highlights -->
+<p class="font-body-lg text-body-lg text-on-surface leading-loose">
+                  Crucially, the socio-economic topography between the two wealthy peninsulas reinforces this moral emptiness. 
+                  
+                  <!-- Highlight 3: Amber Diction note -->
+<mark class="bg-secondary-fixed text-on-surface px-1 py-0.5 rounded cursor-pointer transition-colors hover:bg-secondary-fixed-dim relative inline">
+                    Between the dazzling bays, the valley of ashes functions as a moral wasteland,
+                  </mark>
+                  where George Wilson and the hollow eyes of Doctor T.J. Eckleburg bear silent witness to the industrial human detritus discarded by Tom Buchanan's social class.
+                </p>
+<p class="font-body-lg text-body-lg text-on-surface leading-loose text-on-surface-variant italic">
+                  [Section continues: Examination of Chapter 7 Plaza Hotel confrontation and the climactic pool scene...]
+                </p>
+</div>
+<!-- Sticky Annotations Margin Column -->
+<div class="lg:col-span-4 flex flex-col gap-space-lg lg:pt-16">
+<!-- Margin Note 1: Sage -->
+<div class="relative p-space-md rounded bg-[#FFFDF5] shadow-[0_4px_16px_rgba(43,38,32,0.08)] transition-transform hover:-translate-y-0.5">
+<div class="absolute -left-2 top-4 w-1.5 h-10 rounded-full bg-tertiary-container"></div>
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-sm text-label-sm text-tertiary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">draw</span>
+                      Ms. Holloway
+                    </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Line 14</span>
+</div>
+<p class="font-annotation-note text-annotation-note text-on-surface leading-snug">
+                    Insightful phrasing here! You effectively elevate this beyond standard plot summary into authentic conceptual critique.
+                  </p>
+<div class="mt-space-xs flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-[10px] uppercase font-semibold">Thematic Synthesis</span>
+</div>
+</div>
+<!-- Margin Note 2: Burnt Orange Syntax revision -->
+<div class="relative p-space-md rounded bg-[#FFFDF5] shadow-[0_4px_16px_rgba(43,38,32,0.08)] transition-transform hover:-translate-y-0.5">
+<div class="absolute -left-2 top-4 w-1.5 h-10 rounded-full bg-primary-container"></div>
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-sm text-label-sm text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">priority_high</span>
+                      Syntax Suggestion
+                    </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Line 22</span>
+</div>
+<p class="font-annotation-note text-annotation-note text-on-surface leading-snug">
+                    Weak pronoun reference ("it"). State explicitly: <span class="font-medium text-primary">"This symbolic gesture demonstrates..."</span> to anchor your assertion with force.
+                  </p>
+<div class="mt-space-xs flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-sm text-[10px] uppercase font-semibold">Grammar &amp; Style</span>
+</div>
+</div>
+<!-- Margin Note 3: Amber Diction -->
+<div class="relative p-space-md rounded bg-[#FFFDF5] shadow-[0_4px_16px_rgba(43,38,32,0.08)] transition-transform hover:-translate-y-0.5">
+<div class="absolute -left-2 top-4 w-1.5 h-10 rounded-full bg-secondary-container"></div>
+<div class="flex items-center justify-between pb-space-xs">
+<span class="font-label-sm text-label-sm text-secondary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+                      Diction Acclaim
+                    </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Line 30</span>
+</div>
+<p class="font-annotation-note text-annotation-note text-on-surface leading-snug">
+                    Superb diction ("moral wasteland") echoing T.S. Eliot's modernist influence on Fitzgerald's geography.
+                  </p>
+<div class="mt-space-xs flex items-center gap-space-xs">
+<span class="px-space-xs py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-[10px] uppercase font-semibold">Literary Context</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pedagogical Insight & Next Step Box -->
+<section class="flex flex-col md:flex-row items-stretch gap-space-md p-space-lg rounded-xl bg-[#F9F0D9] shadow-[0_2px_12px_rgba(43,38,32,0.04)] relative">
+<div class="flex items-center justify-center p-space-sm rounded-lg bg-surface-container-lowest text-secondary shrink-0 self-start">
+<span class="material-symbols-outlined text-[32px]">ink_pen</span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-bold">Beyond The Rubric</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Instructor Reflection</span>
+</div>
+<p class="font-headline-sm text-headline-sm text-on-surface">
+            Teacher's Observation: Julian Vance
+          </p>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+            Julian demonstrates collegiate-level sensitivity to symbolic geography and socio-economic subtexts. For the upcoming timed-write, challenge Nick Carraway's reliability as a narrator in Chapter 1: Nick claims to reserve all judgments, yet immediately dispenses cynical moral commentary about every peer. Dissecting this internal paradox will elevate Julian's thesis to a full 6/6 AP rubric standing.
+          </p>
+</div>
+</section>
+<!-- Transparency Metric & Reinforcement Actions Footer -->
+<section class="flex flex-col md:flex-row items-center justify-between gap-space-md p-space-md rounded-lg bg-surface-container-low">
+<!-- Consensus AI Meter -->
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-tertiary-fixed text-on-tertiary-fixed">
+<span class="material-symbols-outlined text-[18px]">balance</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface font-semibold">AI Grading Consensus: 96.8% Agreement</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Triple-evaluated against College Board benchmark data • 0 hallucinations detected</span>
+</div>
+</div>
+<!-- Practice CTA Quiz Button -->
+<div class="flex items-center gap-space-sm w-full md:w-auto">
+<button class="w-full md:w-auto inline-flex items-center justify-center gap-space-xs px-space-md py-space-sm rounded bg-surface-container-lowest text-tertiary hover:bg-tertiary-fixed hover:text-on-tertiary-fixed transition-colors font-label-md text-label-md shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px]">quiz</span>
+            Practice These Grammar Patterns (Weak Pronoun References)
+          </button>
+</div>
+</section>
+</div>
+</div>
+</div></main></div></body></html>

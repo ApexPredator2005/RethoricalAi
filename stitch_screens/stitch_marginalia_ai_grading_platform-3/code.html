@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base { html, body { margin: 0; padding: 0; } body { overscroll-behavior: none; } main > :first-child { margin-top: 0 !important; } main > :last-child { margin-bottom: 0 !important; } } ::-webkit-scrollbar { display: none; }</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-surface": "#1f1b15", "inverse-surface": "#353029", "on-tertiary-fixed-variant": "#374c2e", "on-error": "#ffffff", "on-primary-fixed": "#3a0b00", "surface-container-highest": "#ebe1d7", "on-tertiary-container": "#1c3116", "secondary": "#7d5719", "surface-container": "#f7ece2", "tertiary-container": "#819a76", "on-error-container": "#93000a", "tertiary-fixed": "#d0eac1", "error": "#ba1a1a", "surface-variant": "#ebe1d7", "tertiary-fixed-dim": "#b4cea7", "primary-fixed": "#ffdbd0", "outline": "#8f7067", "error-container": "#ffdad6", "on-background": "#1f1b15", "on-secondary": "#ffffff", "on-tertiary": "#ffffff", "surface-container-lowest": "#ffffff", "on-secondary-fixed": "#291800", "primary": "#ae3200", "on-primary-container": "#561400", "inverse-on-surface": "#faefe5", "inverse-primary": "#ffb59e", "surface-tint": "#ae3200", "surface-dim": "#e2d8cf", "primary-container": "#fe5d26", "on-tertiary-fixed": "#0c2007", "on-primary-fixed-variant": "#852400", "surface-bright": "#fff8f4", "on-surface-variant": "#5b4139", "background": "#fff8f4", "secondary-container": "#ffcc83", "surface-container-high": "#f1e6dd", "on-primary": "#ffffff", "outline-variant": "#e3beb4", "primary-fixed-dim": "#ffb59e", "surface-container-low": "#fcf2e8", "tertiary": "#4e6544", "on-secondary-container": "#795416", "surface": "#fff8f4", "secondary-fixed-dim": "#f0be76", "secondary-fixed": "#ffddb1", "on-secondary-fixed-variant": "#624001" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "space-sm": "0.5rem", "space-xl": "2.5rem", "gutter": "1.5rem", "gutter-lg": "2rem", "space-md": "1rem", "margin-desktop": "3rem", "gutter-sm": "1rem", "margin-mobile": "1rem", "margin": "2rem", "space-xs": "0.25rem" }, "fontFamily": { "body-lg": [ "\"Source Serif 4\"" ], "code-inline": [ "JetBrains Mono" ], "headline-md": [ "\"Source Serif 4\"" ], "label-md": [ "Plus Jakarta Sans" ], "body-md": [ "\"Source Serif 4\"" ], "headline-sm": [ "\"Source Serif 4\"" ], "display-lg-mobile": [ "\"Source Serif 4\"" ], "headline-lg": [ "\"Source Serif 4\"" ], "label-sm": [ "Plus Jakarta Sans" ], "headline-lg-mobile": [ "\"Source Serif 4\"" ], "annotation-note": [ "\"Source Serif 4\"" ], "body-sm": [ "\"Source Serif 4\"" ], "display-lg": [ "\"Source Serif 4\"" ], "label-lg": [ "Plus Jakarta Sans" ] }, "fontSize": { "body-lg": [ "18px", { "lineHeight": "30px", "fontWeight": "400" } ], "code-inline": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "headline-md": [ "24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "label-md": [ "12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" } ], "body-md": [ "16px", { "lineHeight": "26px", "fontWeight": "400" } ], "headline-sm": [ "20px", { "lineHeight": "28px", "fontWeight": "600" } ], "display-lg-mobile": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-lg": [ "32px", { "lineHeight": "40px", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "label-sm": [ "11px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "500" } ], "headline-lg-mobile": [ "26px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "annotation-note": [ "13px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "400" } ], "body-sm": [ "14px", { "lineHeight": "22px", "fontWeight": "400" } ], "display-lg": [ "44px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" } ] } } } };</script></head><body class="bg-surface font-body-md text-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md"><div class="flex flex-col gap-space-lg"><div class="flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><img alt="Marginalia Leaf &amp; Pen Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1VhWJxPqTbBrUQR56LyEQrEJnk9IFSGfv6FtWqTQxN5MMcEB9pnsTQHfMvxqpXxp5OtL4_vUmIY9HXLhmQk32OaJrGXovPMDGMAH4U2zTHlXaahUrm2m1jOX2AE21LJ5HKc1Lb_lENltvT6hbexMyjSPgVGuL_kDlMz1S4TGSloskbntWKP0wwi0FFxF57qJp2Hic7J7uJr_giRXtBnj-OpoNKdKWC6BCEV7z_UZeJTHbEfNPJ7p1UJCA"/><span class="font-headline-sm text-headline-sm text-primary tracking-tight">Marginalia</span></div><div class="inline-flex items-center self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">AP Literature &amp; Comp</div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary font-label-md rounded"><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="dashboard" href="#"><span class="material-symbols-outlined text-[18px]">menu_book</span>Dashboard</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="rubric-builder" href="#"><span class="material-symbols-outlined text-[18px]">tune</span>Rubric Builder</a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-space-sm transition-colors bg-primary-container text-on-primary font-label-md rounded" data-path="submit-essay" href="#"><span class="material-symbols-outlined text-[18px]">edit_note</span>Submit Essay</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="feedback-report" href="#"><span class="material-symbols-outlined text-[18px]">rate_review</span>Feedback Report</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="analytics" href="#"><span class="material-symbols-outlined text-[18px]">insights</span>Analytics</a><a class="flex items-center gap-space-sm px-space-sm py-space-sm rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" data-path="lms-settings" href="#"><span class="material-symbols-outlined text-[18px]">sync_alt</span>LMS Settings</a></nav></div><div class="flex flex-col gap-space-md pt-space-md bg-surface-container-low"><div class="flex items-center justify-between p-space-xs rounded bg-surface-container"><span class="font-label-sm text-label-sm text-on-surface-variant px-space-xs">Grading Ambience</span><div class="flex items-center bg-surface-container-highest p-0.5 rounded"><button class="px-space-xs py-0.5 rounded font-label-sm text-label-sm bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(0,0,0,0.05)]" type="button">Day</button><button class="px-space-xs py-0.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface" type="button">Night</button></div></div><div class="flex items-center gap-space-sm p-space-xs rounded bg-surface-container"><img alt="Profile" class="w-8 h-8 rounded-full object-cover shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJCTfUmOKhg3N1bi3gWV3OipbOGMBcwDigVRtn3hOyB850MjRI30RUfaL173bnw7BTSYRZqexFt6WWj2B5Y1O-e_Ty_r12q1tZtVOq9kzUsN5c-AFElHZGeuhK6urjeJB8ppzOjYPoLTDf7AST0Rl6vgliHqDlZH4f1MywR_60OeEXztahYtlnIq_3HD_tKJ-vj_K2FsG7QlPKgNyN1sGSobNAuyFrc6InetCr3CPS_aEm5D6-DnSk"/><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-on-surface truncate">Ms. Claire Holloway</span><span class="font-label-sm text-label-sm text-on-surface-variant truncate">Westlake High School</span></div></div></div></aside><div class="pl-[260px]"><header class="fixed top-0 left-[260px] right-0 h-16 bg-surface/85 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-gutter"><div class="flex items-center gap-space-md w-full max-w-lg"><div class="relative w-full flex items-center"><span class="material-symbols-outlined absolute left-space-sm text-on-surface-variant text-[20px]">search</span><input class="w-full pl-9 pr-space-md py-space-xs rounded bg-surface-container-low text-on-surface placeholder:text-on-surface-variant font-label-md text-label-md focus:outline-none focus:bg-surface-container" placeholder="Search students, rubrics, or essays..." type="text"/></div></div><div class="flex items-center gap-space-lg"><div class="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant"><span class="w-2 h-2 rounded-full bg-tertiary-container"></span><span>Google Classroom • Synced 12m ago</span></div><div class="flex items-center gap-space-sm"><button class="p-space-xs text-on-surface-variant hover:text-on-surface rounded hover:bg-surface-container" type="button"><span class="material-symbols-outlined text-[20px]">notifications</span></button><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJCTfUmOKhg3N1bi3gWV3OipbOGMBcwDigVRtn3hOyB850MjRI30RUfaL173bnw7BTSYRZqexFt6WWj2B5Y1O-e_Ty_r12q1tZtVOq9kzUsN5c-AFElHZGeuhK6urjeJB8ppzOjYPoLTDf7AST0Rl6vgliHqDlZH4f1MywR_60OeEXztahYtlnIq_3HD_tKJ-vj_K2FsG7QlPKgNyN1sGSobNAuyFrc6InetCr3CPS_aEm5D6-DnSk"/></div></div></header><main class="relative pt-16 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="w-full bg-surface-container-low/60 py-space-xl px-gutter flex justify-center">
+<div class="w-full max-w-[860px] flex flex-col gap-space-lg">
+<!-- Assignment Header Card -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-48 h-48 bg-primary/5 rounded-full pointer-events-none blur-2xl"></div>
+<div class="flex flex-wrap items-center justify-between gap-space-sm">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container/50 text-secondary font-label-sm text-label-sm font-semibold tracking-wide">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            Draft not yet submitted
+          </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+            Auto-saved 2 minutes ago to cloud
+          </span>
+</div>
+<div class="flex flex-col gap-space-xs">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">
+            Submit Your Essay: The Great Gatsby Analysis
+          </h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+            Due Friday, 11:59 PM • Max 1,500 words • Rubric: AP Lit Analytical Synthesis (4 Criteria)
+          </p>
+</div>
+<!-- Progress Mini-Metrics -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-sm pt-space-xs">
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Word Limit</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">842 <span class="font-body-sm text-body-sm text-on-surface-variant">/ 1,500</span></span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Target Level</span>
+<span class="font-headline-sm text-headline-sm text-tertiary">AP Score 5</span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Draft Version</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">v1.3 <span class="font-label-sm text-label-sm text-secondary">(Revised)</span></span>
+</div>
+<div class="bg-surface-container-low p-space-sm rounded-lg flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Read Time</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">~3.5 <span class="font-body-sm text-body-sm text-on-surface-variant">min</span></span>
+</div>
+</div>
+</div>
+<!-- Segmented Input Mode Tabs -->
+<div class="flex items-center justify-between bg-surface-container p-1 rounded-xl shadow-inner">
+<div class="flex items-center gap-1 w-full sm:w-auto" id="inputTabContainer">
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg bg-surface-container-lowest font-label-md text-label-md text-on-surface shadow-sm transition-all duration-200" id="tabTypeText" type="button">
+<span class="material-symbols-outlined text-[18px] text-primary">edit_note</span>
+<span>Paste or Type Text</span>
+</button>
+<button class="flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface hover:bg-surface-container-high transition-all duration-200" id="tabUploadDoc" type="button">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+<span>Upload Document or Photo</span>
+</button>
+</div>
+<div class="hidden md:flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm pr-space-sm">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container">verified</span>
+<span>Stationery Mode Active</span>
+</div>
+</div>
+<!-- OCR Scan Notification & Sync Banner -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Close up photograph of a handwritten notebook page with fountain pen cursive handwriting and editorial margin pencil sketches on sepia toned stationery paper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeiUu4-q3auJC2ekBAvlSAgjc13h6SAwrJAxzIWdTqn4UR0q351MR75EtuqVYUK28a1Qgvv4vtMBZe3r1ICitxss3gYoeH9wc2ue_Sf9PwTUJlRAtlICXkg2TOiTE-pEQYtDu3IT7ngDM9q7eyaiR6RFkGHpoz8ixcz1q6yh_tqU_IXFj6xmEcKeOL2qTrLO3ddID8z5d-3ht2kL-mAdxUBUyvuh3SG9v8Mm6-4G9bCdlB3AgMVgYU"/>
+<div class="absolute bottom-0 inset-x-0 bg-tertiary/90 text-on-tertiary text-center text-[9px] font-label-sm uppercase py-0.5 font-bold">Scanned</div>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface font-semibold truncate">Gatsby_Draft_page1.jpg</span>
+<span class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
+                98.4% OCR Confidence
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+              Handwriting converted into editable transcription below. Stylistic line breaks preserved.
+            </p>
+</div>
+</div>
+<div class="flex items-center gap-space-sm shrink-0">
+<button class="px-space-sm py-1.5 rounded-lg bg-surface-container font-label-sm text-label-sm text-on-surface hover:bg-surface-container-high transition-colors" type="button">
+            Replace File
+          </button>
+<span class="inline-flex items-center gap-1 font-label-sm text-label-sm text-tertiary font-semibold">
+<span class="material-symbols-outlined text-[16px]">check_circle</span> Transcribed
+          </span>
+</div>
+</div>
+<!-- Ruled Notebook Editor Sheet -->
+<div class="relative bg-[#FFFDF5] rounded-xl shadow-md overflow-hidden flex flex-col">
+<!-- Sheet Header Bar / Controls -->
+<div class="bg-[#FBF3DC] px-space-lg py-space-sm flex items-center justify-between border-b border-surface-container-high">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded-full bg-error/70 inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-secondary-container inline-block"></span>
+<span class="w-3 h-3 rounded-full bg-tertiary-container inline-block"></span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">
+              Manuscript Folio • AP Literature
+            </span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest" title="Focus view" type="button">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+</button>
+<button class="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest" title="Spellcheck &amp; Grammar rules" type="button">
+<span class="material-symbols-outlined text-[18px]">spellcheck</span>
+</button>
+<div class="h-4 w-px bg-surface-container-highest"></div>
+<span class="font-label-sm text-label-sm text-secondary font-semibold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live Count
+            </span>
+</div>
+</div>
+<!-- Ruled Paper Body -->
+<div class="relative w-full p-space-lg sm:pl-20 sm:pr-space-xl overflow-hidden min-h-[500px]" style="background: repeating-linear-gradient(to bottom, transparent, transparent 27px, rgba(228, 217, 192, 0.45) 27px, rgba(228, 217, 192, 0.45) 28px); background-color: #FFFDF5;">
+<!-- Red vertical margin guide line -->
+<div class="hidden sm:block absolute left-14 top-0 bottom-0 w-[1.5px] bg-[#FE5D26]/30 pointer-events-none"></div>
+<!-- Lined Paper Text Area -->
+<textarea class="w-full bg-transparent resize-y outline-none font-body-md text-body-md text-on-surface leading-[28px] focus:outline-none min-h-[440px] pt-1" id="essayEditor" placeholder="Draft your literary essay here..." spellcheck="false">F. Scott Fitzgerald constructs Jay Gatsby not merely as an embodiment of romantic disillusionment, but as an architect of self-erasure. In Chapter 5, the reunion at Nick Carraway’s cottage exposes the fragile infrastructure of Gatsby’s persona: his mansion, his imported silk shirts, and his punctilious demeanor are not manifestations of genuine aristocratic confidence, but rather desperate armaments assembled to contest the immutable finality of time. When Fitzgerald writes that Gatsby "revalued everything in his house according to the measure of response it drew from her well-loved eyes," he explicitly subordinates material splendor to an unattainable spectral ideal.
+
+Furthermore, the persistent chromatic motif of green—epitomized by the dock light across the bay—functions as both an compass for yearning and an indictment of the commodified American dream. Gatsby mistranslates moral elevation into geographic and economic accumulation; he presumes that by sheer momentum of will and bootleg lucre, the social chasm dividing West Egg's nouveau riche vulgarity from East Egg’s dynastic complacency can be erased. Yet Daisy's voice, famously described as "full of money," remains an auditory reminder that the aristocracy will never absorb him. Her tonal inflection possesses an ingrained security that capital alone cannot purchase.
+
+Ultimately, Fitzgerald reveals that Gatsby's tragic hubris is rooted in the refusal to accept chronological linearity. To Nick’s cautious caution, "You can’t repeat the past," Gatsby’s defiant response—"Why of course you can!"—serves as the tragic apex of his delusion. By treating human biography as malleable script, Gatsby dooms himself to be crushed between the indifferent inertia of Tom Buchanan’s old-money ruthlessness and the phantom radiance of his own untamed imagination.</textarea>
+</div>
+<!-- Bottom Status Bar inside Editor -->
+<div class="bg-surface-container-low px-space-lg py-2.5 flex flex-wrap items-center justify-between text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-space-md">
+<span class="font-semibold text-on-surface" id="wordCountLabel">842 words</span>
+<span>•</span>
+<span>4,812 characters</span>
+<span>•</span>
+<span>3 paragraphs</span>
+</div>
+<div class="flex items-center gap-space-sm font-label-sm">
+<span class="w-2 h-2 rounded-full bg-tertiary-container"></span>
+<span>Syntactic Rhythm: Balanced</span>
+<span class="mx-1">•</span>
+<span>Est. Reading: 3.5 min</span>
+</div>
+</div>
+</div>
+<!-- Rubric & Model Comparison Section -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col gap-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Evaluation Framework</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Target AP Rubric &amp; Benchmarks</h2>
+</div>
+<div class="relative inline-block">
+<select class="appearance-none bg-surface-container py-2 pl-3 pr-8 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-high cursor-pointer">
+<option selected="">Selected: AP Lit Analytical Synthesis (Default)</option>
+<option>AP Lang Rhetorical Analysis (6-Point Scale)</option>
+<option>Comparative Literature &amp; Motif Study</option>
+<option>Standard High School Literary Essay</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 top-2.5 text-[18px] text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Rubric 4-Point Criteria Chips -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-space-sm">
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Row A: Thesis</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">1 / 1</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Defensible interpretation of character agency.</p>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Row B: Evidence</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-bold">4 / 4 Target</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Textual citations integrated with commentary.</p>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Row C: Complexity</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-bold">Evaluating</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Nuanced rhetoric &amp; thematic tensions.</p>
+</div>
+<div class="p-space-sm rounded-lg bg-surface-container-low flex flex-col gap-1">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-on-surface font-semibold">Mechanics</span>
+<span class="font-label-sm text-label-sm px-1.5 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-bold">Clean</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sophisticated syntax &amp; scholarly lexicon.</p>
+</div>
+</div>
+<!-- Collapsible Model Answer Comparison -->
+<div class="flex flex-col rounded-lg bg-surface-container-low overflow-hidden">
+<button class="w-full flex items-center justify-between px-space-md py-space-sm text-left hover:bg-surface-container transition-colors" id="toggleModelAccordion" type="button">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] text-secondary">balance</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Advanced: Model Answer Comparison</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">(Optional benchmark evaluation)</span>
+</div>
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant transition-transform duration-200" id="accordionIcon">expand_more</span>
+</button>
+<div class="hidden px-space-md pb-space-md flex flex-col gap-space-sm" id="modelAccordionContent">
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              Provide or reference an exemplary student response. Marginalia will highlight rhetorical gaps and structural differences against this baseline.
+            </p>
+<div class="relative">
+<textarea class="w-full p-space-sm rounded bg-surface-container-lowest font-body-sm text-body-sm text-on-surface placeholder:text-on-surface-variant/70 focus:outline-none" placeholder="Paste model excerpt or College Board sample commentary here..." rows="3"></textarea>
+</div>
+</div>
+</div>
+</div>
+<!-- Submission & Action Bar -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl shadow-md flex flex-col gap-space-md">
+<div class="flex items-center gap-space-sm text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[22px] text-primary shrink-0">auto_fix_high</span>
+<span>Your draft will be annotated with margin notes, grammar checks, line-by-line stylistic commentary, and AP rubric breakdown.</span>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-space-sm pt-space-xs">
+<button class="flex items-center justify-center gap-space-sm px-space-md py-3 rounded-lg bg-surface-container font-label-md text-label-md text-on-surface hover:bg-surface-container-high transition-colors" id="saveDraftBtn" type="button">
+<span class="material-symbols-outlined text-[18px]">bookmark</span>
+<span>Save Draft to Binder</span>
+</button>
+<button class="flex items-center justify-center gap-space-sm px-space-xl py-3 rounded-lg bg-primary-container font-label-md text-label-md text-on-primary font-bold shadow-md hover:opacity-95 active:translate-y-0.5 transition-all" id="submitFeedbackBtn" type="button">
+<span class="material-symbols-outlined text-[20px]">rate_review</span>
+<span>Submit for AI Marginalia Feedback</span>
+</button>
+</div>
+<!-- Simulated submission feedback message toast (hidden initially) -->
+<div class="hidden items-center justify-between p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-fixed font-label-md text-label-md" id="statusToast">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-[20px] animate-spin">refresh</span>
+<span>Synthesizing manuscript... Generating red-ink margin notations.</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider">Estimated 6s</span>
+</div>
+</div>
+<!-- Student Desk Footer Note -->
+<div class="text-center font-label-sm text-label-sm text-on-surface-variant pb-space-lg">
+        Westlake High School • Advanced Placement English Literature • Term II Portfolio Desk
+      </div>
+</div>
+</div>
+</div>
+<script>
+  // Simple word count and interactivity hooks
+  const editor = document.getElementById('essayEditor');
+  const countLabel = document.getElementById('wordCountLabel');
+  const toggleBtn = document.getElementById('toggleModelAccordion');
+  const accordionContent = document.getElementById('modelAccordionContent');
+  const accordionIcon = document.getElementById('accordionIcon');
+  const submitBtn = document.getElementById('submitFeedbackBtn');
+  const statusToast = document.getElementById('statusToast');
+  const saveBtn = document.getElementById('saveDraftBtn');
+
+  // Dynamic Word Count
+  if (editor && countLabel) {
+    editor.addEventListener('input', () => {
+      const text = editor.value.trim();
+      const words = text ? text.split(/\s+/).length : 0;
+      countLabel.textContent = `${words} words`;
+    });
+  }
+
+  // Model Comparison Accordion
+  if (toggleBtn && accordionContent && accordionIcon) {
+    toggleBtn.addEventListener('click', () => {
+      const isHidden = accordionContent.classList.contains('hidden');
+      if (isHidden) {
+        accordionContent.classList.remove('hidden');
+        accordionIcon.style.transform = 'rotate(180deg)';
+      } else {
+        accordionContent.classList.add('hidden');
+        accordionIcon.style.transform = 'rotate(0deg)';
+      }
+    });
+  }
+
+  // Tab switching interaction
+  const tabTypeText = document.getElementById('tabTypeText');
+  const tabUploadDoc = document.getElementById('tabUploadDoc');
+
+  if (tabTypeText && tabUploadDoc) {
+    tabUploadDoc.addEventListener('click', () => {
+      tabUploadDoc.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg bg-surface-container-lowest font-label-md text-label-md text-on-surface shadow-sm transition-all duration-200";
+      tabTypeText.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface hover:bg-surface-container-high transition-all duration-200";
+    });
+
+    tabTypeText.addEventListener('click', () => {
+      tabTypeText.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg bg-surface-container-lowest font-label-md text-label-md text-on-surface shadow-sm transition-all duration-200";
+      tabUploadDoc.className = "flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg text-on-surface-variant font-label-md text-label-md hover:text-on-surface hover:bg-surface-container-high transition-all duration-200";
+    });
+  }
+
+  // Simulated Submission feedback
+  if (submitBtn && statusToast) {
+    submitBtn.addEventListener('click', () => {
+      statusToast.classList.remove('hidden');
+      statusToast.classList.add('flex');
+      submitBtn.setAttribute('disabled', 'true');
+      submitBtn.style.opacity = '0.7';
+
+      setTimeout(() => {
+        statusToast.innerHTML = '<div class="flex items-center gap-2"><span class="material-symbols-outlined text-[20px] text-tertiary">check_circle</span><span>Annotations complete! Redirecting to marginal feedback report...</span></div><span class="font-bold text-tertiary">Ready</span>';
+      }, 2500);
+    });
+  }
+
+  // Save Draft notification
+  if (saveBtn) {
+    saveBtn.addEventListener('click', () => {
+      const originalText = saveBtn.innerHTML;
+      saveBtn.innerHTML = '<span class="material-symbols-outlined text-[18px] text-tertiary">check</span> Saved to Desk Binder';
+      setTimeout(() => {
+        saveBtn.innerHTML = originalText;
+      }, 2000);
+    });
+  }
+</script></main></div></body></html>

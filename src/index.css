@@ -1,0 +1,313 @@
+/* Marginalia - Design System & Stylesheet */
+
+:root {
+  /* Color Palette - Day Grading (Default Paper Mode) */
+  --bg-app: #F5F3EC;
+  --bg-paper: #FCFBF7;
+  --bg-paper-elevated: #FFFFFF;
+  --bg-sidebar: #EFECE3;
+  --bg-card: #FAF8F2;
+  --bg-card-hover: #F3EFE4;
+  
+  --text-primary: #1B2A3D;       /* Deep Ink Navy */
+  --text-secondary: #4A5B6E;     /* Muted Ink */
+  --text-muted: #7B8B9C;         /* Faded Stamp Ink */
+  
+  --border-subtle: #E2DDD0;
+  --border-strong: #C8BFAC;
+  --border-paper: #E6E1D3;
+  
+  /* Signature Accents */
+  --accent-red: #B0503A;         /* Muted Red Pen */
+  --accent-red-bg: rgba(176, 80, 58, 0.08);
+  --accent-red-border: rgba(176, 80, 58, 0.25);
+  
+  --accent-gold: #B4872E;        /* Soft Gold Praise */
+  --accent-gold-bg: rgba(180, 135, 46, 0.1);
+  --accent-gold-border: rgba(180, 135, 46, 0.3);
+  
+  --accent-blue: #3E6E8E;        /* Quiet Blue Insights */
+  --accent-blue-bg: rgba(62, 110, 142, 0.09);
+  --accent-blue-border: rgba(62, 110, 142, 0.28);
+  
+  --margin-red-line: rgba(176, 80, 58, 0.35);
+  --ruled-line-color: rgba(27, 42, 61, 0.06);
+
+  /* Fonts */
+  --font-serif: 'Source Serif 4', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-hand: 'Caveat', cursive, sans-serif;
+
+  /* Shadows - Subtle paper stack depth */
+  --shadow-paper: 0 4px 20px -2px rgba(27, 42, 61, 0.06), 0 2px 6px -1px rgba(27, 42, 61, 0.04);
+  --shadow-floating: 0 12px 32px -4px rgba(27, 42, 61, 0.12), 0 4px 12px -2px rgba(27, 42, 61, 0.08);
+  --shadow-stamp: 2px 2px 0px rgba(27, 42, 61, 0.15);
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* Night Grading (Dark Mode Inverted Ink Palette) */
+[data-theme="night"] {
+  --bg-app: #0F151F;
+  --bg-paper: #16202D;
+  --bg-paper-elevated: #1D2A3B;
+  --bg-sidebar: #131B27;
+  --bg-card: #1A2636;
+  --bg-card-hover: #223145;
+  
+  --text-primary: #E8ECF1;       /* Cream Ink */
+  --text-secondary: #9DAEBF;     /* Soft Paper Grey */
+  --text-muted: #6B7C90;         /* Slate Note */
+  
+  --border-subtle: #253448;
+  --border-strong: #374B63;
+  --border-paper: #28374B;
+  
+  --accent-red: #E6735C;         /* Bright Pen Red */
+  --accent-red-bg: rgba(230, 115, 92, 0.14);
+  --accent-red-border: rgba(230, 115, 92, 0.35);
+  
+  --accent-gold: #E5BB5A;        /* Warm Gold */
+  --accent-gold-bg: rgba(229, 187, 90, 0.14);
+  --accent-gold-border: rgba(229, 187, 90, 0.35);
+  
+  --accent-blue: #649EC4;        /* Soft Blue */
+  --accent-blue-bg: rgba(100, 158, 196, 0.14);
+  --accent-blue-border: rgba(100, 158, 196, 0.35);
+  
+  --margin-red-line: rgba(230, 115, 92, 0.35);
+  --ruled-line-color: rgba(232, 236, 241, 0.05);
+
+  --shadow-paper: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+  --shadow-floating: 0 14px 36px -4px rgba(0, 0, 0, 0.6);
+  --shadow-stamp: 2px 2px 0px rgba(0, 0, 0, 0.4);
+}
+
+/* Global Reset & Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  font-family: var(--font-sans);
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Defaults */
+h1, h2, h3, h4, .serif-text {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+p, span, label, input, button, select, textarea {
+  font-family: var(--font-sans);
+}
+
+.handwriting {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Ruled Notebook Line Texture (Applied ONLY to essay-input & feedback-report screens) */
+.ruled-notebook-paper {
+  background-color: var(--bg-paper);
+  background-image: linear-gradient(var(--ruled-line-color) 1px, transparent 1px);
+  background-size: 100% 32px;
+  position: relative;
+  border: 1px solid var(--border-paper);
+  box-shadow: var(--shadow-paper);
+}
+
+.paper-left-margin {
+  position: absolute;
+  left: 64px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: var(--margin-red-line);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Desk container texture */
+.desk-background {
+  background-color: var(--bg-app);
+  background-image: 
+    radial-gradient(rgba(27, 42, 61, 0.03) 1px, transparent 0);
+  background-size: 24px 24px;
+}
+
+[data-theme="night"] .desk-background {
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
+}
+
+/* Clean Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* Margin Note Overlay Highlights */
+.highlight-red {
+  background-color: var(--accent-red-bg);
+  border-bottom: 2px dashed var(--accent-red);
+  color: var(--text-primary);
+  padding: 1px 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.highlight-gold {
+  background-color: var(--accent-gold-bg);
+  border-bottom: 2px dashed var(--accent-gold);
+  color: var(--text-primary);
+  padding: 1px 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.highlight-blue {
+  background-color: var(--accent-blue-bg);
+  border-bottom: 2px dashed var(--accent-blue);
+  color: var(--text-primary);
+  padding: 1px 2px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.highlight-active {
+  box-shadow: 0 0 0 2px var(--text-primary);
+}
+
+/* Paper Badge / Stamp */
+.teacher-stamp {
+  border: 2px solid var(--accent-red);
+  color: var(--accent-red);
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  padding: 4px 14px;
+  transform: rotate(-3deg);
+  display: inline-block;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Buttons & Inputs */
+.btn-primary {
+  background-color: var(--text-primary);
+  color: var(--bg-paper);
+  border: 1px solid var(--text-primary);
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+.btn-primary:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--border-strong);
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+.btn-secondary:hover {
+  background-color: var(--bg-card-hover);
+  border-color: var(--text-secondary);
+}
+
+.btn-accent-red {
+  background-color: var(--accent-red);
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.15s ease;
+}
+.btn-accent-red:hover {
+  opacity: 0.92;
+}
+
+.input-field {
+  background-color: var(--bg-paper-elevated);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  padding: 9px 13px;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.15s ease;
+  width: 100%;
+}
+.input-field:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px var(--accent-blue-bg);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
