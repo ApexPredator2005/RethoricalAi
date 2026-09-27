@@ -11,11 +11,11 @@ export default function Sidebar({
 }) {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'menu_book', badge: pendingCount > 0 ? `${pendingCount}` : null },
-    { id: 'rubric', label: 'Rubric Builder', icon: 'tune' },
-    { id: 'submit', label: 'Submit Essay', icon: 'edit_note' },
-    { id: 'report', label: 'Feedback Report', icon: 'rate_review', badge: 'Live' },
-    { id: 'analytics', label: 'Analytics', icon: 'insights' },
-    { id: 'lms', label: 'LMS Settings', icon: 'sync_alt', badge: syncStatus === 'Synced' ? '✓' : null }
+    { id: 'rubric', label: 'Grading Criteria', icon: 'tune' },
+    { id: 'submit', label: 'Submit Assignment', icon: 'edit_note' },
+    { id: 'report', label: 'Grading & Feedback', icon: 'rate_review', badge: 'Live' },
+    { id: 'analytics', label: 'Class Insights', icon: 'insights' },
+    { id: 'lms', label: 'Gradebook Sync', icon: 'sync_alt', badge: syncStatus === 'Synced' ? '✓' : null }
   ];
 
   return (
@@ -26,7 +26,7 @@ export default function Sidebar({
         <div className="flex flex-col gap-space-xs">
           <div className="flex items-center gap-space-sm cursor-pointer" onClick={() => onTabChange('dashboard')}>
             <span className="material-symbols-outlined text-primary text-[28px]">ink_pen</span>
-            <span className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">Marginalia</span>
+            <span className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">RethoricalAI</span>
           </div>
           <div className="inline-flex items-center self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider font-semibold">
             {currentClassName}

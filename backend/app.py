@@ -1,5 +1,5 @@
 """
-Marginalia — Automated Essay Feedback & Grading Platform
+RethoricalAI — Automated Assignment Feedback & Grading Platform
 A Streamlit multi-page application with an 'annotated paper / teacher desk' aesthetic.
 """
 
@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Set Streamlit Page Config
 st.set_page_config(
-    page_title="Marginalia — AI Essay Feedback & Grading",
+    page_title="RethoricalAI — AI Assignment Feedback & Grading",
     page_icon="✒️",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -318,8 +318,8 @@ def inject_custom_css(dark_mode=False):
 
 # Sidebar Navigation
 with st.sidebar:
-    st.markdown("<h2 style='margin-bottom: 0;'>✒️ Marginalia</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='font-size:0.85rem; color:#6B7C93; margin-top:2px;'>AI Essay Feedback & Grading</p>", unsafe_allow_html=True)
+    st.markdown("<h2 style='margin-bottom: 0;'>✒️ RethoricalAI</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:0.85rem; color:#6B7C93; margin-top:2px;'>AI Assignment Feedback & Grading</p>", unsafe_allow_html=True)
     st.markdown("---")
 
     dark_mode = st.toggle("🌙 Night Grading Mode", value=False)
@@ -329,17 +329,17 @@ with st.sidebar:
         "Navigation",
         [
             "📊 Teacher Dashboard",
-            "📐 Rubric Builder",
-            "📝 Submit Essay",
-            "🔍 Feedback Report",
-            "📈 Class Analytics",
-            "🔗 LMS Settings"
+            "📐 Grading Criteria",
+            "📝 Submit Assignment",
+            "🔍 Assignment Feedback",
+            "📈 Class Insights",
+            "🔗 Gradebook Sync"
         ],
         index=0
     )
 
     st.markdown("---")
-    st.markdown("<div style='font-size:0.8rem; color:#8898AA;'>System Status: 🟢 <b>Gemini 1.5 Flash Active</b><br/>LMS: " + ("🟢 Connected" if st.session_state.lms_connected else "⚪ Offline / Demo") + "</div>", unsafe_allow_html=True)
+    st.markdown("<div style='font-size:0.8rem; color:#8898AA;'>System Status: 🟢 <b>Gemini 2.5 Flash Active</b><br/>Gradebook: " + ("🟢 Connected" if st.session_state.lms_connected else "⚪ Offline / Demo") + "</div>", unsafe_allow_html=True)
 
 
 # SCREEN 1: TEACHER DASHBOARD
@@ -374,13 +374,13 @@ if menu == "📊 Teacher Dashboard":
             if c5.button("Inspect Report ➔", key=f"btn_{sub['id']}"):
                 st.session_state.active_submission = sub
                 st.session_state.quiz_data = None
-                st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Feedback Report' tab to review.", icon="✅")
+                st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Assignment Feedback' tab to review.", icon="✅")
 
 
-# SCREEN 2: RUBRIC BUILDER
-elif menu == "📐 Rubric Builder":
-    st.markdown("<h1>Rubric Builder & Anchoring Studio</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Define dynamic grading dimensions, assign fractional weights, and specify concrete score-band anchor snippets for LLM grounding.</p>", unsafe_allow_html=True)
+# SCREEN 2: GRADING CRITERIA
+elif menu == "📐 Grading Criteria":
+    st.markdown("<h1>Grading Criteria Studio</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Define dynamic grading dimensions, assign fractional weights, and specify concrete score-band examples for AI evaluation.</p>", unsafe_allow_html=True)
 
     default_rubric = load_rubric("data/default_rubric.json")
 
@@ -407,7 +407,7 @@ elif menu == "📐 Rubric Builder":
 
             crit["description"] = st.text_area("Description / What to look for", value=crit.get("description", ""), key=f"desc_{idx}", height=65)
 
-            st.markdown("**Anchor Exemplar Snippets (Rubric Grounding)**")
+            st.markdown("**Score Level Examples (Low, Medium, High)**")
             a_col1, a_col2, a_col3 = st.columns(3)
             if "anchors" not in crit:
                 crit["anchors"] = {"low": "", "mid": "", "high": ""}
@@ -436,37 +436,37 @@ elif menu == "📐 Rubric Builder":
         })
         st.rerun()
 
-    if c_btn2.button("💾 Save Custom Rubric to Disk", disabled=not is_valid_weight):
+    if c_btn2.button("💾 Save Custom Criteria to Disk", disabled=not is_valid_weight):
         rubric_to_save = {"criteria": st.session_state.builder_criteria}
         save_rubric(rubric_to_save, "data/custom_rubric.json")
-        st.success("🎉 Rubric saved successfully as `data/custom_rubric.json`!")
+        st.success("🎉 Criteria saved successfully as `data/custom_rubric.json`!")
 
 
-# SCREEN 3: SUBMIT ESSAY
-elif menu == "📝 Submit Essay":
-    st.markdown("<h1>Student Essay Submission</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Submit student writing via text or photograph/OCR, configure optional reference model answers, and generate ensemble feedback.</p>", unsafe_allow_html=True)
+# SCREEN 3: SUBMIT ASSIGNMENT
+elif menu == "📝 Submit Assignment":
+    st.markdown("<h1>Student Assignment Submission</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Submit student writing or textual assignments via text or photograph/OCR, configure optional reference documents, and generate feedback.</p>", unsafe_allow_html=True)
 
     with st.container():
         st.markdown("<div class='ruled-paper'>", unsafe_allow_html=True)
         student_name = st.text_input("Student Name", value="Alex Chen")
-        essay_title = st.text_input("Essay Title", value="The Paradox of Digital Connection")
+        essay_title = st.text_input("Assignment Title", value="The Paradox of Digital Connection")
 
         tab_text, tab_photo = st.tabs(["✍️ Paste Plaintext", "📸 Upload Handwritten / PDF Photo"])
 
         essay_input = ""
         with tab_text:
             essay_input = st.text_area(
-                "Essay Content",
+                "Assignment Content",
                 value="While social media platforms promise global connectivity, they frequently engender profound psychological isolation. Recent sociological studies indicate that passive consumption of curated profiles exacerbates social anxiety, however individuals continue to spend hours daily scrolling through feeds. Furthermore, algorithmic amplification favors contentious discourse over empathetic dialogue, which distorts public perception. To mitigate these adverse outcomes, digital literacy must prioritize mindful engagement over mere screen time.",
                 height=240,
-                help="Enter or paste student essay text."
+                help="Enter or paste student assignment text."
             )
 
         with tab_photo:
-            uploaded_file = st.file_uploader("Upload essay image (PNG/JPG)", type=["png", "jpg", "jpeg"])
+            uploaded_file = st.file_uploader("Upload assignment image (PNG/JPG)", type=["png", "jpg", "jpeg"])
             if uploaded_file:
-                st.image(uploaded_file, caption="Uploaded Essay Page", use_container_width=True)
+                st.image(uploaded_file, caption="Uploaded Assignment Page", use_container_width=True)
                 if st.button("✨ Transcribe with Gemini Vision OCR"):
                     with st.spinner("Extracting handwritten/printed text..."):
                         time.sleep(1.5)
@@ -476,18 +476,18 @@ elif menu == "📝 Submit Essay":
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
-    with st.expander("⚙️ Advanced Grading Configuration (Model Answer & Rubric Selection)"):
-        selected_rubric = st.selectbox("Grading Rubric", ["Default 4-Criteria", "Custom Saved Rubric (data/custom_rubric.json)"])
+    with st.expander("⚙️ Advanced Evaluation Configuration (Reference Text & Criteria Selection)"):
+        selected_rubric = st.selectbox("Grading Criteria", ["Default 4-Criteria", "Custom Saved Criteria (data/custom_rubric.json)"])
         model_answer = st.text_area(
-            "Reference / Model Answer (Optional — for subjective short-answer comparisons)",
-            placeholder="Provide key themes, arguments, or required terminology that an ideal response should contain..."
+            "Reference / Source Document (Optional — for source verification and claim checks)",
+            placeholder="Provide key themes, source passages, or required concepts that an ideal response should contain..."
         )
 
-    if st.button("🚀 Run Rubric-Anchored Ensemble Feedback", type="primary"):
+    if st.button("🚀 Run AI Evaluation & Feedback", type="primary"):
         if not essay_input.strip():
-            st.error("Please enter essay text before submitting.")
+            st.error("Please enter assignment text before submitting.")
         else:
-            with st.spinner("Executing 3-Pass Ensemble Grading & Rubric Anchoring..."):
+            with st.spinner("Executing Multi-Pass Evaluation & Source Verification..."):
                 norm = normalize_text(essay_input)
                 segments = segment_text(norm)
                 feedback = generate_feedback_from_raw(norm, model_answer=model_answer if model_answer.strip() else None)
@@ -509,16 +509,16 @@ elif menu == "📝 Submit Essay":
                 st.session_state.quiz_data = None
                 st.session_state.quiz_answers = {}
 
-                st.success("🎉 Grading Complete! Navigate to **Feedback Report** to view annotations.")
+                st.success("🎉 Evaluation Complete! Navigate to **Assignment Feedback** to view results.")
 
 
-# SCREEN 4: FEEDBACK REPORT
-elif menu == "🔍 Feedback Report":
+# SCREEN 4: ASSIGNMENT FEEDBACK
+elif menu == "🔍 Assignment Feedback":
     sub = st.session_state.active_submission
     fb = sub.get("feedback", {})
 
-    st.markdown(f"<h1>Feedback Report: <i>{sub.get('title', 'Essay')}</i></h1>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color:#526477; font-size:1.05rem;'>Student: <b>{sub.get('student_name', 'Student')}</b> | Assessed: {sub.get('timestamp', 'Recent')} | Rubric: <span class='badge-pill'>{sub.get('rubric_name', 'Standard')}</span></p>", unsafe_allow_html=True)
+    st.markdown(f"<h1>Assignment Feedback: <i>{sub.get('title', 'Assignment')}</i></h1>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color:#526477; font-size:1.05rem;'>Student: <b>{sub.get('student_name', 'Student')}</b> | Assessed: {sub.get('timestamp', 'Recent')} | Criteria: <span class='badge-pill'>{sub.get('rubric_name', 'Standard')}</span></p>", unsafe_allow_html=True)
 
     # Score Banner
     overall_score = fb.get("overall_score", sub.get("score", 7.5))
@@ -530,10 +530,10 @@ elif menu == "🔍 Feedback Report":
         st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>AI Confidence</div><div style='font-size:2.4rem; font-weight:700; color:#3E6E8E;'>{int(conf*100)}%</div></div>", unsafe_allow_html=True)
     with score_col3:
         agreement = fb.get("ensemble_agreement", "High (94%)")
-        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>3-Pass Ensemble Agreement</div><div style='font-size:2.4rem; font-weight:700; color:#B4872E;'>{agreement}</div></div>", unsafe_allow_html=True)
+        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Ensemble Agreement</div><div style='font-size:2.4rem; font-weight:700; color:#B4872E;'>{agreement}</div></div>", unsafe_allow_html=True)
 
     # Preprocessing stats expander
-    with st.expander("📊 Ingestion & Lexical Statistics"):
+    with st.expander("📊 Ingestion & Text Statistics"):
         stats = sub.get("segments", {}).get("stats", {"word_count": len(sub.get("essay_text", "").split()), "sentence_count": 5, "avg_sentence_length": 18.2, "paragraph_count": 3})
         s1, s2, s3, s4 = st.columns(4)
         s1.metric("Word Count", stats.get("word_count", 0))
@@ -551,8 +551,8 @@ elif menu == "🔍 Feedback Report":
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
-    # Pedagogical Insight
-    st.markdown("### 💡 Beyond the Rubric: Pedagogical Insight")
+    # Teacher Insight
+    st.markdown("### 💡 Beyond the Rubric: Teacher Feedback & Insight")
     st.markdown(f"<div class='insight-card'>{fb.get('pedagogical_insight', 'Strong critical insight demonstrated throughout the paper.')}</div>", unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
@@ -569,7 +569,7 @@ elif menu == "🔍 Feedback Report":
             st.markdown(f"<div class='margin-note'><b>{imp.get('title', 'Improvement')}</b><br/><span style='font-size:0.9rem;'>{imp.get('detail', '')}</span></div>", unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
-    st.markdown("### 📝 Annotated Essay & Margin Notes")
+    st.markdown("### 📝 Annotated Submission & Margin Notes")
     st.markdown("<div class='ruled-paper'>" + sub.get("essay_text", "").replace("\n\n", "<br/><br/>") + "</div>", unsafe_allow_html=True)
 
     if fb.get("excerpt_notes"):
@@ -582,14 +582,14 @@ elif menu == "🔍 Feedback Report":
     act_col1, act_col2 = st.columns(2)
 
     with act_col1:
-        if st.button("🎯 Practice These Grammar Patterns (Build Quiz)", type="primary"):
-            with st.spinner("Crafting 4 contextual quiz questions from your essay errors..."):
+        if st.button("🎯 Practice Writing Skills (Build Practice Questions)", type="primary"):
+            with st.spinner("Crafting 4 contextual practice questions from submission patterns..."):
                 st.session_state.quiz_data = generate_quiz(sub.get("essay_text", ""), fb.get("improvements", []))
 
     with act_col2:
-        if st.button("📤 Push Grade to Google Classroom LMS"):
+        if st.button("📤 Push Grade to Classroom Gradebook"):
             if st.session_state.lms_connected:
-                st.success(f"✅ Grade ({overall_score}/10) and feedback summary synced to Google Classroom for {sub.get('student_name')}!")
+                st.success(f"✅ Grade ({overall_score}/10) and feedback summary synced to Classroom for {sub.get('student_name')}!")
                 st.session_state.lms_sync_log.insert(0, {
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "course": "AP Literature - Period 3",
@@ -597,11 +597,11 @@ elif menu == "🔍 Feedback Report":
                     "records_synced": 1
                 })
             else:
-                st.info("ℹ️ LMS Adapter is in Demo Mode. Connect your Google Classroom OAuth in 'LMS Settings' to sync live.")
+                st.info("ℹ️ Gradebook Adapter is in Demo Mode. Connect your Classroom OAuth in 'Gradebook Sync' to sync live.")
 
     # Render Interactive Quiz if Active
     if st.session_state.quiz_data:
-        st.markdown("<br/><h3>Interactive Grammar & Syntax Practice</h3>", unsafe_allow_html=True)
+        st.markdown("<br/><h3>Interactive Writing & Grammar Practice</h3>", unsafe_allow_html=True)
         questions = st.session_state.quiz_data.get("questions", [])
 
         for q_idx, q in enumerate(questions):
@@ -624,41 +624,41 @@ elif menu == "🔍 Feedback Report":
                 st.markdown("---")
 
 
-# SCREEN 5: ANALYTICS DASHBOARD
-elif menu == "📈 Class Analytics":
-    st.markdown("<h1>Class Writing Analytics & Concept Gaps</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Diagnostic overview of class-wide writing patterns, most frequent misconceptions, and AI-suggested targeted reteaching topics.</p>", unsafe_allow_html=True)
+# SCREEN 5: CLASS INSIGHTS
+elif menu == "📈 Class Insights":
+    st.markdown("<h1>Class Writing Insights & Concept Gaps</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Overview of class-wide writing patterns, common focus areas, and AI-suggested mini-lessons.</p>", unsafe_allow_html=True)
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Weakest Dimension", "Coherence & Transitions", delta="-0.8 vs Grammar", delta_color="inverse")
-    c2.metric("Top Concept Gap", "Comma Splices (42% affected)")
-    c3.metric("Reteach Readiness", "2 Modules Recommended")
+    c1.metric("Weakest Dimension", "Organization & Transitions", delta="-0.8 vs Grammar", delta_color="inverse")
+    c2.metric("Top Focus Area", "Comma Splices (42% affected)")
+    c3.metric("Suggested Lessons", "2 Mini-Lessons Ready")
 
-    st.markdown("### Top Concept Gaps Across Class Submissions")
+    st.markdown("### Top Focus Areas Across Class Submissions")
 
     gaps = [
-        {"gap": "Comma Splices with Conjunctive Adverbs ('however', 'therefore')", "affected": "42% of students", "frequency": 5, "concept": "Independent clauses connected by conjunctive adverbs require semicolon + comma structure.", "exercise": "Sentence combining drill: convert 10 comma-spliced pairs into compound sentences."},
-        {"gap": "Transitional Logic Between Body Paragraphs", "affected": "33% of students", "frequency": 4, "concept": "Thematic pivot bridges that link supporting evidence back to the central thesis claim.", "exercise": "Paragraph re-ordering & transition writing exercise using historical source docs."},
-        {"gap": "Counterargument Formulation & Rebuttal Depth", "affected": "25% of students", "frequency": 3, "concept": "Anticipating substantive objections rather than dismissing trivial counterclaims.", "exercise": "Steel-manning debate exercise: draft 2 full-paragraph counterarguments to student's own thesis."}
+        {"gap": "Comma Splices with Connecting Words ('however', 'therefore')", "affected": "42% of students", "frequency": 5, "concept": "Complete sentences joined by connecting words need a semicolon or period.", "exercise": "Sentence combining drill: convert 10 comma-spliced pairs into correct compound sentences."},
+        {"gap": "Transitions Between Paragraphs", "affected": "33% of students", "frequency": 4, "concept": "Clear transition sentences that link supporting evidence back to the main thesis statement.", "exercise": "Paragraph connection & transition writing exercise using source texts."},
+        {"gap": "Counterarguments & Rebuttal Strength", "affected": "25% of students", "frequency": 3, "concept": "Addressing opposing viewpoints directly and providing strong counter-evidence.", "exercise": "Debate exercise: write a full-paragraph rebuttal to an opposing viewpoint."}
     ]
 
     for g in gaps:
         with st.expander(f"⚠️ {g['gap']} — **{g['affected']}**", expanded=True):
-            st.markdown(f"**Core Concept to Review:** {g['concept']}")
-            st.markdown(f"**Targeted Skill-Building Exercise:** {g['exercise']}")
+            st.markdown(f"**Key Concept to Review:** {g['concept']}")
+            st.markdown(f"**Quick Practice Exercise:** {g['exercise']}")
 
-    st.markdown("<br/>### Student Drilldown")
-    selected_student = st.selectbox("Select Student for Individual Diagnostic Profile", [s["student_name"] for s in st.session_state.submissions])
+    st.markdown("<br/>### Individual Student View")
+    selected_student = st.selectbox("Select Student for Individual Profile", [s["student_name"] for s in st.session_state.submissions])
     student_record = next((s for s in st.session_state.submissions if s["student_name"] == selected_student), None)
     if student_record:
-        st.write(f"**Recent Score:** {student_record['score']} / 10 | **Paper:** *{student_record['title']}*")
+        st.write(f"**Recent Score:** {student_record['score']} / 10 | **Assignment:** *{student_record['title']}*")
         st.info(f"**Recommended Focus Area:** {student_record.get('feedback', {}).get('improvements', [{'title': 'Punctuation'}])[0].get('title', 'Refine Thesis')}")
 
 
-# SCREEN 6: LMS SETTINGS & SYNC
-elif menu == "🔗 LMS Settings":
-    st.markdown("<h1>LMS Integration & Gradebook Sync</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Manage enterprise Learning Management System adapters, authenticate Google Classroom via OAuth2, and audit recent synchronization events.</p>", unsafe_allow_html=True)
+# SCREEN 6: GRADEBOOK SYNC
+elif menu == "🔗 Gradebook Sync":
+    st.markdown("<h1>Gradebook &amp; Classroom Sync</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Manage Learning Management System adapters, authenticate Google Classroom via OAuth2, and audit recent synchronization events.</p>", unsafe_allow_html=True)
 
     col_lms1, col_lms2 = st.columns(2)
 

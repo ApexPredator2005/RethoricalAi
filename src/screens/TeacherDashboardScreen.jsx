@@ -1,15 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export default function TeacherDashboardScreen({
   classes,
-  assignments,
   selectedClassId,
   onOpenNewAssignment,
   onNavigateToReport,
   onNavigateToLms
 }) {
-  const [filterPeriod, setFilterPeriod] = useState('all');
-
   const currentClass = classes.find(c => c.id === selectedClassId) || classes[0];
 
   return (
@@ -39,7 +36,7 @@ export default function TeacherDashboardScreen({
             type="button"
           >
             <span className="material-symbols-outlined text-[18px] text-tertiary">cloud_sync</span>
-            <span className="font-label-md text-label-md">Import from Google Classroom</span>
+            <span className="font-label-md text-label-md">Import from Classroom</span>
           </button>
           
           <button 
@@ -61,7 +58,7 @@ export default function TeacherDashboardScreen({
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">
-                Aggregate Standing
+                Class Performance
               </span>
               <div className="font-headline-sm text-headline-sm text-on-surface">Class Average</div>
             </div>
@@ -78,19 +75,19 @@ export default function TeacherDashboardScreen({
             </span>
           </div>
           <p className="mt-space-sm font-annotation-note text-annotation-note text-on-surface-variant">
-            Based on 142 graded rubrics across both periods.
+            Based on 142 graded assignments across both periods.
           </p>
         </div>
 
-        {/* Card 2: Essays Needing Review */}
+        {/* Card 2: Submissions Needing Review */}
         <div className="relative bg-surface-container-lowest p-space-lg rounded shadow-[0_3px_10px_rgba(31,27,21,0.04),0_1px_2px_rgba(31,27,21,0.06)] flex flex-col justify-between overflow-hidden border border-surface-container">
           <div className="absolute top-0 left-0 right-0 h-1 bg-primary-container"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">
-                Priority Inbox
+                Needs Attention
               </span>
-              <div className="font-headline-sm text-headline-sm text-on-surface">Essays Needing Review</div>
+              <div className="font-headline-sm text-headline-sm text-on-surface">Submissions to Review</div>
             </div>
             <span className="p-space-xs rounded bg-primary-fixed text-on-primary-fixed-variant">
               <span className="material-symbols-outlined text-[20px]">draw</span>
@@ -98,26 +95,26 @@ export default function TeacherDashboardScreen({
           </div>
           <div className="mt-space-lg flex items-baseline justify-between">
             <div className="font-display-lg text-display-lg text-primary font-semibold tracking-tight">
-              7 <span className="font-body-md text-body-md text-on-surface-variant font-normal">essays</span>
+              7 <span className="font-body-md text-body-md text-on-surface-variant font-normal">submissions</span>
             </div>
             <span className="inline-flex items-center px-space-xs py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold tracking-wide">
               Action needed
             </span>
           </div>
           <p className="mt-space-sm font-annotation-note text-annotation-note text-on-surface-variant">
-            5 Gatsby papers • 2 King Lear argumentative essays.
+            5 Gatsby assignments • 2 King Lear writing tasks.
           </p>
         </div>
 
-        {/* Card 3: LMS Sync */}
+        {/* Card 3: Gradebook Sync */}
         <div className="relative bg-surface-container-lowest p-space-lg rounded shadow-[0_3px_10px_rgba(31,27,21,0.04),0_1px_2px_rgba(31,27,21,0.06)] flex flex-col justify-between overflow-hidden border border-surface-container">
           <div className="absolute top-0 left-0 right-0 h-1 bg-secondary"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">
-                Gradebook Connectivity
+                Gradebook Sync
               </span>
-              <div className="font-headline-sm text-headline-sm text-on-surface">Synced to LMS</div>
+              <div className="font-headline-sm text-headline-sm text-on-surface">Synced to Gradebook</div>
             </div>
             <span className="p-space-xs rounded bg-secondary-fixed text-on-secondary-container">
               <span className="material-symbols-outlined text-[20px]">sync_saved_locally</span>

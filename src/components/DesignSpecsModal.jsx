@@ -2,7 +2,7 @@ import React from 'react';
 import { X, Download, Copy, Check } from 'lucide-react';
 
 const SPEC_TEXT = `
-# Marginalia — Design Specification v1.0
+# RethoricalAI — Design Specification v1.0
 ## Exported for Code-Generation Handoff
 ---
 

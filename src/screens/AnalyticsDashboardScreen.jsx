@@ -20,10 +20,10 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-sm">
             <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
-              Cohort Intelligence • Module 8 Aggregation
+              Cohort Intelligence • Analytics Aggregation
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">28 Graded Papers</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant">28 Graded Submissions</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
             {analytics.className} — Prose &amp; Concept Gaps
@@ -34,12 +34,12 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
         </div>
 
         <button
-          onClick={() => alert('Mini-Lesson Plan exported to Google Classroom!')}
+          onClick={() => alert('Mini-Lesson Plan exported to Classroom!')}
           className="inline-flex items-center gap-2 px-space-md py-space-sm rounded bg-primary-container text-on-primary font-label-md text-label-md hover:bg-primary shadow-sm font-semibold active:translate-y-0.5 transition-all self-start lg:self-auto"
           type="button"
         >
           <span className="material-symbols-outlined text-[18px]">school</span>
-          <span>Generate Whole-Class Remediation</span>
+          <span>Generate Whole-Class Lesson</span>
         </button>
       </div>
 
@@ -47,7 +47,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
         <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-            Essays Analyzed
+            Assignments Analyzed
           </div>
           <div className="font-display-lg text-display-lg font-bold text-on-surface mt-2">
             28<span className="font-body-md text-on-surface-variant font-normal">/28</span>
@@ -107,7 +107,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
           </div>
 
           <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container space-y-space-md">
-            {analytics.criteriaAverages.map((crit) => {
+            {(analytics.criteriaAverages || []).map((crit) => {
               const pct = crit.percentage;
               const isWeakest = crit.name.includes('Textual Evidence') || pct < 80;
               return (
@@ -182,7 +182,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
         <div className="lg:col-span-5 space-y-space-md">
           <div className="flex items-center justify-between pb-space-xs">
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-              Suggested Lesson Plans
+              Suggested Mini-Lessons
             </h2>
             <span className="material-symbols-outlined text-[20px] text-secondary">auto_stories</span>
           </div>
@@ -200,7 +200,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
                     : 'text-on-surface-variant hover:text-on-surface'
                 }`}
               >
-                Gap #{topic.rank}
+                Focus Topic #{topic.rank}
               </button>
             ))}
           </div>
@@ -226,7 +226,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
             {/* Lesson Architecture */}
             <div className="bg-surface-container-low p-space-md rounded-lg space-y-2 border border-surface-container">
               <span className="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider">
-                Classroom Protocol
+                Quick Activity Plan
               </span>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
                 {activeReteach.lessonPlan}
@@ -235,7 +235,7 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
 
             {/* Anchor Snippet */}
             <div className="border-l-2 border-primary pl-3 py-1 bg-primary-fixed/20 rounded-r">
-              <span className="font-label-sm text-xs font-bold text-primary block">Exemplar Correction:</span>
+              <span className="font-label-sm text-xs font-bold text-primary block">Example Correction:</span>
               <span className="font-annotation-note text-annotation-note text-on-surface italic">
                 {activeReteach.sampleFix}
               </span>

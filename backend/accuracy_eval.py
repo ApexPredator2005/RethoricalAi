@@ -37,10 +37,6 @@ try:
     _SKLEARN_AVAILABLE = True
 except ImportError:
     _SKLEARN_AVAILABLE = False
-    sys.stderr.write(
-        "[accuracy_eval] WARNING: scikit-learn not installed. "
-        "QWK will be reported as N/A. Run: pip install scikit-learn\n"
-    )
 
 # ---- local ---------------------------------------------------------------
 from rubric_engine import load_rubric
@@ -88,9 +84,6 @@ def _compute_qwk(
         has fewer than 2 distinct values (QWK is undefined when there is no
         variance in either set).
     """
-    if not _SKLEARN_AVAILABLE:
-        return None
-
     if len(expert_scores) < 2:
         return None
 
@@ -103,9 +96,51 @@ def _compute_qwk(
         return None
 
     labels = list(range(scale_min, scale_max + 1))
+    if _SKLEARN_AVAILABLE:
+        try:
+            return float(cohen_kappa_score(expert_int, ai_int, weights="quadratic", labels=labels))
+        except Exception:
+            pass
+
+    # Pure Python Quadratic Weighted Kappa implementation
     try:
-        return float(cohen_kappa_score(expert_int, ai_int,
-                                       weights="quadratic", labels=labels))
+        n_labels = len(labels)
+        if n_labels < 2:
+            return None
+        label_to_idx = {val: idx for idx, val in enumerate(labels)}
+        # Filter scores to valid label indices
+        pairs = [(label_to_idx[e], label_to_idx[a]) for e, a in zip(expert_int, ai_int) if e in label_to_idx and a in label_to_idx]
+        if not pairs:
+            return None
+        n = len(pairs)
+        # Confusion matrix O
+        O = [[0.0] * n_labels for _ in range(n_labels)]
+        for r, c in pairs:
+            O[r][c] += 1.0
+
+        # Histograms
+        hist_e = [sum(O[i][j] for j in range(n_labels)) for i in range(n_labels)]
+        hist_a = [sum(O[i][j] for i in range(n_labels)) for j in range(n_labels)]
+
+        # Expected matrix E
+        E = [[(hist_e[i] * hist_a[j]) / float(n) for j in range(n_labels)] for i in range(n_labels)]
+
+        # Weight matrix W
+        denom_weight = float((n_labels - 1) ** 2)
+        if denom_weight == 0:
+            return None
+
+        sum_O = 0.0
+        sum_E = 0.0
+        for i in range(n_labels):
+            for j in range(n_labels):
+                w = float((i - j) ** 2) / denom_weight
+                sum_O += w * O[i][j]
+                sum_E += w * E[i][j]
+
+        if sum_E == 0:
+            return 1.0
+        return round(1.0 - (sum_O / sum_E), 4)
     except Exception as exc:
         sys.stderr.write(f"[accuracy_eval] WARNING: QWK computation failed: {exc}\n")
         return None
@@ -444,7 +479,7 @@ def format_report(results: dict) -> str:
     lines += [
         "",
         "=" * 72,
-        "  Marginalia — Scoring Accuracy Evaluation Report",
+        "  RethoricalAI — Scoring Accuracy Evaluation Report",
         f"  Model:   {meta['model_name']}",
         f"  Rubric:  {os.path.basename(meta['rubric_path'])}",
         f"  Labeled: {os.path.basename(meta['labeled_path'])}",
@@ -600,7 +635,7 @@ def format_report(results: dict) -> str:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description="Evaluate Marginalia AI scoring accuracy against expert labels.",
+        description="Evaluate RethoricalAI AI scoring accuracy against expert labels.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent("""\
             Metrics:

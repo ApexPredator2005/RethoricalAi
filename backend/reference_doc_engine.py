@@ -27,8 +27,64 @@ try:
 except ImportError:
     docx = None
 
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+try:
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics.pairwise import cosine_similarity
+except ImportError:
+    class TfidfVectorizer:
+        def __init__(self, stop_words=None):
+            self.stop_words = stop_words or set()
+            self.vocab = {}
+
+        def fit_transform(self, texts):
+            import math
+            from collections import Counter
+            doc_freq = Counter()
+            doc_counts = []
+            for t in texts:
+                words = [w.lower() for w in re.findall(r"\w+", t) if len(w) > 2]
+                counts = Counter(words)
+                doc_counts.append(counts)
+                for w in counts:
+                    doc_freq[w] += 1
+            N = max(1, len(texts))
+            self.vocab = {w: idx for idx, w in enumerate(doc_freq.keys())}
+            self.idf = {w: math.log((1 + N) / (1 + doc_freq[w])) + 1 for w in doc_freq}
+            matrix = []
+            for counts in doc_counts:
+                vec = [0.0] * len(self.vocab)
+                for w, c in counts.items():
+                    if w in self.vocab:
+                        vec[self.vocab[w]] = c * self.idf.get(w, 1.0)
+                norm = math.sqrt(sum(v*v for v in vec)) or 1.0
+                matrix.append([v / norm for v in vec])
+            return matrix
+
+        def transform(self, texts):
+            import math
+            from collections import Counter
+            matrix = []
+            for t in texts:
+                words = [w.lower() for w in re.findall(r"\w+", t) if len(w) > 2]
+                counts = Counter(words)
+                vec = [0.0] * len(self.vocab)
+                for w, c in counts.items():
+                    if w in self.vocab:
+                        vec[self.vocab[w]] = c * self.idf.get(w, 1.0)
+                norm = math.sqrt(sum(v*v for v in vec)) or 1.0
+                matrix.append([v / norm for v in vec])
+            return matrix
+
+    def cosine_similarity(v1, v2):
+        # Pure Python dot product between normalized vectors
+        res = []
+        for row1 in v1:
+            row_sims = []
+            for row2 in v2:
+                dot = sum(a * b for a, b in zip(row1, row2))
+                row_sims.append(dot)
+            res.append(row_sims)
+        return type("SimArray", (), {"flatten": lambda self: [item for sub in res for item in sub]})()
 
 
 # ---------------------------------------------------------------------------

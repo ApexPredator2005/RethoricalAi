@@ -1,5 +1,5 @@
 """
-quiz_engine.py — Grammar Self-Improvement Quiz Generator for Marginalia.
+quiz_engine.py — Grammar Self-Improvement Quiz Generator for RethoricalAI.
 
 Generates targeted, contextual multiple-choice quiz questions based on
 a student's essay text and identified grammar/structural improvement areas.
@@ -16,7 +16,7 @@ try:
 except ImportError:
     pass
 
-MODEL_NAME = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
+MODEL_NAME = os.getenv("GEMINI_MODEL", os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash"))
 
 
 def _clean_json_string(text: str) -> str:

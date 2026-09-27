@@ -1,4 +1,4 @@
-// Marginalia Mock Data Engine
+// RethoricalAI Mock Data Engine
 
 export const INITIAL_CLASSES = [
   { id: 'ap-lit', name: 'AP English Literature (Period 3)', students: 28, pending: 4, avgScore: 88.4 },
@@ -42,7 +42,7 @@ export const INITIAL_ASSIGNMENTS = [
 export const DEFAULT_RUBRIC = {
   id: 'rubric-ap-lit',
   title: 'AP Literary Analysis & Synthesis Rubric',
-  description: 'Custom evaluation scale for AP Senior English literature essays focusing on thesis formulation, quote integration, and stylistic depth.',
+  description: 'Custom evaluation scale for AP Senior English literature assignments focusing on thesis formulation, quote integration, and stylistic depth.',
   criteria: [
     {
       id: 'c1',
@@ -107,10 +107,10 @@ export const SAMPLE_ESSAY_REPORT = {
   ],
 
   pedagogicalInsight: {
-    title: 'Beyond the Rubric: Architectural Voice & Disillusionment',
-    content: `Maya demonstrates remarkable maturity in examining spatial symbolism in Fitzgerald's prose. Her insight regarding the physical distance across the bay mirroring the rigid class divide between West and East Egg elevates this paper beyond standard high school literary analysis.
+    title: 'Teacher Feedback & In-Depth Insight',
+    content: `Maya demonstrates remarkable maturity in examining spatial symbolism in Fitzgerald's prose. Her insight regarding the physical distance across the bay mirroring the class divide between West and East Egg elevates this paper beyond standard literary analysis.
 
-Teaching Recommendation: To help Maya progress from an A- to a publication-ready essay, encourage her to explore Fitzgerald's subtle rhythm choices—specifically how short, truncated sentences in Chapter 5 mirror Gatsby's anxiety before Daisy's arrival.`
+Teaching Recommendation: To help Maya progress from an A- to a publication-ready assignment, encourage her to explore Fitzgerald's subtle rhythm choices—specifically how short, truncated sentences in Chapter 5 mirror Gatsby's anxiety before Daisy's arrival.`
   },
 
   essayParagraphs: [
@@ -140,7 +140,7 @@ Teaching Recommendation: To help Maya progress from an A- to a publication-ready
     {
       id: 'note-1',
       type: 'praise', // gold
-      author: 'AI Assistant & Prof. Miller',
+      author: 'AI Assistant & Teacher',
       tag: 'Thesis Strength',
       text: 'Exemplary thesis statement! It clearly connects the literal object (green light) to broader socio-economic critique.',
       quoteExcerpt: 'The green light at the end of Daisy Buchanan\'s dock is not merely an object of romantic yearning...'
@@ -148,7 +148,7 @@ Teaching Recommendation: To help Maya progress from an A- to a publication-ready
     {
       id: 'note-2',
       type: 'insight', // blue
-      author: 'Pedagogical Insight',
+      author: 'Teacher Insight',
       tag: 'Metaphoric Depth',
       text: 'Brilliant analytical metaphor comparing Nick to a theater director. This demonstrates deep engagement with narrative perspective.',
       quoteExcerpt: 'Nick Carraway acts almost as an uncredited theater director...'
@@ -227,6 +227,12 @@ export const CLASS_ANALYTICS = {
   className: 'AP English Literature (Period 3)',
   totalEssays: 28,
   avgScore: 88.4,
+  criteriaAverages: [
+    { name: 'Thesis & Argumentative Claims', average: 23.4, max: 25, percentage: 94 },
+    { name: 'Textual Evidence & Synthesis', average: 26.6, max: 35, percentage: 76 },
+    { name: 'Organization & Section Flow', average: 17.6, max: 20, percentage: 88 },
+    { name: 'Voice, Style & Mechanics', average: 18.2, max: 20, percentage: 91 }
+  ],
   scoreDistribution: [
     { grade: 'A (90-100)', count: 12, percentage: 43 },
     { grade: 'B (80-89)', count: 10, percentage: 36 },

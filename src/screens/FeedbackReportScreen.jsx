@@ -34,13 +34,13 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-sm">
             <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
-              Evaluated Dossier • Period 3 AP Lit
+              Graded Submission • Period 3 AP Lit
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
             <span className="font-label-sm text-label-sm text-on-surface-variant">Archived 20m ago</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            Feedback Report: Julian Vance — The Great Gatsby Analysis
+            Assignment Feedback: Julian Vance — The Great Gatsby Analysis
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
             Evaluated against AP Literature Analytical Synthesis Rubric (100-Point Analytic Scale). Assessed on September 24, 2026.
@@ -80,7 +80,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
                 / 100 (A-)
               </span>
               <span className="font-annotation-note text-annotation-note text-primary font-medium tracking-tight mt-0.5">
-                Top Quintile
+                Top 20% of Class
               </span>
             </div>
           </div>
@@ -93,7 +93,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
               type="button"
             >
               <span className="material-symbols-outlined text-[18px]">publish</span>
-              {pushedToLms ? 'Grade Pushed Successfully! ✓' : 'Push Grade to Google Classroom'}
+              {pushedToLms ? 'Grade Pushed Successfully! ✓' : 'Push Grade to Classroom'}
             </button>
 
             <div className="flex items-center gap-space-xs">
@@ -101,13 +101,13 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
                 onClick={onOpenQuiz}
                 className="flex-1 inline-flex items-center justify-center gap-space-xs px-space-md py-space-xs rounded bg-tertiary-fixed text-on-tertiary-container hover:bg-tertiary-fixed-dim transition-colors font-label-md text-label-md font-semibold border border-tertiary/20"
                 type="button"
-                title="Launch diagnostic grammar quiz based on Julian's flagged syntactical weaknesses"
+                title="Launch practice questions based on Julian's flagged writing patterns"
               >
                 <span className="material-symbols-outlined text-[17px]">quiz</span>
-                Take Grammar Quiz
+                Practice Writing Skills
               </button>
               <button
-                onClick={() => alert('Annotated Manuscript PDF generated!')}
+                onClick={() => alert('Annotated Submission PDF generated!')}
                 className="p-space-xs rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors border border-surface-container"
                 title="Export Annotated PDF"
                 type="button"
@@ -117,7 +117,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
               <button
                 onClick={() => window.print()}
                 className="p-space-xs rounded bg-surface-container-low text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-colors border border-surface-container"
-                title="Print Manuscript"
+                title="Print Submission"
                 type="button"
               >
                 <span className="material-symbols-outlined text-[18px]">print</span>
@@ -202,7 +202,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
             <div className="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm border border-surface-container">
               <span className="w-2 h-2 rounded-full bg-secondary-container mt-2 shrink-0"></span>
               <div className="flex flex-col">
-                <span className="font-label-md text-label-md text-on-surface font-semibold">Nuanced Identity Curation</span>
+                <span className="font-label-md text-label-md text-on-surface font-semibold">Clear Analysis &amp; Point of View</span>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
                   Julian formulates an articulate stance detailing how Gatsby treats social respectability as an engineered stage performance rather than simple social climbing.
                 </p>
@@ -211,7 +211,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
             <div className="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm border border-surface-container">
               <span className="w-2 h-2 rounded-full bg-secondary-container mt-2 shrink-0"></span>
               <div className="flex flex-col">
-                <span className="font-label-md text-label-md text-on-surface font-semibold">Symbolic Polysemy</span>
+                <span className="font-label-md text-label-md text-on-surface font-semibold">Effective Use of Symbols</span>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
                   Skillful textual analysis connecting the dock's green light to the siren-like quality of Daisy Buchanan's voice ("full of money").
                 </p>
@@ -230,7 +230,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
             <div className="p-space-sm rounded bg-surface-container-lowest flex items-start gap-space-sm border border-surface-container">
               <span className="w-2 h-2 rounded-full bg-primary-container mt-2 shrink-0"></span>
               <div className="flex flex-col">
-                <span className="font-label-md text-label-md text-on-surface font-semibold">Expletive Pronoun Syntactical Ambiguity</span>
+                <span className="font-label-md text-label-md text-on-surface font-semibold">Unclear Pronoun References</span>
                 <p className="font-body-sm text-body-sm text-on-surface-variant">
                   Clarify ambiguous pronoun references in paragraph 2 ("In doing this, it demonstrates..."). Replace empty fillers with the direct symbolic agent.
                 </p>
@@ -276,7 +276,6 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
           {SAMPLE_SOURCE_ALIGNMENTS.map((item, idx) => {
             const isSupported = item.verdict === 'supported';
             const isContradicted = item.verdict === 'contradicted';
-            const isUnverified = item.verdict === 'unverified_against_source';
 
             return (
               <div
@@ -285,7 +284,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
               >
                 <div className="flex items-center justify-between">
                   <span className="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider">
-                    Student Essay Claim #{idx + 1}
+                    Student Claim #{idx + 1}
                   </span>
                   <span
                     className={`px-2.5 py-0.5 rounded font-label-sm text-xs font-bold uppercase ${
@@ -331,7 +330,7 @@ export default function FeedbackReportScreen({ onOpenQuiz }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-space-xs">
             <span className="material-symbols-outlined text-primary text-[22px]">history_edu</span>
-            <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Annotated Manuscript (Draft 2)</h2>
+            <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Annotated Submission (Draft 2)</h2>
           </div>
           <div className="hidden sm:flex items-center gap-space-sm">
             <span className="font-label-sm text-label-sm text-on-surface-variant">3 teacher notes attached</span>

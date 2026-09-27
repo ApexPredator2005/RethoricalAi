@@ -22,7 +22,6 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
   const [selectedRubric, setSelectedRubric] = useState('AP Lit Analytical Synthesis (Default)');
 
   // Reference Document State
-  const [hasRefDoc, setHasRefDoc] = useState(true);
   const [refText, setRefText] = useState(DEFAULT_REFERENCE_TEXT);
   const [refFileName, setRefFileName] = useState('The_Great_Gatsby_Chapter_5_Excerpts.pdf');
 
@@ -55,7 +54,6 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
     const file = e.target.files?.[0];
     if (file) {
       setRefFileName(file.name);
-      setHasRefDoc(true);
     }
   };
 
@@ -66,13 +64,13 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">
             <span className="material-symbols-outlined text-[16px]">edit_note</span>
-            <span>Student Manuscript Submission</span>
+            <span>Student Submission</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            Submit Your Essay: The Great Gatsby Analysis
+            Submit Assignment: The Great Gatsby Analysis
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Examine whether Fitzgerald constructs Jay Gatsby as a sympathetic romantic idealist or a cynical racketeer.
+            Submit your completed assignment text or scan for AI-assisted evaluation and source verification.
           </p>
         </div>
 
@@ -86,7 +84,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
             <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Target Level</span>
-            <span className="font-headline-sm text-headline-sm text-tertiary font-bold">AP Score 5</span>
+            <span className="font-headline-sm text-headline-sm text-tertiary font-bold">Grade A Target</span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
             <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Draft Version</span>
@@ -141,9 +139,9 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
       {inputMode === 'upload' && (
         <div className="p-space-xl border-2 border-dashed border-primary/40 rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center gap-space-sm text-center animate-fade-in shadow-sm">
           <span className="material-symbols-outlined text-[48px] text-primary">cloud_upload</span>
-          <h3 className="font-headline-sm text-headline-sm text-on-surface">Upload Written Essay, PDF, or Photo Scan</h3>
+          <h3 className="font-headline-sm text-headline-sm text-on-surface">Upload Assignment, PDF, or Photo Scan</h3>
           <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-            Our multi-modal vision OCR and diagram engine will automatically digitize handwritten pages, graphs, and flowcharts into styled manuscript prose.
+            Our multi-modal vision OCR automatically digitizes handwritten pages, typed assignments, and documents into clear text.
           </p>
           <label className="mt-space-sm px-space-md py-space-xs rounded bg-primary-container text-on-primary font-label-md text-label-md cursor-pointer hover:bg-primary shadow-sm">
             Choose File from Device
@@ -197,7 +195,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               <span className="w-3 h-3 rounded-full bg-tertiary-container inline-block"></span>
             </div>
             <span className="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">
-              Manuscript Folio • AP Literature &amp; Comp
+              Assignment Sheet • AP Literature &amp; Comp
             </span>
           </div>
           <div className="flex items-center gap-space-sm">
@@ -227,7 +225,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             className="w-full bg-transparent resize-y outline-none font-body-md text-body-md text-on-surface leading-[28px] focus:outline-none min-h-[420px] pt-1"
             value={essayText}
             onChange={(e) => setEssayText(e.target.value)}
-            placeholder="Draft your literary essay here..."
+            placeholder="Enter or paste your assignment text here..."
             spellCheck="false"
           />
         </div>
@@ -243,7 +241,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           </div>
           <div className="flex items-center gap-space-sm font-label-sm">
             <span className="w-2 h-2 rounded-full bg-tertiary-container"></span>
-            <span>Syntactic Rhythm: Balanced</span>
+            <span>Writing Rhythm: Balanced</span>
             <span className="mx-1">•</span>
             <span>Est. Reading: {readTime} min</span>
           </div>
@@ -268,7 +266,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
                 ? 'bg-tertiary-fixed text-on-tertiary-container' 
                 : 'bg-secondary-fixed text-on-secondary-fixed'
             }`}>
-              {refMode === 'direct' ? 'Mode A: Direct Inject' : 'Mode B: TF-IDF Chunk Retrieval'}
+              {refMode === 'direct' ? 'Mode A: Direct Check' : 'Mode B: Search Chunk Retrieval'}
             </span>
             <span className="font-annotation-note text-on-surface-variant">
               ({refWords} words)
@@ -278,7 +276,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
 
         <div className="pt-space-md space-y-space-md">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Upload the primary text, prompt passage, or whole chapter. The engine will automatically select <strong>Mode A (Direct Inject)</strong> if ≤ 3,000 words or <strong>Mode B (TF-IDF Retrieval)</strong> if &gt; 3,000 words, verbatim verifying student claims against the source material.
+            Upload the primary text, prompt passage, or chapter. The engine will automatically check and verify student claims directly against the source material.
           </p>
 
           <div className="flex items-center gap-space-sm">
@@ -308,7 +306,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">
             Evaluation Framework
           </span>
-          <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">Target AP Rubric &amp; Benchmarks</h2>
+          <h2 className="font-headline-sm text-headline-sm text-on-surface font-bold">Grading Criteria &amp; Scale</h2>
           <div className="pt-1">
             <select
               value={selectedRubric}
@@ -318,7 +316,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               <option>AP Lit Analytical Synthesis (Default)</option>
               <option>AP Lang Rhetorical Analysis (6-Point Scale)</option>
               <option>Comparative Literature &amp; Motif Study</option>
-              <option>Standard High School Literary Essay</option>
+              <option>Standard High School Assignment Rubric</option>
             </select>
           </div>
         </div>
@@ -332,12 +330,12 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           {isEvaluating ? (
             <>
               <span className="material-symbols-outlined text-[22px] animate-spin">progress_activity</span>
-              <span>Running Reference-Grounded Synthesis...</span>
+              <span>Evaluating Assignment...</span>
             </>
           ) : (
             <>
               <span className="material-symbols-outlined text-[22px]">ink_pen</span>
-              <span>Submit for AI Evaluation &amp; Source Alignment</span>
+              <span>Submit for AI Evaluation</span>
             </>
           )}
         </button>

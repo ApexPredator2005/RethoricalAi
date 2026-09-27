@@ -3,22 +3,22 @@ import React, { useState } from 'react';
 const INITIAL_CRITERIA = [
   {
     id: 'CRIT-01',
-    name: 'Thesis & Argumentative Defensibility',
-    description: 'Formulates a nuanced, defensible thesis that establishes a clear line of literary reasoning and synthesizes prompt tensions without formulaic phrasing.',
+    name: 'Thesis & Main Argument',
+    description: 'Formulates a clear, defensible main argument that answers the prompt without relying on simple plot summary.',
     weight: 25,
-    highAnchor: "Thesis offers unexpected tension between Gatsby's romantic idealism and moral decay, framing the valley of ashes as a self-inflicted purgatory.",
+    highAnchor: "Thesis offers insightful perspective on prompt tensions, presenting a clear line of reasoning.",
     highRange: '23–25 pts',
-    midAnchor: 'Clear thesis statement articulating character motive, but relies on conventional thematic dualities without exploring internal prose friction.',
+    midAnchor: 'Clear thesis statement articulating character motive, but relies on conventional ideas without deeper analysis.',
     midRange: '17–22 pts',
     lowAnchor: 'Restates prompt without distinct arguable claim or uses simple plot summary as assertion.',
     lowRange: '0–16 pts'
   },
   {
     id: 'CRIT-02',
-    name: 'Textual Evidence & Synthesis',
-    description: 'Synthesizes specific, evocative textual quotes embedded smoothly within analytical commentary to illuminate authorial choice and deeper motif layers.',
+    name: 'Textual Evidence & Quotes',
+    description: 'Integrates specific, relevant quotes and evidence smoothly within commentary to support key points.',
     weight: 35,
-    highAnchor: 'Quotes seamlessly integrated with active verbs; close-reading unpacks figurative resonance and subtextual motifs without block quotations.',
+    highAnchor: 'Quotes seamlessly integrated with active verbs; close-reading unpacks deeper meaning without block quotations.',
     highRange: '32–35 pts',
     midAnchor: 'Adequate textual evidence citing key scenes, though occasional quotes stand alone or are paraphrased with surface-level explanation.',
     midRange: '25–31 pts',
@@ -27,22 +27,22 @@ const INITIAL_CRITERIA = [
   },
   {
     id: 'CRIT-03',
-    name: 'Organization & Structural Progression',
-    description: 'Constructs an inevitable, sequential argumentative progression where each paragraph advances the central thesis through controlled transitional rhetoric.',
+    name: 'Organization & Structure',
+    description: 'Constructs a logical paragraph progression where each section advances the main argument with smooth transitions.',
     weight: 20,
-    highAnchor: 'Organic topic sentences and sophisticated transitions that interweave contrasting counter-motifs without artificial signposts.',
+    highAnchor: 'Clear topic sentences and natural transitions that connect ideas smoothly across paragraphs.',
     highRange: '18–20 pts',
-    midAnchor: 'Functional 5-paragraph structure with clear topic sentences; transitions rely on standard chronological connective adverbs.',
+    midAnchor: 'Functional paragraph structure with clear topic sentences; transitions rely on standard connective adverbs.',
     midRange: '14–17 pts',
-    lowAnchor: 'Disjointed sequence of observations; abrupt thematic shifts with redundant or missing conclusions.',
+    lowAnchor: 'Disjointed sequence of observations; abrupt shifts with redundant or missing conclusions.',
     lowRange: '0–13 pts'
   },
   {
     id: 'CRIT-04',
-    name: 'Stylistic Voice & Rhetorical Register',
-    description: 'Demonstrates precise literary vocabulary, mature syntactical variety, active voice discipline, and accurate grammatical mechanics.',
+    name: 'Style, Voice & Grammar',
+    description: 'Demonstrates clear vocabulary, sentence variety, active voice, and accurate grammar mechanics.',
     weight: 20,
-    highAnchor: 'High academic register with rhythmic variety, vivid verbs, and nuanced literary terminology (e.g. polysemy, hubris, juxtaposition).',
+    highAnchor: 'Clear academic tone with rhythmic sentence variety, vivid verbs, and precise literary terminology.',
     highRange: '18–20 pts',
     midAnchor: 'Clear and grammatically sound prose with minor colloquialisms or repetitive sentence beginnings.',
     midRange: '14–17 pts',
@@ -53,7 +53,7 @@ const INITIAL_CRITERIA = [
 
 export default function RubricBuilderScreen() {
   const [criteria, setCriteria] = useState(INITIAL_CRITERIA);
-  const [rubricTitle, setRubricTitle] = useState('Rubric Builder: AP Literature Analytical Synthesis');
+  const [rubricTitle, setRubricTitle] = useState('Grading Criteria: AP Literature Analytical Synthesis');
   const [rubricDesc, setRubricDesc] = useState('Crafted for multi-source comparative prose analysis. Balances argumentative rigor, close-reading textual defense, and rhetorical cadence.');
   const [savedNotification, setSavedNotification] = useState(false);
 
@@ -78,10 +78,10 @@ export default function RubricBuilderScreen() {
       ...criteria,
       {
         id: newId,
-        name: 'New Custom Assessment Dimension',
+        name: 'New Custom Grading Criterion',
         description: 'Specify clear evaluative criteria, student observable behaviors, and expected mastery level.',
         weight: 10,
-        highAnchor: 'Mastery exemplar demonstrates exceptional nuance and technical command.',
+        highAnchor: 'High standard demonstrates exceptional clarity and mastery.',
         highRange: '9–10 pts',
         midAnchor: 'Proficient standard meets expectations with minor areas for refinement.',
         midRange: '7–8 pts',
@@ -103,7 +103,7 @@ export default function RubricBuilderScreen() {
         <div className="space-y-space-xs max-w-3xl">
           <div className="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">
             <span className="material-symbols-outlined text-[16px]">tune</span>
-            <span>Archival Assessment Specification</span>
+            <span>Grading Criteria Specification</span>
           </div>
           <input
             type="text"
@@ -123,11 +123,11 @@ export default function RubricBuilderScreen() {
         <div className="flex items-center gap-space-sm shrink-0 self-start">
           <button 
             type="button"
-            onClick={() => alert('Rubric template duplicated to draft repository!')}
+            onClick={() => alert('Criteria template duplicated to draft repository!')}
             className="inline-flex items-center gap-space-xs px-space-md py-space-sm bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors rounded shadow-sm font-label-md text-label-md"
           >
             <span className="material-symbols-outlined text-[18px]">content_copy</span>
-            <span>Duplicate Template</span>
+            <span>Duplicate Criteria</span>
           </button>
           <button 
             type="button"
@@ -136,7 +136,7 @@ export default function RubricBuilderScreen() {
             className="inline-flex items-center gap-space-xs px-space-md py-space-sm bg-primary-container text-on-primary hover:opacity-90 active:translate-y-0.5 transition-all rounded shadow-md font-label-md text-label-md"
           >
             <span className="material-symbols-outlined text-[18px]">ink_pen</span>
-            <span>Save Rubric</span>
+            <span>Save Criteria</span>
           </button>
         </div>
       </div>
@@ -146,9 +146,9 @@ export default function RubricBuilderScreen() {
         <div className="p-space-sm rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center justify-between shadow-sm animate-fade-in">
           <span className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px]">check_circle</span>
-            Rubric specifications successfully locked and synchronized with Gemini grading anchors!
+            Grading criteria successfully saved and synchronized for evaluation!
           </span>
-          <span className="font-code-inline text-xs">v2.4 Active</span>
+          <span className="font-code-inline text-xs">Active</span>
         </div>
       )}
 
@@ -194,7 +194,7 @@ export default function RubricBuilderScreen() {
       <div className="flex flex-col gap-space-md">
         <div className="flex items-center justify-between px-space-xs">
           <div className="flex items-center gap-space-sm">
-            <span className="font-label-lg text-label-lg text-on-surface font-semibold">Evaluation Strata</span>
+            <span className="font-label-lg text-label-lg text-on-surface font-semibold">Grading Criteria</span>
             <span className="font-code-inline text-code-inline text-on-surface-variant bg-surface-container px-space-xs rounded">
               {criteria.length} Criteria
             </span>
@@ -274,7 +274,7 @@ export default function RubricBuilderScreen() {
                   <span className="material-symbols-outlined text-[16px] text-primary transition-transform group-open:rotate-90">
                     arrow_right
                   </span>
-                  Anchor Benchmarks (3 Score Bands for LLM Calibration)
+                  Score Level Examples (High, Medium, and Low Examples)
                 </span>
                 <span className="text-outline font-normal">Toggle descriptors</span>
               </summary>

@@ -6,8 +6,6 @@ export default function Header({
   onSelectClass, 
   role, 
   onToggleRole, 
-  theme, 
-  onToggleTheme, 
   onOpenSpecsModal,
   onOpenNewAssignment,
   searchQuery = '',
@@ -23,7 +21,7 @@ export default function Header({
           </span>
           <input 
             className="w-full pl-9 pr-space-md py-space-xs rounded bg-surface-container-low text-on-surface placeholder:text-on-surface-variant font-label-md text-label-md focus:outline-none focus:bg-surface-container border border-surface-container transition-all" 
-            placeholder="Search students, rubrics, or essays..." 
+            placeholder="Search students, criteria, or assignments..." 
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange && onSearchChange(e.target.value)}

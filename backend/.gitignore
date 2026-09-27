@@ -30,7 +30,12 @@ wheels/
 htmlcov/
 *.log
 
-# Environment variables
+# Environment variables & secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
+credentials.json
+token.json
+client_secret*.json

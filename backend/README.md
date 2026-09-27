@@ -1,205 +1,233 @@
-# Marginalia — Automated Essay Feedback & Grading Platform
+# RethoricalAI — AI Essay Feedback & Grading Platform
 
-> **AI-powered, rubric-anchored essay evaluation with ensemble scoring, diagnostic analytics, interactive grammar quizzes, and LMS synchronization.**
-
----
-
-## 1. Problem Statement
-
-Grading essays is one of the most time-intensive responsibilities in education, often resulting in delayed, inconsistent, or superficial feedback for students. **Marginalia** provides an intelligent, rubric-grounded feedback engine that delivers transparent, consistent scoring, actionable margin notes, and personalized remediation while cutting teacher grading time by over 70%.
+> **Accurate, rubric-anchored automated essay grading, ensemble-scored feedback, concept-gap analytics, contextual grammar quizzes, and enterprise LMS synchronization.**
 
 ---
 
-## 2. System Architecture
+## 📌 Executive Overview
+
+**RethoricalAI** is an advanced AI writing evaluation platform engineered specifically for educators and students. Built with an authentic **"Annotated Paper / Teacher's Desk"** aesthetic, RethoricalAI moves beyond generic SaaS cards to deliver actionable margin annotations, rubric-anchored score calibration, source-document alignment checks, and targeted grammar remediation while reducing teacher grading workloads by over 70%.
+
+---
+
+## 🏛️ System Architecture
 
 ```text
 +-----------------------------------------------------------------------------------+
 |                                 INPUT CHANNELS                                    |
-|         [ Student Text Input ]        |         [ OCR / Image Upload ]            |
-+---------------------------------------+-------------------------------------------+
-                                        |
-                                        v
+|     [ Student Typed Text ]      |     [ OCR Scan / Photo / Multi-page PDF ]       |
++---------------------------------+-------------------------------------------------+
+                                  |
+                                  v
 +-----------------------------------------------------------------------------------+
-|                        PREPROCESSING & SEGMENTATION                               |
-|   - Unicode NFKC normalization & clean-up                                         |
-|   - Sentence splitting & paragraph boundary detection (NLTK punkt)                |
-|   - Lexical & readability metrics (word count, avg sentence length)               |
-+---------------------------------------+-------------------------------------------+
-                                        |
-                                        v
+|                        PREPROCESSING & SANITIZATION                               |
+|   - Maximum payload bounds validation (100k char limit, null byte stripping)     |
+|   - Unicode NFKC normalization & smart typographic symbol translation             |
+|   - Sentence splitting & paragraph boundary detection (NLTK punkt / regex)        |
+|   - Surface lexical metrics (word count, sentence count, avg sentence length)     |
++---------------------------------+-------------------------------------------------+
+                                  |
+                                  v
 +-----------------------------------------------------------------------------------+
 |                             RUBRIC ENGINE & ANCHORS                               |
-|   - Dynamic criterion weighting (sums to 1.0)                                     |
+|   - Normalized scoring: [scale_min, scale_max] -> [0, 1] before weight scaling    |
+|   - Interactive weight validation (ensures sum(weights) == 1.0)                   |
 |   - Concrete score-band anchor snippets (Low: 2-3 | Mid: 5-6 | High: 8-9)          |
-|   - Optional Model Answer comparison for subjective short-answer grading          |
-+---------------------------------------+-------------------------------------------+
-                                        |
-                                        v
+|   - Optional Model Answer / Reference Document Grounding                          |
++---------------------------------+-------------------------------------------------+
+                                  |
+                                  v
 +-----------------------------------------------------------------------------------+
-|                        AI GRADING ENGINE (Gemini LLM)                             |
-|   - Rubric-Anchored Few-Shot Prompting                                            |
-|   - 3-Pass Ensemble Median Scoring (stabilizes scores & removes outlier variance) |
-|   - Structured JSON output: scores, strengths, growth areas, margin notes         |
-+-------------------+-------------------+-------------------+-----------------------+
-                    |                   |                   |
-                    v                   v                   v
-+-----------------------+ +-----------------------+ +-------------------------------+
-|  ACCURACY VALIDATION  | |   ANALYTICS ENGINE    | |     GRAMMAR QUIZ ENGINE       |
-| - Quadratic Weighted  | | - Class concept gaps  | | - 4 contextual MCQs           |
-|   Kappa (QWK)         | | - Weakest criterion   | | - Real essay excerpt stems    |
-| - Agreement within ±1 | | - Target reteaching   | | - Grammar rule + personal     |
-| - Model confidence    | | - Student drill-down  | |   writing pattern insights    |
-+-----------------------+ +-----------------------+ +-------------------------------+
-                    |                   |                   |
-                    +-------------------+-------------------+
-                                        |
-                                        v
+|                   AI GRADING & EVALUATION ENGINE (Gemini)                         |
+|   - Rubric-anchored prompt synthesis                                              |
+|   - 3-Pass Ensemble Median Scoring (removes outlier variance)                     |
+|   - Verbatim excerpt margin note grounding & hallucination protection             |
+|   - Defensive JSON extraction with automatic retry on malformed responses         |
++---------------------+---------------------+---------------------------------------+
+                      |                     |
+                      v                     v
++-------------------------+ +-------------------------+ +---------------------------+
+|  ACCURACY BENCHMARKING  | |    ANALYTICS ENGINE     | |    GRAMMAR QUIZ ENGINE    |
+| - Quadratic Weighted    | | - Class concept gaps    | | - 4 targeted MCQs         |
+|   Kappa (QWK)           | | - Weakest criterion     | | - Essay excerpt stems     |
+| - Agreement within +/-1 | | - Mini-lesson generator | | - Personalized insights & |
+| - Model confidence      | | - Student drill-down    | |   grammar rule breakdown  |
++-------------------------+ +-------------------------+ +---------------------------+
+                      |                     |                         |
+                      +---------------------+-------------------------+
+                                            |
+                                            v
 +-----------------------------------------------------------------------------------+
-|                           LMS INTEGRATION LAYER (lms/)                            |
-|       [ Google Classroom (Live OAuth2) ]   |   [ Canvas / Moodle / Blackboard ]   |
-|       (Syncs roster, assignments & grades) |   (Stubbed polymorphic adapters)     |
-+---------------------------------------+-------------------------------------------+
-                                        |
-                                        v
+|                            LMS INTEGRATION LAYER                                  |
+|   - Google Classroom (Live OAuth2 sync for courses, coursework, and grades)       |
+|   - Canvas, Moodle, Blackboard (Polymorphic ready-to-wire adapter stubs)          |
 +-----------------------------------------------------------------------------------+
-|                       STREAMLIT USER INTERFACE (Marginalia)                       |
-|   - Teacher Desk / Annotated Paper Aesthetic (#FCFBF7, #1B2A3D, #B0503A)          |
-|   - Multi-page navigation: Dashboard, Rubric Builder, Submission, Feedback,       |
-|     Class Analytics, LMS Sync                                                     |
+                                            |
+                                            v
++-----------------------------------------------------------------------------------+
+|                            USER INTERFACE PLATFORMS                               |
+|   - React 19 + Vite Frontend (Stitch Design System, Day/Night grading modes)      |
+|   - Multi-Page Streamlit App (backend/app.py for standalone rapid deployment)     |
 +-----------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 3. Feedback & Rubric Criteria
+## ✨ Comprehensive Feature Matrix
 
-Rubrics in Marginalia are **fully customizable per assignment** and not locked to hardcoded criteria. Educators can define custom criteria, score scales, weights (validated to sum to $1.0$), and illustrative anchor snippets.
+### 1. Rubric-Anchored Grading Engine
+- **Customizable Rubrics**: Dynamic criteria with custom descriptions, scale ranges, and relative weight allocations.
+- **Scale Normalization**: Automatically normalizes individual criterion ranges ($[\text{scale\_min}, \text{scale\_max}] \to [0, 1]$) prior to weight multiplication, preventing larger scale dimensions from silently dominating the composite grade.
+- **Anchor Snippet Calibration**: Grounded by concrete low, mid, and high exemplar snippets to enforce consistent grading standards across passes.
 
-### Default 4-Dimension Rubric Overview
+### 2. Ensemble Scoring & Variance Transparency
+- **3-Pass Sampling**: Samples independent model passes with controlled temperature variation.
+- **Median Metric Aggregation**: Takes the median score per criterion across passes to eliminate single-pass hallucinations.
+- **Cross-Pass Consensus**: Calculates and surfaces agreement metrics directly to teachers (e.g., *"3-Pass Agreement: High (94%)"*).
 
-| Criterion ID | Criterion Name | Weight | Scale | Description |
-| :--- | :--- | :---: | :---: | :--- |
-| `grammar` | **Grammar & Mechanics** | 25% | 1–10 | Sentence structure, punctuation, syntax, orthography, and tense consistency. |
-| `coherence` | **Coherence & Organization** | 25% | 1–10 | Logical paragraph sequencing, clear transitions, structural clarity, and focus. |
-| `argument_strength` | **Argument & Evidence** | 25% | 1–10 | Thesis clarity, counterargument handling, empirical support, and reasoning. |
-| `originality` | **Originality & Voice** | 25% | 1–10 | Distinct authorial voice, stylistic flair, critical thought, and rhetorical insight. |
+### 3. Reference-Document Grounded Evaluation
+- **Dual-Mode Auto-Selection**:
+  - **Mode A (Direct Inject $\le$ 3,000 words)**: Full reference text injected into prompt for close reading validation.
+  - **Mode B (Chunked TF-IDF Retrieval $>$ 3,000 words)**: Overlapping chunk index with cosine similarity retrieval for long documents/books.
+- **Source Alignment Verification**: Generates explicit claim verification tables tagged as `supported`, `contradicted`, or `unverified_against_source` with verbatim source excerpts.
 
-```json
-{
-  "id": "argument_strength",
-  "name": "Argument & Evidence",
-  "description": "Evaluates thesis clarity, counterargument integration, and evidence sufficiency.",
-  "weight": 0.25,
-  "scale_min": 1,
-  "scale_max": 10,
-  "anchors": {
-    "low": "The essay states an opinion without supporting facts. Claims are made without data or textual citations, and opposing viewpoints are ignored.",
-    "mid": "A recognizable thesis is present with some supporting evidence. However, claims rely on generalization and counterarguments are mentioned only in passing.",
-    "high": "A nuanced, defensible thesis backed by robust textual evidence and empirical examples. Seamlessly anticipates and dismantles counterarguments."
-  }
-}
-```
+### 4. Diagnostic Class Analytics
+- **Cohort Misconception Clustering**: Aggregates recurring weaknesses across student submissions (e.g., *"42% of students struggle with thesis specificity"*).
+- **Targeted Reteaching Recommendations**: Generates 15-minute mini-lesson plans and focused skill-building drills.
+- **Individual Student Drilldown**: Comparative student trajectory against class benchmark averages.
 
----
+### 5. Interactive Contextual Grammar Quizzes
+- **Contextual MCQ Generation**: Generates 4 multiple-choice questions pulling real sentence stems directly from the student's essay.
+- **Actionable Remediation**: Instant feedback accompanied by grammar rule explanations and personalized writing habit notes.
 
-## 4. How Accuracy is Measured
+### 6. Enterprise LMS Integration
+- **Google Classroom Adapter (Live)**: OAuth2 authentication supporting course roster retrieval, assignment discovery, and direct gradebook submission with feedback notes.
+- **Polymorphic Stubs**: Standardized `LMSAdapter` implementations for **Canvas**, **Moodle**, and **Blackboard Learn**.
 
-To guarantee grading reliability and eliminate single-pass hallucinations, Marginalia implements:
-1. **Rubric Anchoring**: Providing concrete exemplar snippets for low/mid/high bands forces the LLM to anchor its evaluation to human grading benchmarks.
-2. **3-Pass Ensemble Median Scoring**: Three independent passes with slight temperature variations are sampled; the median score per criterion is taken to eliminate outlier skew.
-3. **Quadratic Weighted Kappa (QWK)**: The industry-standard metric in Automated Essay Scoring (AES) research (e.g., ASAP benchmarks) that heavily penalizes large rating discrepancies compared to minor $\pm 1$ shifts.
-
-### Benchmark Results (`accuracy_eval.py`)
-
-*Validated against labeled benchmark set (`data/labeled_validation.json`):*
-
-- **Overall Agreement ($\pm 1$ point)**: **$87.5\%$**
-- **Quadratic Weighted Kappa (QWK)**: **$0.82$** *(Substantial to near-perfect human-AI concordance)*
-- **Average Model Confidence**: **$0.89$**
-
-```text
-+-------------------+----------------+-------------+------------+
-| Criterion         | AI Median (Avg)| Expert (Avg)| Within ±1? |
-+-------------------+----------------+-------------+------------+
-| Grammar           | 7.2            | 7.0         | 92.0%      |
-| Coherence         | 6.8            | 6.9         | 87.5%      |
-| Argument Strength | 6.5            | 6.4         | 85.0%      |
-| Originality       | 7.0            | 7.2         | 85.0%      |
-+-------------------+----------------+-------------+------------+
-```
+### 7. Dual Frontend Implementations
+- **React + Vite App (`src/`)**: High-performance client matching the Stitch design system with Day/Night grading ambience modes.
+- **Streamlit App (`backend/app.py`)**: Multi-page interactive application for standalone hackathon demonstrations.
 
 ---
 
-## 5. LMS Integration
+## 🛠️ Frameworks, Libraries & Technologies
 
-Marginalia uses a unified `LMSAdapter` interface (`lms/base.py`) enabling interoperability across educational ecosystems:
+### Frontend
+- **React 19** & **React DOM 19**: Modern component architecture with hooks.
+- **Vite 8**: Next-generation lightning-fast frontend tooling and bundling.
+- **Tailwind CSS**: Utility-first styling with custom design tokens (`#FCFBF7` paper, `#1B2A3D` ink, `#FE5D26` red-pen accent, `#F2C078` gold highlight, `#C1DBB3` sage).
+- **Google Fonts**: *Source Serif 4* (editorial typography), *Plus Jakarta Sans* / *Inter* (UI chrome), *JetBrains Mono* (code/metrics).
+- **Canvas Confetti**: Visual celebration on quiz completion.
+- **Oxlint**: High-speed JavaScript/JSX linter.
 
-- **Google Classroom (`lms/google_classroom.py`) — LIVE**:
-  - Full OAuth2 authentication (`google-auth-oauthlib`).
-  - Fetches active courses and coursework assignments.
-  - Pushes numerical grades and qualitative feedback directly into student submission records.
-- **Canvas / Moodle / Blackboard (`lms/canvas.py`, `lms/moodle.py`, `lms/blackboard.py`) — STUBBED**:
-  - Implements the identical polymorphic `LMSAdapter` contract.
-  - Ready for REST/LTI 1.3 endpoint configuration without modifying core frontend or grading code.
+### Backend & AI
+- **Python 3.10+**: Core backend runtime.
+- **Google Generative AI SDK (`google-generativeai`)**: Powered by **Gemini 2.5 Flash / Gemini 1.5 Flash** models.
+- **Scikit-Learn**: For TF-IDF vectorization and Quadratic Weighted Kappa (QWK) computation *(with pure-Python fallback)*.
+- **NLTK / Regex**: Sentence tokenization and text segmentation.
+- **Google OAuth2 & API Client**: `google-auth-oauthlib`, `google-api-python-client` for Google Classroom.
+- **Streamlit**: Python web application framework for rapid interactive deployment.
+- **Python-dotenv**: Environment configuration manager.
 
 ---
 
-## 6. Setup & Installation
+## 🔒 Security, Privacy & Input Sanitization
+
+- **Zero Hardcoded Secrets**: All API keys and OAuth tokens are strictly read from environment variables (`.env`).
+- **Git Security**: Sensitive patterns (`.env`, `token.json`, `credentials.json`, `*.pem`, `*.key`) are ignored in `.gitignore`.
+- **Input Sanitization**:
+  - Maximum payload bounds (100,000 characters for essays, 500,000 for reference documents).
+  - Null bytes (`\x00`) and dangerous non-printable control characters are stripped.
+  - Unicode NFKC normalization prevents homoglyph attacks.
+- **FERPA / GDPR Compliance**: Stateless LLM calls with zero external data retention; synthetic datasets used for validation benchmarks.
+
+---
+
+## 🚀 Setup & Installation Guide
 
 ### Prerequisites
-- Python 3.10+
+- Python 3.10 or higher
+- Node.js 18+ and npm
 - Google Gemini API Key
 
-### Installation
+### 1. Repository Setup
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/your-repo/essay-feedback-ai.git
-cd essay-feedback-ai
+# Clone the repository
+git clone https://github.com/Asu2407/TCS-hck.git
+cd TCS-hck
 
-# 2. Create virtual environment
+# Install frontend dependencies
+npm install
+```
+
+### 2. Backend Environment Configuration
+
+```bash
+# Navigate to backend
+cd backend
+
+# Create virtual environment (recommended)
 python3 -m venv venv
 source venv/bin/activate
 
-# 3. Install dependencies
+# Install backend dependencies
 pip install -r requirements.txt
 
-# 4. Configure environment variables
+# Configure environment variables
 cp .env.example .env
 ```
 
 Edit `.env`:
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
+GEMINI_MODEL=gemini-2.5-flash
 GOOGLE_CLASSROOM_CLIENT_ID=your_client_id.apps.googleusercontent.com
 GOOGLE_CLASSROOM_CLIENT_SECRET=your_client_secret
 ```
 
-### Running the Application
+---
 
+## 💻 Running the Applications
+
+### Launch React Frontend:
 ```bash
-# Launch Streamlit web app
+# In project root
+npm run dev
+```
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+### Launch Streamlit Backend App:
+```bash
+# In backend directory
 streamlit run app.py
 ```
+Open [http://localhost:8501](http://localhost:8501) in your browser.
 
-### Running Accuracy Evaluation
+---
 
+## 🧪 Testing & Accuracy Benchmarking
+
+### Run Automated Unit Test Suite (85 Tests):
 ```bash
+cd backend
+python3 -m unittest discover -s . -p "test_*.py"
+```
+
+### Run QWK Accuracy Evaluation Benchmark:
+```bash
+cd backend
 python3 accuracy_eval.py
 ```
 
----
-
-## 7. Data Privacy & Ethical Considerations
-
-- **Synthetic Training & Validation Data**: All sample essays (`data/sample_essays.json`) and labeled sets (`data/labeled_validation.json`) are synthetic datasets designed to preserve student confidentiality and comply with FERPA/GDPR guidelines.
-- **No Model Retention**: Prompts are transmitted via stateless API calls with zero persistent retention of student prose on external servers.
-- **Teacher-in-the-Loop**: All AI-generated scores and suggestions are presented as advisory feedback for educators and students, with teacher override capabilities before grade submission.
+### Run Frontend Linter & Production Build:
+```bash
+npm run lint
+npm run build
+```
 
 ---
 
-## 8. Known Limitations & Roadmap
+## 📄 License & Attribution
 
-- **Validation Set Scale**: The initial validation benchmark comprises 8–15 synthetic essays. Expanding to 100+ annotated essays across grade levels will further stabilize QWK metrics.
-- **Session Persistence**: Currently uses Streamlit `session_state` for fast hackathon demonstration; production deployment will connect to PostgreSQL/Supabase.
-- **Multi-Teacher Collaboration**: Future iterations will support shared departmental rubric repositories and longitudinal student progress tracking.
+Designed and developed for the TCS Hackathon under the MIT License.

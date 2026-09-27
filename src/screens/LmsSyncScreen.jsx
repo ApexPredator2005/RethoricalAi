@@ -36,16 +36,16 @@ export default function LmsSyncScreen() {
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-sm">
             <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
-              Interoperability Hub • Module 9
+              Gradebook Sync Hub
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
             <span className="font-label-sm text-label-sm text-on-surface-variant">Live Synchronizer</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            LMS Gradebook Integration
+            Gradebook &amp; Classroom Sync
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Seamless two-way bridge transmitting validated AI essay scores, per-criterion diagnostic breakdown summaries, and annotated feedback PDFs directly into institutional gradebooks.
+            Seamless two-way bridge transmitting validated assignment scores, per-criterion diagnostic breakdown summaries, and feedback directly into institutional gradebooks.
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function LmsSyncScreen() {
           <span className={`material-symbols-outlined text-[18px] ${isSyncing ? 'animate-spin' : ''}`}>
             sync
           </span>
-          <span>{isSyncing ? 'Syncing Gradebook...' : 'Sync Now with LMS'}</span>
+          <span>{isSyncing ? 'Syncing Gradebook...' : 'Sync Grades Now'}</span>
         </button>
       </div>
 
@@ -84,7 +84,7 @@ export default function LmsSyncScreen() {
                 <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded uppercase ${
                   p.active ? 'bg-tertiary-fixed text-on-tertiary-fixed' : 'bg-surface-container text-on-surface-variant'
                 }`}>
-                  {p.active ? 'Live' : 'Polymorphic'}
+                  {p.active ? 'Active' : 'Supported'}
                 </span>
               </div>
               <div>
@@ -106,10 +106,10 @@ export default function LmsSyncScreen() {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                  Google Classroom Live Adapter
+                  Google Classroom Grade Sync
                 </h3>
                 <span className="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-xs font-bold">
-                  OAuth2 Verified
+                  Connected
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
@@ -153,7 +153,7 @@ export default function LmsSyncScreen() {
           <div className="p-space-sm rounded-lg bg-surface-container-low border border-surface-container">
             <span className="font-label-md text-label-md text-on-surface font-semibold block">Target Grade Category</span>
             <span className="font-annotation-note text-annotation-note text-on-surface-variant">
-              Major Essays (40% of Final Grade)
+              Major Assignments (40% of Final Grade)
             </span>
           </div>
         </div>

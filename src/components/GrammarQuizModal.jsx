@@ -56,10 +56,10 @@ export default function GrammarQuizModal({ onClose }) {
             <span className="material-symbols-outlined text-primary text-[24px]">quiz</span>
             <div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                Adaptive Grammar &amp; Syntax Diagnostic
+                Practice Writing Skills
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Targeting flagged weaknesses from Julian's essay (Module 7)
+                Targeting flagged writing patterns from Julian's submission
               </span>
             </div>
           </div>
@@ -163,9 +163,9 @@ export default function GrammarQuizModal({ onClose }) {
               </div>
 
               <div className="p-space-md rounded-xl bg-surface-container-low border border-surface-container text-left space-y-1 max-w-md mx-auto">
-                <span className="font-label-sm text-xs font-bold text-tertiary uppercase">Mastery Recommendation:</span>
+                <span className="font-label-sm text-xs font-bold text-tertiary uppercase">Next Step Recommendation:</span>
                 <p className="font-annotation-note text-annotation-note text-on-surface-variant">
-                  Julian has demonstrated strong command over expletive pronoun replacement. Next recommended workshop: Active Voice Cadence in Paragraph Transitions.
+                  Julian has demonstrated strong command over clear pronoun usage. Next recommended topic: Active Voice in Paragraph Transitions.
                 </p>
               </div>
             </div>

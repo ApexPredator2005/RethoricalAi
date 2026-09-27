@@ -26,10 +26,10 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
             <span className="material-symbols-outlined text-primary text-[24px]">post_add</span>
             <div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                Deploy New Writing Prompt
+                Create New Assignment
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Configure prompt guidelines, word limits, and rubric anchoring
+                Configure assignment guidelines, word limits, and grading criteria
               </span>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
           {saved && (
             <div className="p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px]">check_circle</span>
-              Assignment published to Google Classroom and ready for student drafting!
+              Assignment published to Classroom and ready for student drafting!
             </div>
           )}
 
@@ -99,7 +99,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
           <div className="grid grid-cols-2 gap-space-sm">
             <div className="space-y-1">
               <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                Evaluation Rubric
+                Grading Criteria
               </label>
               <select
                 value={rubric}
@@ -109,7 +109,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
                 <option>AP Lit Analytical Synthesis (Default)</option>
                 <option>AP Lang Rhetorical Analysis</option>
                 <option>Comparative Literature &amp; Motif Study</option>
-                <option>Standard High School Literary Essay</option>
+                <option>Standard High School Assignment Rubric</option>
               </select>
             </div>
 
@@ -128,11 +128,11 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
 
           <div className="space-y-1">
             <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-              Analytical Prompt &amp; Context
+              Assignment Prompt &amp; Instructions
             </label>
             <textarea
               rows={3}
-              placeholder="Provide prompt details, guiding questions, or required textual passages..."
+              placeholder="Provide assignment details, guiding questions, or reference material..."
               value={instructions}
               onChange={(e) => setInstructions(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-surface-container-low border border-surface-container font-body-sm text-body-sm text-on-surface focus:outline-none resize-none"
@@ -153,7 +153,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
               className="px-space-md py-2 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary shadow-sm active:translate-y-0.5 transition-all flex items-center gap-1.5"
             >
               <span className="material-symbols-outlined text-[18px]">publish</span>
-              <span>Deploy Assignment</span>
+              <span>Create Assignment</span>
             </button>
           </div>
         </form>

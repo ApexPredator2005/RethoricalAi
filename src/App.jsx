@@ -39,14 +39,14 @@ export default function App() {
     }
   }, [theme]);
 
-  // On student role switch, jump to submit screen
-  useEffect(() => {
-    if (role === 'student') setActiveTab('submit');
-    else setActiveTab('dashboard');
-  }, [role]);
-
   const handleToggleTheme = () => setTheme((t) => (t === 'day' ? 'night' : 'day'));
-  const handleToggleRole = () => setRole((r) => (r === 'teacher' ? 'student' : 'teacher'));
+  const handleToggleRole = () => {
+    setRole((r) => {
+      const nextRole = r === 'teacher' ? 'student' : 'teacher';
+      setActiveTab(nextRole === 'student' ? 'submit' : 'dashboard');
+      return nextRole;
+    });
+  };
 
   const currentClass = INITIAL_CLASSES.find((c) => c.id === selectedClassId) || INITIAL_CLASSES[0];
 

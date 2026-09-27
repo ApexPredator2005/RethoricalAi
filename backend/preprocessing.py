@@ -85,43 +85,39 @@ for _src, _dst in _CHAR_MAP:
 # Public API
 # ---------------------------------------------------------------------------
 
+MAX_ESSAY_CHARACTERS = 100_000
+MAX_REFERENCE_CHARACTERS = 500_000
+
+
+def sanitize_user_input(text: str, max_chars: int = MAX_ESSAY_CHARACTERS) -> str:
+    """
+    Sanitise raw user input string:
+      - Validates type and non-null content.
+      - Rejects inputs exceeding max_chars.
+      - Strips null bytes (\x00) and dangerous non-printable control characters.
+    """
+    if not isinstance(text, str):
+        raise TypeError(f"Input must be a string, got {type(text).__name__!r}")
+
+    if len(text) > max_chars:
+        raise ValueError(
+            f"Input exceeds maximum allowed size ({len(text):,} > {max_chars:,} characters)."
+        )
+
+    # Strip null bytes and non-printable control characters except tab, newline, carriage return
+    cleaned = "".join(ch for ch in text if ch in ("\t", "\n", "\r") or (ord(ch) >= 32 and ord(ch) != 127))
+    return cleaned
+
+
 def normalize_text(raw_text: str) -> str:
     """
     Normalise raw essay text for downstream processing.
-
-    Operations performed (in order):
-        1. Unicode NFKC normalisation — decomposes compatibility characters
-           (e.g. full-width letters, superscript digits) into their canonical
-           plain-ASCII equivalents where possible.
-        2. Smart-quote / typographic substitution — converts curly quotes,
-           guillemets, em-dashes, en-dashes, ligatures, and invisible
-           zero-width characters to their plain-ASCII counterparts.
-        3. Strip trailing whitespace from every line.
-        4. Collapse runs of 3+ blank lines to exactly one blank line —
-           preserves paragraph structure without leaving excessive whitespace.
-        5. Fix stray mid-sentence line breaks — a single newline (i.e. NOT
-           a paragraph break) between two non-whitespace characters is
-           replaced by a single space. This repairs the most common OCR
-           artefact where lines are hard-wrapped inside sentences.
-        6. Collapse runs of 2+ spaces to a single space within lines.
-        7. Strip leading and trailing whitespace from the entire document.
-
-    What is NOT changed:
-        - Casing (all uppercase / lowercase preserved as-is).
-        - Spelling and grammar (including errors — intentional for downstream
-          grammar detection).
-        - Paragraph boundaries (double-newline separators are preserved).
-
-    Args:
-        raw_text: Raw essay text, which may include copy-pasted content
-                  with smart quotes, OCR output, or mixed-encoding issues.
-
-    Returns:
-        A cleaned string with the same semantic content as the input but
-        with normalised whitespace, encoding, and typographic characters.
     """
     if not isinstance(raw_text, str):
         raise TypeError(f"normalize_text expects str, got {type(raw_text).__name__!r}")
+
+    # Sanitise input size and strip control characters
+    raw_text = sanitize_user_input(raw_text, max_chars=MAX_ESSAY_CHARACTERS)
 
     # 1. Unicode NFKC normalisation.
     text = unicodedata.normalize("NFKC", raw_text)
@@ -333,7 +329,7 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
     print()
     print("=" * 78)
-    print("  Marginalia — Preprocessing Pipeline Demo")
+    print("  RethoricalAI — Preprocessing Pipeline Demo")
     print(f"  Source: {data_path}")
     print(f"  Essays: {len(essays)}")
     print("=" * 78)
