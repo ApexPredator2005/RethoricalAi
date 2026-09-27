@@ -1,0 +1,199 @@
+﻿{
+  "schema_version": "1.0",
+  "rubric_id": "default_rubric_v1",
+  "rater_notes": "Expert scores assigned by two raters (English educator + writing specialist). Final score is the mean. Scale 1-10 per criterion as defined in default_rubric.json.",
+  "essays": [
+    {
+      "essay_id": "essay-001",
+      "quality_band": "weak",
+      "expert_scores": {
+        "grammar": {
+          "score": 3,
+          "rater_notes": "Multiple agreement errors ('Its getting', missing apostrophes), comma splices, and run-ons. Sentence variety is absent—almost all sentences follow Subject-Verb-Object with no subordination."
+        },
+        "coherence": {
+          "score": 2,
+          "rater_notes": "No discernible paragraph structure. The second paragraph shifts abruptly from climate science to polar bears to a vague appeal. No transitions. Conclusion simply restates the problem without synthesising the body."
+        },
+        "argument_strength": {
+          "score": 2,
+          "rater_notes": "Thesis is a generic assertion ('Climate change is a really big problem'). No specific evidence cited—'Scientists say' with no source. Counter-argument dismissed in one unsupported sentence. No policy specifics."
+        },
+        "originality": {
+          "score": 2,
+          "rater_notes": "Entirely generic. The anecdote about the student's family recycling is the only personal element but it is irrelevant to the argument. No distinctive interpretive lens or analytical voice."
+        }
+      },
+      "overall_expert_score": 45.0,
+      "overall_letter_grade": "D/F"
+    },
+    {
+      "essay_id": "essay-002",
+      "quality_band": "weak",
+      "expert_scores": {
+        "grammar": {
+          "score": 4,
+          "rater_notes": "Consistent apostrophe omissions ('alot', 'Thats', 'peoples'). Sentences are grammatically simple but mostly correct. One comma splice ('Thats true but'). Informal register inappropriate for academic writing."
+        },
+        "coherence": {
+          "score": 4,
+          "rater_notes": "The four-paragraph structure (intro, pros/cons, personal experience, counter-argument, conclusion) is partially present. Transitions are mechanical ('Also', 'Another thing'). The personal anecdote paragraph disrupts analytical flow."
+        },
+        "argument_strength": {
+          "score": 3,
+          "rater_notes": "Thesis present but underdeveloped ('mostly bad'). Counter-argument acknowledged but dismissed without substantive engagement. No citations, statistics, or named sources beyond platform names. Evidence is entirely anecdotal."
+        },
+        "originality": {
+          "score": 3,
+          "rater_notes": "The personal observation about Instagram-induced comparison is a genuine voice moment. However, the framing quickly retreats to generic claims. No unusual interpretive angle on a heavily-covered topic."
+        }
+      },
+      "overall_expert_score": 52.5,
+      "overall_letter_grade": "D/F"
+    },
+    {
+      "essay_id": "essay-003",
+      "quality_band": "mixed",
+      "expert_scores": {
+        "grammar": {
+          "score": 6,
+          "rater_notes": "Generally correct. A few missing commas after introductory clauses ('At this point the reader'). Sentence variety is improving—some complex sentences present. Block quote not properly formatted. Register is mostly appropriate."
+        },
+        "coherence": {
+          "score": 6,
+          "rater_notes": "Clear five-paragraph structure with distinct intro, three body paragraphs, and conclusion. Topic sentences present and relevant. Transitions adequate but formulaic ('Another thing about'). The third paragraph's focus shifts slightly mid-paragraph."
+        },
+        "argument_strength": {
+          "score": 5,
+          "rater_notes": "Thesis defensible but broad ('represents dreams and hopes'). One specific textual quotation included and partially analysed. The word 'orgastic' is noticed but its rhetorical function is not fully explained. Counter-argument absent."
+        },
+        "originality": {
+          "score": 5,
+          "rater_notes": "The observation about Gatsby reaching for 'something bigger than' Daisy shows emerging analytical ambition. However, the green-light-as-American-Dream reading is the standard critical interpretation. No original angle developed."
+        }
+      },
+      "overall_expert_score": 68.75,
+      "overall_letter_grade": "C"
+    },
+    {
+      "essay_id": "essay-004",
+      "quality_band": "mixed",
+      "expert_scores": {
+        "grammar": {
+          "score": 8,
+          "rater_notes": "Strong sentence control throughout. Varied syntax—complex-compound sentences, nominalisations, and effective use of em-dash for emphasis. One minor comma error in paragraph 3. Academic register maintained consistently."
+        },
+        "coherence": {
+          "score": 7,
+          "rater_notes": "Well-structured with a clear thesis and logical paragraph progression. The pivot from pro-AI to counter-argument is well-handled. The 'homogenisation' paragraph is the essay's strongest unit. Conclusion is crisp and direct."
+        },
+        "argument_strength": {
+          "score": 7,
+          "rater_notes": "Thesis is specific and defensible. The distinction between 'learning aid' and 'prose generator' is analytically precise. Educational psychology research invoked but not cited specifically. Counter-argument engaged seriously, not just acknowledged."
+        },
+        "originality": {
+          "score": 7,
+          "rater_notes": "The 'homogenisation effect' and 'rhetorical fingerprints' observation is genuinely original—most AI-in-education essays do not consider the collective impact on academic voice diversity. This is the essay's most distinctive contribution."
+        }
+      },
+      "overall_expert_score": 80.0,
+      "overall_letter_grade": "B"
+    },
+    {
+      "essay_id": "essay-005",
+      "quality_band": "strong",
+      "expert_scores": {
+        "grammar": {
+          "score": 9,
+          "rater_notes": "Exceptional syntactic control. Deliberate use of the em-dash, semi-colon, and colon for rhetorical effect. Sentence variety is sophisticated—balanced periodic sentences, interrupted constructions, and short declarative punches. Zero grammatical errors."
+        },
+        "coherence": {
+          "score": 9,
+          "rater_notes": "The essay's structure is itself an argument: each section advances the spatial thesis from setting, to the green light, to the Valley of Ashes, to the cosmic-geological close. The bridging sentences between paragraphs are particularly elegant."
+        },
+        "argument_strength": {
+          "score": 9,
+          "rater_notes": "The thesis reframes the entire critical conversation—geography as the novel's 'true protagonist' is a bold, specific, defensible claim. Evidence integrated seamlessly. The point about the green light requiring impossibility is a genuinely insightful textual observation. Counter-readings implicitly acknowledged."
+        },
+        "originality": {
+          "score": 10,
+          "rater_notes": "Exceptional. The spatial-as-eschatological reading is unfamiliar in high-school criticism. The identification of Eckleburg as 'faded advertisement rendered godlike by abandonment' is a memorable formulation that shows genuine critical imagination. The closing paragraph reframes the entire novel's meaning."
+        }
+      },
+      "overall_expert_score": 94.0,
+      "overall_letter_grade": "A"
+    },
+    {
+      "essay_id": "essay-006",
+      "quality_band": "strong",
+      "expert_scores": {
+        "grammar": {
+          "score": 8,
+          "rater_notes": "Confident academic prose with effective use of passive constructions where appropriate. One slightly tangled sentence in paragraph 4 ('The decline in cloth prices was in part purchased with the labour of children...'—the 'purchased with' metaphor slightly strains). Overall mechanics are strong."
+        },
+        "coherence": {
+          "score": 9,
+          "rater_notes": "Outstanding structural discipline for a DBQ essay. Each paragraph has a clear evidentiary purpose (wages, urban conditions, countervailing evidence). The opening and closing paragraphs both demonstrate meta-awareness of the analytical task. The transition from Document 3 to Document 4 is rhetorically sharp."
+        },
+        "argument_strength": {
+          "score": 9,
+          "rater_notes": "The thesis explicitly acknowledges historiographical complexity ('cannot be characterised by a single verdict') and then resolves it with a specific, time-bounded claim. Triangulation of three document types is methodologically sound. The engagement with the critics of Engels shows awareness of source limitations."
+        },
+        "originality": {
+          "score": 8,
+          "rater_notes": "The question 'whose lifetime it was good or bad within' is an original reframing of a well-worn debate. The comparison of life expectancy figures is deployed with statistical precision that goes beyond typical student analysis. Slightly less distinctive than essay-005 in terms of interpretive novelty."
+        }
+      },
+      "overall_expert_score": 91.5,
+      "overall_letter_grade": "A-"
+    },
+    {
+      "essay_id": "essay-007",
+      "quality_band": "weak",
+      "expert_scores": {
+        "grammar": {
+          "score": 3,
+          "rater_notes": "Consistent apostrophe errors ('doesnt', 'families feud'). All sentences are short and declarative with no subordination or variety. One non-standard construction ('This shows that the characters are not very smart'—register shift). Fragment risk in the final sentence."
+        },
+        "coherence": {
+          "score": 4,
+          "rater_notes": "Basic paragraph structure present. However, the essay conflates Romeo's tragic flaw with Juliet's decisions and then pivots to 'bad luck' as the true cause—these three explanatory frames contradict each other without synthesis. The conclusion restates rather than resolves."
+        },
+        "argument_strength": {
+          "score": 2,
+          "rater_notes": "The 'bad luck' thesis directly undermines the 'tragic flaw' thesis established in paragraph 1, leaving the essay argumentatively incoherent. No textual quotations. The claim that the characters 'are not very smart' is an evaluative judgment masquerading as analysis."
+        },
+        "originality": {
+          "score": 2,
+          "rater_notes": "Plot summary dominates. The reading of the play as a lesson about 'dangers of hatred between families' is the most common and least analytical interpretation. The bad-luck observation, while underexplored, is the essay's only original moment."
+        }
+      },
+      "overall_expert_score": 42.5,
+      "overall_letter_grade": "D/F"
+    },
+    {
+      "essay_id": "essay-008",
+      "quality_band": "mixed",
+      "expert_scores": {
+        "grammar": {
+          "score": 7,
+          "rater_notes": "Generally strong. Accurate use of commas and em-dashes. One minor wordiness issue in paragraph 3. The phrase 'politically untested at scale' is a slightly compressed construction. Overall sentence variety and control is above average for the quality band."
+        },
+        "coherence": {
+          "score": 7,
+          "rater_notes": "Well-organised with a clear problem-evidence-counter-argument structure. The Finland paragraph is focused and methodologically aware. The pivot to 'philosophical reframing' in paragraph 4 is a bit abrupt and would benefit from a transitional sentence. Conclusion is appropriately hedged."
+        },
+        "argument_strength": {
+          "score": 7,
+          "rater_notes": "Thesis is measured and honest about complexity. The cost estimate ($3 trillion) is specific and demonstrates research. The engagement with the funding counter-argument is direct. The final paragraph's automation-as-necessity argument adds a forward-looking dimension that strengthens the essay's urgency."
+        },
+        "originality": {
+          "score": 6,
+          "rater_notes": "The framing of UBI as a rewrite of the social contract—treating basic income as a right rather than a safety net—is a philosophically substantive move, not just a policy argument. The essay is stronger analytically than most on this topic, though the Finland evidence is now widely cited."
+        }
+      },
+      "overall_expert_score": 76.25,
+      "overall_letter_grade": "B"
+    }
+  ]
+}

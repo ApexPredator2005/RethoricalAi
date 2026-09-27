@@ -1,0 +1,27 @@
+﻿# essay-feedback-ai requirements
+# Install: pip install -r requirements.txt
+
+# Streamlit web UI
+streamlit>=1.35.0
+
+# Gemini generative AI SDK
+google-generativeai>=0.7.0
+
+# Environment variable management
+python-dotenv>=1.0.0
+
+# NLP text processing
+nltk>=3.8.1
+
+# Unicode-aware regex
+regex>=2024.4.16
+
+# Google Classroom / LMS sync
+google-api-python-client>=2.130.0
+google-auth-oauthlib>=1.2.0
+
+# Scoring accuracy evaluation (QWK via cohen_kappa_score)
+scikit-learn>=1.4.0
+
+# Pearson correlation in accuracy_eval
+scipy>=1.13.0

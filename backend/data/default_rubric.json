@@ -1,0 +1,56 @@
+﻿{
+  "criteria": [
+    {
+      "id": "grammar",
+      "name": "Grammar & Mechanics",
+      "description": "Evaluates control of standard English grammar, punctuation, capitalisation, and sentence mechanics. Assesses whether errors impede readability and whether sentence structures are varied and purposeful.",
+      "weight": 0.25,
+      "scale_min": 1,
+      "scale_max": 10,
+      "anchors": {
+        "low": "The student do not understand the topic at all and there argument is hard to follow. There writing have many mistake, the sentences run-on and on without stop which make it very confusion to read for anyone.",
+        "mid": "Climate change is a serious problem that affects many people around the world. Scientists have found that temperatures are rising, and this causes problems like floods and droughts. Governments need to take action to reduce emissions.",
+        "high": "Fitzgerald's deliberate use of the present tense in Nick's narration creates an unsettling immediacy—the reader inhabits Gatsby's longing alongside him, unable to maintain critical distance. This syntactic choice undermines Nick's self-proclaimed objectivity from the novel's opening paragraph."
+      }
+    },
+    {
+      "id": "coherence",
+      "name": "Coherence & Organisation",
+      "description": "Assesses the logical progression of ideas from introduction through conclusion. Evaluates whether topic sentences, transitions, and paragraph unity work together to sustain a clear line of reasoning throughout the essay.",
+      "weight": 0.25,
+      "scale_min": 1,
+      "scale_max": 10,
+      "anchors": {
+        "low": "First I will talk about pollution. Pollution is bad for animals. Also the economy is important. My uncle works in a factory. In conclusion global warming is real and we should care about it and also recycle.",
+        "mid": "The introduction presents the thesis clearly, and each body paragraph addresses one main idea. However, transitions between paragraphs are abrupt—phrases like 'Another point is' appear without connecting back to the preceding argument. The conclusion restates the thesis but does not synthesise the evidence presented.",
+        "high": "Each paragraph opens with a claim that advances the central argument, marshals two or three pieces of evidence, and closes with a sentence that bridges forward to the next section. The essay's structure mirrors its argument: just as the author contends that incremental reforms compound over time, the analysis itself builds from local stylistic observations to sweeping historical conclusions."
+      }
+    },
+    {
+      "id": "argument_strength",
+      "name": "Argument Strength & Evidence",
+      "description": "Evaluates the quality and specificity of the thesis, the relevance and integration of supporting evidence, the acknowledgement of counter-arguments, and the overall persuasiveness of the analytical reasoning.",
+      "weight": 0.30,
+      "scale_min": 1,
+      "scale_max": 10,
+      "anchors": {
+        "low": "I think Shakespeare is a good writer because he wrote many plays. Romeo and Juliet is about two people who fall in love but then they die. This shows that love can be sad sometimes and people should be careful.",
+        "mid": "The essay presents a defensible thesis and supports it with two relevant quotations. However, the analysis stops at paraphrase—after quoting Orwell's 'All animals are equal,' the student writes 'This means the pigs are hypocrites' without explaining how the syntactic irony of the slogan's revision enacts the very corruption it describes.",
+        "high": "Rather than simply asserting that the Industrial Revolution widened class inequality, the essay triangulates three distinct evidentiary strands: Mayhew's 1851 labour interviews, aggregate wage data from the Parliamentary Select Committee reports, and Engels's ethnographic observations in Manchester. The convergence of these sources—two quantitative, one qualitative—gives the causal claim a rigour that no single source could provide."
+      }
+    },
+    {
+      "id": "originality",
+      "name": "Originality & Voice",
+      "description": "Assesses the distinctiveness of the student's analytical perspective, the freshness of their interpretive lens, and the presence of an individual academic voice that goes beyond plot summary or generic statements.",
+      "weight": 0.20,
+      "scale_min": 1,
+      "scale_max": 10,
+      "anchors": {
+        "low": "In this essay I will write about The Great Gatsby by F. Scott Fitzgerald. This is a famous novel. Many people have read it. The main character is Jay Gatsby. He is rich but he is not happy. This book teaches us a lesson about money.",
+        "mid": "The student makes competent observations about the green light as a symbol of aspiration, but the interpretation stays within well-established critical territory. The essay would benefit from a more personal or unexpected analytical angle—for instance, considering why Fitzgerald chooses water, not distance on land, as the physical barrier between Gatsby and his dream.",
+        "high": "What distinguishes this essay is its contention that Atticus Finch's courtroom eloquence is not heroic restraint but a form of complicity: by operating within the procedural logic of a system designed to produce his client's conviction, he implicitly legitimises the very institution he appears to challenge. This reframing—lawyerly competence as moral failure—generates a genuinely unsettling interpretive tension that the essay sustains without resolving."
+      }
+    }
+  ]
+}
