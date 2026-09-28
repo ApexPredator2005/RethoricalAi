@@ -5,7 +5,6 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import GrammarQuizModal from './components/GrammarQuizModal';
 import NewAssignmentModal from './components/NewAssignmentModal';
-import DesignSpecsModal from './components/DesignSpecsModal';
 import TeacherProfileModal from './components/TeacherProfileModal';
 import StudentProfileModal from './components/StudentProfileModal';
 import SubmissionReceiptModal from './components/SubmissionReceiptModal';
@@ -123,7 +122,6 @@ export default function App() {
   // Modal states
   const [showQuizModal, setShowQuizModal] = useState(false);
   const [showNewAssignment, setShowNewAssignment] = useState(false);
-  const [showSpecsModal, setShowSpecsModal] = useState(false);
 
   // Apply theme attribute to <html>
   useEffect(() => {
@@ -350,7 +348,6 @@ export default function App() {
           onToggleRole={handleToggleRole}
           theme={theme}
           onToggleTheme={handleToggleTheme}
-          onOpenSpecsModal={() => setShowSpecsModal(true)}
           onOpenNewAssignment={() => setShowNewAssignment(true)}
           teacherProfile={teacherProfile}
           studentProfile={studentProfile}
@@ -412,10 +409,6 @@ export default function App() {
           onCreateAssignment={handleCreateAssignment}
           onClose={() => setShowNewAssignment(false)}
         />
-      )}
-
-      {showSpecsModal && (
-        <DesignSpecsModal onClose={() => setShowSpecsModal(false)} />
       )}
     </div>
   );

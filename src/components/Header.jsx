@@ -6,7 +6,6 @@ export default function Header({
   onSelectClass, 
   role, 
   onToggleRole, 
-  onOpenSpecsModal,
   onOpenNewAssignment,
   teacherProfile,
   studentProfile,
@@ -140,16 +139,6 @@ export default function Header({
             lock
           </span>
         </div>
-
-        {/* Specs Modal Trigger */}
-        <button
-          onClick={onOpenSpecsModal}
-          className="p-1.5 text-on-surface-variant hover:text-on-surface rounded-lg hover:bg-surface-container transition-colors"
-          title="View Design Specs & System Archetypes"
-          type="button"
-        >
-          <span className="material-symbols-outlined text-[18px]">design_services</span>
-        </button>
       </div>
     </header>
   );
