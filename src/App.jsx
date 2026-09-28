@@ -9,6 +9,7 @@ import DesignSpecsModal from './components/DesignSpecsModal';
 import TeacherProfileModal from './components/TeacherProfileModal';
 import StudentProfileModal from './components/StudentProfileModal';
 import SubmissionReceiptModal from './components/SubmissionReceiptModal';
+import RoleSelectionGateway from './components/RoleSelectionGateway';
 
 import TeacherDashboardScreen from './screens/TeacherDashboardScreen';
 import RubricBuilderScreen from './screens/RubricBuilderScreen';
@@ -69,13 +70,27 @@ const DEFAULT_CLASSES = [
 
 export default function App() {
   const [theme, setTheme] = useState('day'); // 'day' | 'night'
-  const [activeTab, setActiveTab] = useState('dashboard');
-  const [role, setRole] = useState('teacher'); // 'teacher' | 'student'
+  const [role, setRole] = useState(() => {
+    return sessionStorage.getItem('rethorical_academic_role') || null;
+  });
+  const [activeTab, setActiveTab] = useState(() => {
+    const savedRole = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('rethorical_academic_role') : null;
+    return savedRole === 'student' ? 'submit' : 'dashboard';
+  });
   const [classes, setClasses] = useState(DEFAULT_CLASSES);
   const [selectedClassId, setSelectedClassId] = useState(DEFAULT_CLASSES[0].id);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Teacher & Institution Profile
+  // Handle permanent one-time role selection
+  const handleSelectRole = (selectedRole) => {
+    setRole(selectedRole);
+    try {
+      sessionStorage.setItem('rethorical_academic_role', selectedRole);
+    } catch (e) {
+      console.warn('Session storage note:', e);
+    }
+    setActiveTab(selectedRole === 'student' ? 'submit' : 'dashboard');
+  };
   const [teacherProfile, setTeacherProfile] = useState({
     name: 'Dr. Eleanor Vance',
     title: 'Senior Faculty & Rhetoric Chair',
@@ -179,6 +194,27 @@ export default function App() {
   ).length;
 
   const renderScreen = () => {
+    // Role-based protection: Students should never see teacher dashboard or teacher-only analytics/sync
+    if (role === 'student' && (activeTab === 'dashboard' || activeTab === 'analytics' || activeTab === 'lms')) {
+      return (
+        <StudentSubmissionsScreen
+          submissions={submissions}
+          studentProfile={studentProfile}
+          onNavigateToReport={(studentSub) => {
+            if (studentSub) setCurrentSubmission(studentSub);
+            setActiveTab('report');
+          }}
+          onNavigateToSubmit={() => setActiveTab('submit')}
+          onOpenReceiptModal={(sub) => setReceiptModalSub(sub)}
+          onOpenQuiz={(sub) => {
+            if (sub) setCurrentSubmission(sub);
+            setShowQuizModal(true);
+          }}
+          onOpenProfileModal={() => setShowStudentProfileModal(true)}
+        />
+      );
+    }
+
     switch (activeTab) {
       case 'dashboard':
         return (
@@ -271,6 +307,17 @@ export default function App() {
         return null;
     }
   };
+
+  // One-time Initial Gateway: User must choose between Teacher and Student
+  if (!role) {
+    return (
+      <RoleSelectionGateway
+        onSelectRole={handleSelectRole}
+        teacherProfile={teacherProfile}
+        institutionName={teacherProfile?.institution}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-surface text-on-surface antialiased">

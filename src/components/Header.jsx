@@ -127,18 +127,19 @@ export default function Header({
           </button>
         )}
 
-        {/* Role Toggle Switcher */}
-        <button
-          onClick={onToggleRole}
-          className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-xs hover:bg-surface-container-high transition-colors border border-surface-container"
-          title="Switch view between Educator and Student"
-          type="button"
+        {/* Role Indicator (Locked & Non-Switchable) */}
+        <div 
+          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm text-xs border border-surface-container select-none cursor-default"
+          title={`Active Institutional Role: ${role === 'teacher' ? 'Faculty Instructor' : 'Student Scholar'} (Role locked)`}
         >
-          <span className="material-symbols-outlined text-[15px] text-secondary">
+          <span className={`material-symbols-outlined text-[15px] ${role === 'teacher' ? 'text-primary' : 'text-secondary'}`}>
             {role === 'teacher' ? 'school' : 'person'}
           </span>
-          <span className="hidden sm:inline">{role === 'teacher' ? 'Teacher' : 'Student'}</span>
-        </button>
+          <span className="font-semibold">{role === 'teacher' ? 'Faculty' : 'Student'}</span>
+          <span className="material-symbols-outlined text-[13px] text-on-surface-variant" title="Role is permanently locked">
+            lock
+          </span>
+        </div>
 
         {/* Specs Modal Trigger */}
         <button
