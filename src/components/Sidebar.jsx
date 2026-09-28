@@ -7,7 +7,10 @@ export default function Sidebar({
   syncStatus = 'Synced',
   theme = 'day',
   onToggleTheme,
-  currentClassName = 'AP Literature & Comp'
+  currentClassName = 'Grade 11 - Section A',
+  currentSubject = 'AP English Literature',
+  teacherProfile,
+  onOpenProfileModal
 }) {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'menu_book', badge: pendingCount > 0 ? `${pendingCount}` : null },
@@ -17,6 +20,12 @@ export default function Sidebar({
     { id: 'analytics', label: 'Class Insights', icon: 'insights' },
     { id: 'lms', label: 'Gradebook Sync', icon: 'sync_alt', badge: syncStatus === 'Synced' ? '✓' : null }
   ];
+
+  const getInitials = (name) => {
+    if (!name) return 'EV';
+    const parts = name.split(' ').filter(n => !n.includes('.'));
+    return parts.length > 0 ? parts.map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'EV';
+  };
 
   return (
     <aside className="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md border-r border-surface-container">
@@ -28,8 +37,9 @@ export default function Sidebar({
             <span className="material-symbols-outlined text-primary text-[28px]">ink_pen</span>
             <span className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">RethoricalAI</span>
           </div>
-          <div className="inline-flex items-center self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider font-semibold">
-            {currentClassName}
+          <div className="flex items-center gap-1.5 self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider font-semibold truncate max-w-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0"></span>
+            <span className="truncate">{currentSubject || currentClassName}</span>
           </div>
         </div>
 
@@ -101,15 +111,26 @@ export default function Sidebar({
           </div>
         </div>
 
-        {/* Teacher Profile Card */}
-        <div className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors">
+        {/* Teacher & Institution Profile Card */}
+        <div 
+          onClick={onOpenProfileModal}
+          className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group"
+          title="Click to view & edit teacher profile & institution"
+        >
           <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center justify-center shrink-0">
-            ED
+            {getInitials(teacherProfile?.name)}
           </div>
-          <div className="flex flex-col min-w-0">
-            <span className="font-label-md text-label-md text-on-surface font-semibold truncate">Educator Desk</span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant truncate">RethoricalAI Workspace</span>
+          <div className="flex flex-col min-w-0 flex-1">
+            <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+              {teacherProfile?.name || 'Dr. Eleanor Vance'}
+            </span>
+            <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
+              {teacherProfile?.institution || 'Oakridge Collegiate Academy'}
+            </span>
           </div>
+          <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">
+            edit
+          </span>
         </div>
       </div>
     </aside>

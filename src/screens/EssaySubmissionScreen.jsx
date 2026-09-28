@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
 
-export default function EssaySubmissionScreen({ onSubmitted }) {
+export default function EssaySubmissionScreen({ onSubmitted, initialStudentName = '' }) {
   const [inputMode, setInputMode] = useState('type'); // 'type' | 'upload' | 'batch'
   const [selectedTemplate, setSelectedTemplate] = useState('ap_lit');
   const [selectedTone, setSelectedTone] = useState('standard');
-  const [studentName, setStudentName] = useState('');
+  const [studentName, setStudentName] = useState(initialStudentName);
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [essayText, setEssayText] = useState('');
   const [fileName, setFileName] = useState(null);
