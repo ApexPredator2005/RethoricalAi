@@ -98,7 +98,7 @@ export default function EssaySubmissionScreen({
         className: currentClass.name,
         subject: currentClass.subject,
         teacherName: teacherProfile?.name || 'Dr. Eleanor Vance',
-        institution: teacherProfile?.institution || 'Oakridge International Collegiate Academy',
+        institution: teacherProfile?.institution || studentProfile?.institution || '',
         templateId: selectedTemplate,
         receiptCode: receiptCode,
         isLocked: true,
@@ -290,11 +290,15 @@ export default function EssaySubmissionScreen({
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-sm border-b border-surface-container">
               <div className="space-y-1">
                 <div className="flex flex-wrap items-center gap-space-xs">
-                  <span className="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-primary-fixed text-primary flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[14px]">account_balance</span>
-                    {teacherProfile?.institution || 'Oakridge International Collegiate Academy'}
-                  </span>
-                  <span className="text-on-surface-variant">•</span>
+                  {teacherProfile?.institution && (
+                    <>
+                      <span className="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-primary-fixed text-primary flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[14px]">school</span>
+                        {teacherProfile.institution}
+                      </span>
+                      <span className="text-on-surface-variant">•</span>
+                    </>
+                  )}
                   <span className="text-xs text-on-surface-variant font-medium">
                     {teacherProfile?.department || 'Department of Humanities & Rhetoric'}
                   </span>
@@ -727,7 +731,7 @@ export default function EssaySubmissionScreen({
                 Collegiate Academic Integrity &amp; Permanent Turn-In Pledge:
               </span>
               <p className="text-on-surface-variant leading-relaxed">
-                I hereby certify that this draft represents my own original intellectual work and adheres to the Oakridge Academic Honor Code. I understand that once submitted, this assignment will be <strong>permanently locked</strong> against editing or resubmission.
+                I hereby certify that this draft represents my own original intellectual work and adheres to collegiate academic integrity policies and the institutional Honor Code. I understand that once submitted, this assignment will be <strong>permanently locked</strong> against editing or resubmission.
               </p>
             </div>
           </label>

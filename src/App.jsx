@@ -27,14 +27,14 @@ const DEFAULT_CLASSES = [
     period: 'Period 2 (09:15 - 10:05 AM)',
     room: 'Hall 304',
     studentRoster: [
-      { id: 'stu-101', name: 'Aria Montgomery', rollNo: '11A-01', email: 'aria.m@oakridge.edu' },
-      { id: 'stu-102', name: 'Liam Gallagher', rollNo: '11A-02', email: 'liam.g@oakridge.edu' },
-      { id: 'stu-103', name: 'Sophia Patel', rollNo: '11A-03', email: 'sophia.p@oakridge.edu' },
-      { id: 'stu-104', name: 'Ethan Zhang', rollNo: '11A-04', email: 'ethan.z@oakridge.edu' },
-      { id: 'stu-105', name: 'Maya Lin', rollNo: '11A-05', email: 'maya.l@oakridge.edu' },
-      { id: 'stu-106', name: 'Noah Al-Mansoor', rollNo: '11A-06', email: 'noah.a@oakridge.edu' },
-      { id: 'stu-107', name: 'Zoe Deschanel', rollNo: '11A-07', email: 'zoe.d@oakridge.edu' },
-      { id: 'stu-108', name: 'Lucas Vance', rollNo: '11A-08', email: 'lucas.v@oakridge.edu' }
+      { id: 'stu-101', name: 'Aria Montgomery', rollNo: '11A-01', email: 'aria.m@student.edu' },
+      { id: 'stu-102', name: 'Liam Gallagher', rollNo: '11A-02', email: 'liam.g@student.edu' },
+      { id: 'stu-103', name: 'Sophia Patel', rollNo: '11A-03', email: 'sophia.p@student.edu' },
+      { id: 'stu-104', name: 'Ethan Zhang', rollNo: '11A-04', email: 'ethan.z@student.edu' },
+      { id: 'stu-105', name: 'Maya Lin', rollNo: '11A-05', email: 'maya.l@student.edu' },
+      { id: 'stu-106', name: 'Noah Al-Mansoor', rollNo: '11A-06', email: 'noah.a@student.edu' },
+      { id: 'stu-107', name: 'Zoe Deschanel', rollNo: '11A-07', email: 'zoe.d@student.edu' },
+      { id: 'stu-108', name: 'Lucas Vance', rollNo: '11A-08', email: 'lucas.v@student.edu' }
     ]
   },
   {
@@ -44,12 +44,12 @@ const DEFAULT_CLASSES = [
     period: 'Period 4 (11:20 - 12:10 PM)',
     room: 'Seminar Room B',
     studentRoster: [
-      { id: 'stu-201', name: 'Hannah Abbott', rollNo: '12H-01', email: 'hannah.a@oakridge.edu' },
-      { id: 'stu-202', name: 'Cedric Diggory', rollNo: '12H-02', email: 'cedric.d@oakridge.edu' },
-      { id: 'stu-203', name: 'Cho Chang', rollNo: '12H-03', email: 'cho.c@oakridge.edu' },
-      { id: 'stu-204', name: 'Dean Thomas', rollNo: '12H-04', email: 'dean.t@oakridge.edu' },
-      { id: 'stu-205', name: 'Padma Patil', rollNo: '12H-05', email: 'padma.p@oakridge.edu' },
-      { id: 'stu-206', name: 'Seamus Finnigan', rollNo: '12H-06', email: 'seamus.f@oakridge.edu' }
+      { id: 'stu-201', name: 'Hannah Abbott', rollNo: '12H-01', email: 'hannah.a@student.edu' },
+      { id: 'stu-202', name: 'Cedric Diggory', rollNo: '12H-02', email: 'cedric.d@student.edu' },
+      { id: 'stu-203', name: 'Cho Chang', rollNo: '12H-03', email: 'cho.c@student.edu' },
+      { id: 'stu-204', name: 'Dean Thomas', rollNo: '12H-04', email: 'dean.t@student.edu' },
+      { id: 'stu-205', name: 'Padma Patil', rollNo: '12H-05', email: 'padma.p@student.edu' },
+      { id: 'stu-206', name: 'Seamus Finnigan', rollNo: '12H-06', email: 'seamus.f@student.edu' }
     ]
   },
   {
@@ -59,11 +59,11 @@ const DEFAULT_CLASSES = [
     period: 'Period 6 (02:00 - 02:50 PM)',
     room: 'Hall 208',
     studentRoster: [
-      { id: 'stu-301', name: 'Benjamin Sisko', rollNo: '10C-01', email: 'ben.s@oakridge.edu' },
-      { id: 'stu-302', name: 'Kira Nerys', rollNo: '10C-02', email: 'kira.n@oakridge.edu' },
-      { id: 'stu-303', name: 'Julian Bashir', rollNo: '10C-03', email: 'julian.b@oakridge.edu' },
-      { id: 'stu-304', name: 'Jadzia Dax', rollNo: '10C-04', email: 'jadzia.d@oakridge.edu' },
-      { id: 'stu-305', name: 'Miles O\'Brien', rollNo: '10C-05', email: 'miles.o@oakridge.edu' }
+      { id: 'stu-301', name: 'Benjamin Sisko', rollNo: '10C-01', email: 'ben.s@student.edu' },
+      { id: 'stu-302', name: 'Kira Nerys', rollNo: '10C-02', email: 'kira.n@student.edu' },
+      { id: 'stu-303', name: 'Julian Bashir', rollNo: '10C-03', email: 'julian.b@student.edu' },
+      { id: 'stu-304', name: 'Jadzia Dax', rollNo: '10C-04', email: 'jadzia.d@student.edu' },
+      { id: 'stu-305', name: 'Miles O\'Brien', rollNo: '10C-05', email: 'miles.o@student.edu' }
     ]
   }
 ];
@@ -94,10 +94,10 @@ export default function App() {
   const [teacherProfile, setTeacherProfile] = useState({
     name: 'Dr. Eleanor Vance',
     title: 'Senior Faculty & Rhetoric Chair',
-    institution: 'Oakridge International Collegiate Academy',
+    institution: '',
     department: 'Department of Humanities & Rhetoric',
     academicYear: '2026–2027 Academic Session',
-    email: 'e.vance@oakridge.edu'
+    email: 'e.vance@faculty.edu'
   });
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [prefillStudentName, setPrefillStudentName] = useState('');
@@ -107,9 +107,9 @@ export default function App() {
     id: 'stu-101',
     name: 'Aria Montgomery',
     rollNo: '11A-01',
-    email: 'aria.m@oakridge.edu',
+    email: 'aria.m@student.edu',
     grade: 'Grade 11 - Section A',
-    institution: 'Oakridge International Collegiate Academy'
+    institution: ''
   });
   const [showStudentProfileModal, setShowStudentProfileModal] = useState(false);
   const [receiptModalSub, setReceiptModalSub] = useState(null);

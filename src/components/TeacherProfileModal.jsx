@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 export default function TeacherProfileModal({ teacherProfile, onSave, onClose }) {
   const [name, setName] = useState(teacherProfile?.name || 'Dr. Eleanor Vance');
   const [title, setTitle] = useState(teacherProfile?.title || 'Faculty Lead & Rhetoric Chair');
-  const [institution, setInstitution] = useState(teacherProfile?.institution || 'Oakridge International Collegiate Academy');
+  const [institution, setInstitution] = useState(teacherProfile?.institution || '');
   const [department, setDepartment] = useState(teacherProfile?.department || 'Department of Humanities & Rhetoric');
   const [academicYear, setAcademicYear] = useState(teacherProfile?.academicYear || '2026–2027 Academic Session');
-  const [email, setEmail] = useState(teacherProfile?.email || 'e.vance@oakridge.edu');
+  const [email, setEmail] = useState(teacherProfile?.email || 'e.vance@faculty.edu');
   const [saved, setSaved] = useState(false);
 
   const handleSubmit = (e) => {
@@ -15,10 +15,10 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
       onSave({
         name: name.trim() || 'Educator',
         title: title.trim() || 'Instructor',
-        institution: institution.trim() || 'Educational Institution',
+        institution: institution.trim(),
         department: department.trim() || 'Academic Department',
         academicYear: academicYear.trim() || 'Current Term',
-        email: email.trim() || 'educator@institution.edu'
+        email: email.trim() || 'educator@faculty.edu'
       });
     }
     setSaved(true);
@@ -89,7 +89,7 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. e.vance@oakridge.edu"
+                placeholder="e.g. e.vance@faculty.edu"
                 className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
               />
             </div>
@@ -103,8 +103,7 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
-              placeholder="e.g. Oakridge International Collegiate Academy"
-              required
+              placeholder="e.g. Collegiate Academy / University"
               className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>

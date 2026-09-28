@@ -162,11 +162,15 @@ export default function TeacherDashboardScreen({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg pb-space-md border-b border-surface-container">
         <div className="space-y-space-xs max-w-3xl">
           <div className="flex flex-wrap items-center gap-space-sm">
-            <span className="font-code-inline text-code-inline text-primary font-bold tracking-wide uppercase flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px]">account_balance</span>
-              {teacherProfile?.institution || 'Oakridge International Collegiate Academy'}
-            </span>
-            <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+            {teacherProfile?.institution && (
+              <>
+                <span className="font-code-inline text-code-inline text-primary font-bold tracking-wide uppercase flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">school</span>
+                  {teacherProfile.institution}
+                </span>
+                <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+              </>
+            )}
             <span className="font-label-sm text-label-sm text-secondary font-semibold">
               {teacherProfile?.department || 'Department of Humanities & Rhetoric'}
             </span>

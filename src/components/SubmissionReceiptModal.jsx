@@ -37,14 +37,14 @@ export default function SubmissionReceiptModal({ submission, onClose, onNavigate
           {/* Institution Header Stamp */}
           <div className="text-center pb-space-sm border-b border-dashed border-surface-container">
             <span className="font-code-inline text-xs font-bold text-primary uppercase tracking-widest block">
-              {submission.institution || 'Oakridge International Collegiate Academy'}
+              {submission.institution || 'Academic Assessment Office'}
             </span>
             <span className="text-[11px] text-on-surface-variant">
               Faculty of Rhetoric &amp; Comparative Literature • Academic Records Division
             </span>
             <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-container font-code-inline text-xs font-bold">
               <span className="material-symbols-outlined text-[14px]">lock</span>
-              <span>LOCKED FOR GRADING • {submission.receiptCode || `OAK-${Math.floor(100000 + Math.random() * 900000)}`}</span>
+              <span>LOCKED FOR GRADING • {submission.receiptCode || `REC-${Math.floor(100000 + Math.random() * 900000)}`}</span>
             </div>
           </div>
 

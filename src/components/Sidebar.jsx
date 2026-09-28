@@ -160,7 +160,7 @@ export default function Sidebar({
                 {teacherProfile?.name || 'Dr. Eleanor Vance'}
               </span>
               <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
-                {teacherProfile?.institution || 'Oakridge Collegiate Academy'}
+                {teacherProfile?.institution || teacherProfile?.department || 'Faculty Instructor'}
               </span>
             </div>
             <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">

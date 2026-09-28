@@ -10,9 +10,9 @@ export default function StudentProfileModal({
 }) {
   const [name, setName] = useState(studentProfile?.name || 'Aria Montgomery');
   const [rollNo, setRollNo] = useState(studentProfile?.rollNo || '11A-01');
-  const [email, setEmail] = useState(studentProfile?.email || 'aria.m@oakridge.edu');
+  const [email, setEmail] = useState(studentProfile?.email || 'aria.m@student.edu');
   const [grade, setGrade] = useState(studentProfile?.grade || 'Grade 11 - Section A');
-  const [institution, setInstitution] = useState(studentProfile?.institution || 'Oakridge International Collegiate Academy');
+  const [institution, setInstitution] = useState(studentProfile?.institution || '');
   const [saved, setSaved] = useState(false);
 
   const currentClass = classes.find(c => c.id === selectedClassId) || classes[0];
@@ -25,9 +25,9 @@ export default function StudentProfileModal({
         ...studentProfile,
         name: name.trim() || 'Scholar',
         rollNo: rollNo.trim() || '11A-00',
-        email: email.trim() || 'scholar@oakridge.edu',
+        email: email.trim() || 'scholar@student.edu',
         grade: grade.trim() || 'Grade 11',
-        institution: institution.trim() || 'Oakridge International Collegiate Academy'
+        institution: institution.trim()
       });
     }
     setSaved(true);
@@ -157,7 +157,7 @@ export default function StudentProfileModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface font-code-inline"
-              placeholder="e.g. aria.m@oakridge.edu"
+              placeholder="e.g. aria.m@student.edu"
             />
           </div>
 
@@ -167,11 +167,10 @@ export default function StudentProfileModal({
             </label>
             <input
               type="text"
-              required
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface"
-              placeholder="e.g. Oakridge International Collegiate Academy"
+              placeholder="e.g. Collegiate Academy / High School"
             />
           </div>
 

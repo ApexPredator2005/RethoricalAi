@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { sounds } from '../utils/soundEffects';
 
-export default function RoleSelectionGateway({ onSelectRole, teacherProfile, institutionName = 'Oakridge International Collegiate Academy' }) {
+export default function RoleSelectionGateway({ onSelectRole, teacherProfile, institutionName = '' }) {
   const [selectedRole, setSelectedRole] = useState(null);
   const [hoveredRole, setHoveredRole] = useState(null);
 
@@ -35,10 +35,12 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
           </div>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold border border-surface-container">
-          <span className="material-symbols-outlined text-[15px] text-primary">account_balance</span>
-          <span>{institutionName}</span>
-        </div>
+        {institutionName ? (
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-semibold border border-surface-container">
+            <span className="material-symbols-outlined text-[15px] text-primary">school</span>
+            <span>{institutionName}</span>
+          </div>
+        ) : null}
       </header>
 
       {/* Main Selection Area */}

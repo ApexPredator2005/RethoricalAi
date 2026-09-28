@@ -70,7 +70,7 @@ export default function Header({
             title={`${activeInstitution} • ${role === 'student' ? 'Student Portal' : 'Faculty'} (Click to view)`}
           >
             <span className={`material-symbols-outlined text-[15px] ${role === 'student' ? 'text-secondary' : 'text-primary'}`}>
-              {role === 'student' ? 'school' : 'account_balance'}
+              school
             </span>
             <span className="truncate">{activeInstitution}</span>
           </div>

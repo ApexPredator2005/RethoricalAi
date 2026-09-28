@@ -43,11 +43,15 @@ export default function StudentSubmissionsScreen({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg pb-space-md border-b border-surface-container">
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex flex-wrap items-center gap-space-sm">
-            <span className="font-code-inline text-code-inline text-secondary font-bold tracking-wide uppercase flex items-center gap-1.5">
-              <span className="material-symbols-outlined text-[16px]">school</span>
-              {studentProfile?.institution || 'Oakridge International Collegiate Academy'}
-            </span>
-            <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+            {studentProfile?.institution && (
+              <>
+                <span className="font-code-inline text-code-inline text-secondary font-bold tracking-wide uppercase flex items-center gap-1.5">
+                  <span className="material-symbols-outlined text-[16px]">school</span>
+                  {studentProfile.institution}
+                </span>
+                <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+              </>
+            )}
             <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">
               Student Scholar Portal
             </span>

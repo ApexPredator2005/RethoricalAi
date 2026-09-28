@@ -38,7 +38,7 @@ export const ASSIGNMENT_TEMPLATES = [
     id: 'history_dbq',
     name: 'History Document-Based Question (DBQ)',
     category: 'Social Studies & History',
-    icon: 'account_balance',
+    icon: 'history_edu',
     defaultWordLimit: 1800,
     criteria: [
       { id: 'c1', name: 'Historical Contextualization', description: 'Accurate broader historical context connecting events across time and geography.', weight: 20, maxScore: 20 },
