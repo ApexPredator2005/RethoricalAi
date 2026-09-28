@@ -611,8 +611,88 @@ export default function TeacherDashboardScreen({
             </div>
           </div>
 
-          {/* Roster Table */}
-          <div className="overflow-x-auto">
+          {/* Mobile/Tablet Card View (< md) */}
+          <div className="md:hidden divide-y divide-surface-container">
+            {filteredRoster.length === 0 ? (
+              <div className="py-8 text-center text-on-surface-variant">
+                <span className="material-symbols-outlined text-[32px] text-outline-variant block mb-1">person_search</span>
+                <p className="font-semibold text-sm">No students match this filter.</p>
+              </div>
+            ) : (
+              filteredRoster.map((student) => (
+                <div key={`mob-${student.id}`} className="p-space-md space-y-2.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2.5">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
+                        student.hasSubmitted ? 'bg-secondary-fixed text-on-secondary-fixed' : 'bg-surface-container text-on-surface-variant'
+                      }`}>
+                        {student.name.split(' ').map(n => n[0]).join('')}
+                      </div>
+                      <div>
+                        <span className="font-bold text-sm text-on-surface block leading-tight">{student.name}</span>
+                        <span className="text-[11px] font-code-inline text-on-surface-variant">{student.rollNo} • {student.email}</span>
+                      </div>
+                    </div>
+                    {student.hasSubmitted ? (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-container shrink-0">
+                        <span className="material-symbols-outlined text-[13px]">check_circle</span>
+                        {student.score !== null ? `${student.score}/100` : 'Submitted'}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container shrink-0">
+                        <span className="material-symbols-outlined text-[13px]">pending</span>
+                        Missing
+                      </span>
+                    )}
+                  </div>
+
+                  {student.hasSubmitted ? (
+                    <div className="bg-surface-container-low p-2 rounded-lg text-xs space-y-0.5 border border-surface-container">
+                      <span className="font-medium text-on-surface line-clamp-1 block">“{student.title || 'Assignment Submission'}”</span>
+                      <span className="text-[11px] font-code-inline text-on-surface-variant block">
+                        {student.submission?.wordCount || 0} words • {student.submittedAt || 'Today'}
+                      </span>
+                    </div>
+                  ) : null}
+
+                  <div className="flex items-center justify-end gap-2 pt-0.5">
+                    {student.hasSubmitted ? (
+                      <button
+                        type="button"
+                        onClick={() => onNavigateToReport(student.submission)}
+                        className="w-full inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-xs font-semibold border border-surface-container transition-all"
+                      >
+                        <span>Inspect Report</span>
+                        <span className="material-symbols-outlined text-[14px]">arrow_forward</span>
+                      </button>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleSendReminder(student)}
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-primary-fixed hover:bg-primary-fixed-dim text-primary font-label-md text-xs font-semibold transition-all"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">mail</span>
+                          <span>Remind</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => onNavigateToSubmit && onNavigateToSubmit(student.name)}
+                          className="p-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface-variant border border-surface-container"
+                          title="Submit on scholar's behalf"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">edit</span>
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* Desktop Roster Table (>= md) */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="border-b border-surface-container font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider bg-surface-container-low/40">

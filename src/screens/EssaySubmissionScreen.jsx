@@ -361,35 +361,11 @@ export default function EssaySubmissionScreen({
               </div>
 
               <div className="flex items-center gap-1 text-[11px] font-code-inline text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
-                <span className="material-symbols-outlined text-[13px] text-primary">verified_user</span>
-                Permanent Lock Enforced Upon Submit
+                <span className="material-symbols-outlined text-[13px] text-primary">
+                  {role === 'student' ? 'lock' : 'assignment_turned_in'}
+                </span>
+                <span>{role === 'student' ? 'Permanent Examination Turn-In Lock' : 'Instructor Draft Intake Desk'}</span>
               </div>
-            </div>
-          </div>
-
-          {/* Quick Stats Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
-            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Word Limit</span>
-              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                {words} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">/ {currentTemplate.defaultWordLimit}</span>
-              </span>
-            </div>
-            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Discipline</span>
-              <span className="font-headline-sm text-headline-sm text-tertiary font-bold truncate max-w-[120px]">{currentTemplate.category.split(' ')[0]}</span>
-            </div>
-            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Status</span>
-              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                {words > 0 ? 'Drafting' : 'Awaiting Input'}
-              </span>
-            </div>
-            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Read Time</span>
-              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                ~{readTime} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">min</span>
-              </span>
             </div>
           </div>
 
@@ -651,16 +627,24 @@ export default function EssaySubmissionScreen({
         </div>
 
         {/* Bottom Status Bar inside Editor */}
-        <div className="bg-surface-container-low px-space-lg py-2.5 flex flex-wrap items-center justify-between text-on-surface-variant font-label-sm text-label-sm border-t border-[#E8DFC8]">
-          <div className="flex items-center gap-space-md">
-            <span className="font-semibold text-on-surface">{words} words</span>
+        <div className="bg-surface-container-low px-space-lg py-2.5 flex flex-wrap items-center justify-between text-on-surface-variant font-label-sm text-xs border-t border-[#E8DFC8] gap-2">
+          <div className="flex flex-wrap items-center gap-space-md">
+            <span className="font-bold text-on-surface flex items-center gap-1.5">
+              <span className={`w-2 h-2 rounded-full ${words > currentTemplate.defaultWordLimit ? 'bg-error animate-pulse' : words > 0 ? 'bg-secondary' : 'bg-outline'}`}></span>
+              {words} / {currentTemplate.defaultWordLimit} words
+            </span>
             <span>•</span>
-            <span>{chars} characters</span>
+            <span>{chars} chars</span>
             <span>•</span>
             <span>{paragraphs} paragraphs</span>
+            <span>•</span>
+            <span className="text-secondary font-semibold">{currentTemplate.category.split(' ')[0]}</span>
           </div>
           <div className="flex items-center gap-space-sm font-label-sm">
-            <span>Est. Reading: {readTime} min</span>
+            <span>Est. Reading: ~{readTime} min</span>
+            <span className="px-2 py-0.5 rounded bg-surface-container text-on-surface text-[11px] font-semibold border border-surface-container">
+              {words >= 50 ? 'Ready for Evaluation' : words > 0 ? 'Drafting' : 'Awaiting Input'}
+            </span>
           </div>
         </div>
       </div>

@@ -13,7 +13,14 @@ const PRESET_QUICK_STAMPS = [
   { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-tertiary-fixed-dim text-on-tertiary-container border-tertiary/40' }
 ];
 
-export default function FeedbackReportScreen({ submission, onNavigateToSubmit, onOpenQuiz }) {
+export default function FeedbackReportScreen({ 
+  submission, 
+  submissions = [], 
+  onSelectSubmission, 
+  onNavigateToSubmit, 
+  onOpenQuiz,
+  onNavigateToDashboard 
+}) {
   const [activeNote, setActiveNote] = useState(null);
   const [pushedToLms, setPushedToLms] = useState(false);
   const [viewMode, setViewMode] = useState('single'); // 'single' | 'split_compare'
@@ -35,6 +42,9 @@ export default function FeedbackReportScreen({ submission, onNavigateToSubmit, o
   const [voiceNotes, setVoiceNotes] = useState([]);
   const [userStamps, setUserStamps] = useState([]);
   const [extraNotes, setExtraNotes] = useState([]);
+
+  const currentIndex = submissions.findIndex(s => s.id === submission?.id);
+  const hasQueue = submissions.length > 1 && currentIndex !== -1;
 
   // Global Flight Control Keyboard Shortcuts Handler
   useEffect(() => {
@@ -61,6 +71,18 @@ export default function FeedbackReportScreen({ submission, onNavigateToSubmit, o
         if (PRESET_QUICK_STAMPS[idx]) {
           handleAddStamp(PRESET_QUICK_STAMPS[idx]);
         }
+      } else if (e.key === '[' && hasQueue) {
+        e.preventDefault();
+        if (currentIndex > 0 && onSelectSubmission) {
+          sounds.playPaperRustle();
+          onSelectSubmission(submissions[currentIndex - 1]);
+        }
+      } else if (e.key === ']' && hasQueue) {
+        e.preventDefault();
+        if (currentIndex < submissions.length - 1 && onSelectSubmission) {
+          sounds.playPaperRustle();
+          onSelectSubmission(submissions[currentIndex + 1]);
+        }
       } else if (e.key === ' ' || e.key === 'a' || e.key === 'A') {
         e.preventDefault();
         handlePushGrade();
@@ -69,7 +91,7 @@ export default function FeedbackReportScreen({ submission, onNavigateToSubmit, o
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [currentIndex, hasQueue, submissions, onSelectSubmission]);
 
   const handlePushGrade = () => {
     sounds.playSuccessChime();
@@ -210,6 +232,53 @@ export default function FeedbackReportScreen({ submission, onNavigateToSubmit, o
           </button>
         </div>
       </section>
+
+      {/* Consecutive Cohort Speed-Grading Control Bar */}
+      {hasQueue && (
+        <div className="flex flex-wrap items-center justify-between gap-space-sm p-space-sm bg-surface-container-low rounded-xl border border-surface-container font-label-md text-xs">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => onSelectSubmission && onSelectSubmission(submissions[currentIndex - 1])}
+              disabled={currentIndex <= 0}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all font-semibold border border-surface-container text-on-surface"
+              title="Previous Student Submission (Press [ )"
+            >
+              <span className="material-symbols-outlined text-[16px]">chevron_left</span>
+              <span>Previous [</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => onSelectSubmission && onSelectSubmission(submissions[currentIndex + 1])}
+              disabled={currentIndex >= submissions.length - 1}
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high disabled:opacity-40 disabled:cursor-not-allowed transition-all font-semibold border border-surface-container text-on-surface"
+              title="Next Student Submission (Press ] )"
+            >
+              <span>Next ]</span>
+              <span className="material-symbols-outlined text-[16px]">chevron_right</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-2 text-on-surface">
+            <span className="font-semibold text-on-surface-variant">Cohort Grading Queue:</span>
+            <span className="px-2.5 py-0.5 rounded-full bg-primary-fixed text-primary font-bold font-code-inline text-xs">
+              {currentIndex + 1} of {submissions.length}
+            </span>
+            <span className="text-on-surface font-bold hidden sm:inline">{studentName}</span>
+          </div>
+
+          {onNavigateToDashboard && (
+            <button
+              type="button"
+              onClick={onNavigateToDashboard}
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-xs border border-surface-container transition-colors"
+            >
+              <span className="material-symbols-outlined text-[15px]">arrow_back</span>
+              <span>Back to Desk</span>
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Top Banner / Assessment Identity Header */}
       <section className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg pb-space-sm border-b border-surface-container">

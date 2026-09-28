@@ -284,8 +284,11 @@ export default function App() {
         return (
           <FeedbackReportScreen
             submission={currentSubmission}
+            submissions={submissions}
+            onSelectSubmission={(sub) => setCurrentSubmission(sub)}
             onNavigateToSubmit={() => setActiveTab('submit')}
             onOpenQuiz={() => setShowQuizModal(true)}
+            onNavigateToDashboard={() => setActiveTab(role === 'student' ? 'student_submissions' : 'dashboard')}
           />
         );
       case 'analytics':
