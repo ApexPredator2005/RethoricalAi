@@ -7,6 +7,8 @@ import GrammarQuizModal from './components/GrammarQuizModal';
 import NewAssignmentModal from './components/NewAssignmentModal';
 import DesignSpecsModal from './components/DesignSpecsModal';
 import TeacherProfileModal from './components/TeacherProfileModal';
+import StudentProfileModal from './components/StudentProfileModal';
+import SubmissionReceiptModal from './components/SubmissionReceiptModal';
 
 import TeacherDashboardScreen from './screens/TeacherDashboardScreen';
 import RubricBuilderScreen from './screens/RubricBuilderScreen';
@@ -14,6 +16,7 @@ import EssaySubmissionScreen from './screens/EssaySubmissionScreen';
 import FeedbackReportScreen from './screens/FeedbackReportScreen';
 import AnalyticsDashboardScreen from './screens/AnalyticsDashboardScreen';
 import LmsSyncScreen from './screens/LmsSyncScreen';
+import StudentSubmissionsScreen from './screens/StudentSubmissionsScreen';
 
 const DEFAULT_CLASSES = [
   {
@@ -84,6 +87,18 @@ export default function App() {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [prefillStudentName, setPrefillStudentName] = useState('');
 
+  // Student Scholar Profile (Aria Montgomery default)
+  const [studentProfile, setStudentProfile] = useState({
+    id: 'stu-101',
+    name: 'Aria Montgomery',
+    rollNo: '11A-01',
+    email: 'aria.m@oakridge.edu',
+    grade: 'Grade 11 - Section A',
+    institution: 'Oakridge International Collegiate Academy'
+  });
+  const [showStudentProfileModal, setShowStudentProfileModal] = useState(false);
+  const [receiptModalSub, setReceiptModalSub] = useState(null);
+
   // Live dynamic data state (starts completely clean — no synthetic mock submissions)
   const [assignments, setAssignments] = useState([]);
   const [submissions, setSubmissions] = useState([]);
@@ -122,7 +137,17 @@ export default function App() {
   const handleAssignmentSubmitted = (subData) => {
     const newSub = {
       id: `sub-${Date.now()}`,
-      studentName: (subData.studentName || '').trim() || 'Student Submission',
+      studentId: subData.studentId || (role === 'student' ? studentProfile.id : 'sub-usr'),
+      studentName: (subData.studentName || '').trim() || (role === 'student' ? studentProfile.name : 'Student Submission'),
+      rollNo: subData.rollNo || (role === 'student' ? studentProfile.rollNo : '11A-01'),
+      classId: subData.classId || selectedClassId,
+      className: subData.className || currentClass.name,
+      subject: subData.subject || currentClass.subject,
+      teacherName: subData.teacherName || teacherProfile.name,
+      institution: subData.institution || teacherProfile.institution,
+      receiptCode: subData.receiptCode || `OAK-${Math.floor(100000 + Math.random() * 900000)}`,
+      isLocked: true,
+      submittedAt: subData.submittedAt || (new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ' + new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })),
       title: (subData.title || '').trim() || `${subData.rubric || 'Assignment'} Draft`,
       text: subData.text || '',
       referenceText: subData.referenceText || '',
@@ -138,11 +163,20 @@ export default function App() {
     setBatchQueue((prev) => [newSub, ...prev]);
     setCurrentSubmission(newSub);
     setPrefillStudentName('');
-    setActiveTab('report');
+    setReceiptModalSub(newSub);
+    if (role === 'student') {
+      setActiveTab('student_submissions');
+    } else {
+      setActiveTab('report');
+    }
   };
 
   const currentClass = classes.find((c) => c.id === selectedClassId) || classes[0];
   const pendingCount = batchQueue.filter((q) => !q.approved).length;
+  const currentStudentSubsCount = submissions.filter(s => 
+    s.studentId === studentProfile.id || 
+    (s.studentName && s.studentName.toLowerCase().trim() === studentProfile.name.toLowerCase().trim())
+  ).length;
 
   const renderScreen = () => {
     switch (activeTab) {
@@ -172,12 +206,43 @@ export default function App() {
             }}
           />
         );
+      case 'student_submissions':
+        return (
+          <StudentSubmissionsScreen
+            submissions={submissions}
+            studentProfile={studentProfile}
+            onNavigateToReport={(studentSub) => {
+              if (studentSub) setCurrentSubmission(studentSub);
+              setActiveTab('report');
+            }}
+            onNavigateToSubmit={() => setActiveTab('submit')}
+            onOpenReceiptModal={(sub) => setReceiptModalSub(sub)}
+            onOpenQuiz={(sub) => {
+              if (sub) setCurrentSubmission(sub);
+              setShowQuizModal(true);
+            }}
+            onOpenProfileModal={() => setShowStudentProfileModal(true)}
+          />
+        );
       case 'rubric':
         return <RubricBuilderScreen />;
       case 'submit':
         return (
           <EssaySubmissionScreen
             initialStudentName={prefillStudentName}
+            classes={classes}
+            selectedClassId={selectedClassId}
+            onSelectClass={setSelectedClassId}
+            teacherProfile={teacherProfile}
+            studentProfile={studentProfile}
+            role={role}
+            submissions={submissions}
+            onNavigateToReport={(studentSub) => {
+              if (studentSub) setCurrentSubmission(studentSub);
+              setActiveTab('report');
+            }}
+            onNavigateToHistory={() => setActiveTab('student_submissions')}
+            onOpenReceiptModal={(sub) => setReceiptModalSub(sub)}
             onSubmitted={handleAssignmentSubmitted}
           />
         );
@@ -220,7 +285,11 @@ export default function App() {
         currentClassName={currentClass.name}
         currentSubject={currentClass.subject}
         teacherProfile={teacherProfile}
+        studentProfile={studentProfile}
+        role={role}
         onOpenProfileModal={() => setShowProfileModal(true)}
+        onOpenStudentProfileModal={() => setShowStudentProfileModal(true)}
+        studentSubmissionsCount={currentStudentSubsCount}
       />
 
       {/* Main Container offset by Sidebar width */}
@@ -237,7 +306,9 @@ export default function App() {
           onOpenSpecsModal={() => setShowSpecsModal(true)}
           onOpenNewAssignment={() => setShowNewAssignment(true)}
           teacherProfile={teacherProfile}
+          studentProfile={studentProfile}
           onOpenProfileModal={() => setShowProfileModal(true)}
+          onOpenStudentProfileModal={() => setShowStudentProfileModal(true)}
           searchQuery={searchQuery}
           onSearchChange={setSearchQuery}
         />
@@ -254,6 +325,29 @@ export default function App() {
           teacherProfile={teacherProfile}
           onSave={setTeacherProfile}
           onClose={() => setShowProfileModal(false)}
+        />
+      )}
+
+      {showStudentProfileModal && (
+        <StudentProfileModal
+          studentProfile={studentProfile}
+          onSave={setStudentProfile}
+          classes={classes}
+          selectedClassId={selectedClassId}
+          onSelectStudent={(scholar) => setStudentProfile(scholar)}
+          onClose={() => setShowStudentProfileModal(false)}
+        />
+      )}
+
+      {receiptModalSub && (
+        <SubmissionReceiptModal
+          submission={receiptModalSub}
+          onClose={() => setReceiptModalSub(null)}
+          onNavigateToReport={(sub) => {
+            setCurrentSubmission(sub);
+            setActiveTab('report');
+          }}
+          onNavigateToHistory={() => setActiveTab('student_submissions')}
         />
       )}
 

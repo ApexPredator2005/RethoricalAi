@@ -1,11 +1,33 @@
 import React, { useState } from 'react';
 import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
+import { sounds } from '../utils/soundEffects';
 
-export default function EssaySubmissionScreen({ onSubmitted, initialStudentName = '' }) {
+export default function EssaySubmissionScreen({ 
+  onSubmitted, 
+  initialStudentName = '',
+  classes = [],
+  selectedClassId,
+  onSelectClass,
+  teacherProfile,
+  studentProfile,
+  role = 'student',
+  submissions = [],
+  onNavigateToReport,
+  onNavigateToHistory,
+  onOpenReceiptModal
+}) {
+  const currentClass = classes.find(c => c.id === selectedClassId) || classes[0] || {
+    id: 'cls-101',
+    name: 'Grade 11 - Section A',
+    subject: 'AP English Literature & Rhetoric',
+    period: 'Period 2 (09:15 - 10:05 AM)',
+    room: 'Hall 304'
+  };
+
   const [inputMode, setInputMode] = useState('type'); // 'type' | 'upload' | 'batch'
   const [selectedTemplate, setSelectedTemplate] = useState('ap_lit');
   const [selectedTone, setSelectedTone] = useState('standard');
-  const [studentName, setStudentName] = useState(initialStudentName);
+  const [studentName, setStudentName] = useState(initialStudentName || (role === 'student' ? (studentProfile?.name || '') : ''));
   const [assignmentTitle, setAssignmentTitle] = useState('');
   const [essayText, setEssayText] = useState('');
   const [fileName, setFileName] = useState(null);
@@ -13,6 +35,16 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedRubric, setSelectedRubric] = useState('AP Lit Analytical Synthesis (Default)');
+  const [honorPledge, setHonorPledge] = useState(false);
+
+  // Check if current student has already submitted for this class/subject/template
+  const activeScholarName = studentProfile?.name || studentName;
+  const activeScholarId = studentProfile?.id;
+  const existingSubmission = role === 'student' && submissions.find(s => 
+    ((activeScholarId && s.studentId === activeScholarId) ||
+     (s.studentName && activeScholarName && s.studentName.toLowerCase().trim() === activeScholarName.toLowerCase().trim())) &&
+    (s.classId === selectedClassId || s.templateId === selectedTemplate)
+  );
 
   // Reference Document State
   const [refText, setRefText] = useState('');
@@ -39,25 +71,50 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (existingSubmission && role === 'student') {
+      setErrorMessage('This assignment has already been turned in and permanently locked. Resubmission is disabled.');
+      return;
+    }
     if (!essayText.trim() && batchFiles.length === 0) {
       setErrorMessage('Please enter assignment text or upload a document to proceed.');
       return;
     }
+    if (role === 'student' && !honorPledge) {
+      setErrorMessage('Please check the Academic Honor Pledge to certify your draft and finalize your permanent submission.');
+      return;
+    }
     setErrorMessage('');
+    sounds.playStampThud();
     setIsEvaluating(true);
     setTimeout(() => {
       setIsEvaluating(false);
+      sounds.playSuccessChime();
+      const receiptCode = `OAK-${Math.floor(100000 + Math.random() * 900000)}`;
+      const submissionData = {
+        studentId: role === 'student' ? (studentProfile?.id || 'stu-101') : 'sub-usr',
+        studentName: (studentName.trim() || (role === 'student' ? (studentProfile?.name || 'Aria Montgomery') : 'Student Submission')),
+        rollNo: role === 'student' ? (studentProfile?.rollNo || '11A-01') : '11A-00',
+        classId: selectedClassId,
+        className: currentClass.name,
+        subject: currentClass.subject,
+        teacherName: teacherProfile?.name || 'Dr. Eleanor Vance',
+        institution: teacherProfile?.institution || 'Oakridge International Collegiate Academy',
+        templateId: selectedTemplate,
+        receiptCode: receiptCode,
+        isLocked: true,
+        submittedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ' + new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }),
+        title: assignmentTitle.trim() || `${currentTemplate.name} Submission`,
+        text: essayText,
+        template: currentTemplate,
+        rubric: selectedRubric,
+        tone: selectedTone,
+        refText: refText,
+        wordCount: words,
+        overallScore: Math.floor(86 + Math.random() * 11) // High honors initial draft score
+      };
+
       if (onSubmitted) {
-        onSubmitted({
-          studentName: studentName.trim() || 'Student Submission',
-          title: assignmentTitle.trim() || `${currentTemplate.name} Submission`,
-          text: essayText,
-          template: currentTemplate,
-          rubric: selectedRubric,
-          tone: selectedTone,
-          refText: refText,
-          wordCount: words
-        });
+        onSubmitted(submissionData);
       }
     }, 1200);
   };
@@ -106,84 +163,265 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
 
   return (
     <div className="w-full px-gutter lg:px-margin-desktop py-space-xl space-y-space-xl animate-fade-in">
-      {/* Header & Metrics */}
-      <div className="flex flex-col lg:flex-row lg:items-start justify-between gap-space-lg">
-        <div className="space-y-space-xs max-w-2xl">
-          <div className="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">
-            <span className="material-symbols-outlined text-[16px]">edit_note</span>
-            <span>Student &amp; Class Submission</span>
-          </div>
-          <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            Submit Assignment: {currentTemplate.name}
-          </h1>
-          <p className="font-body-md text-body-md text-on-surface-variant">
-            Enter or paste student writing, upload documents, or ingest multi-student batches for AI-assisted evaluation and citation verification.
-          </p>
-        </div>
+      {/* ──── IF ASSIGNMENT ALREADY SUBMITTED & LOCKED (STUDENT POLICY LOCK) ──── */}
+      {existingSubmission && role === 'student' ? (
+        <div className="space-y-space-lg">
+          {/* Lock Notification Hero */}
+          <div className="p-space-lg rounded-2xl bg-surface-container-lowest border-2 border-primary/20 shadow-md space-y-space-md">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-space-sm border-b border-surface-container">
+              <div className="flex items-center gap-space-sm">
+                <div className="w-12 h-12 rounded-xl bg-primary-fixed text-primary flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-[28px]">lock</span>
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded-full text-xs font-bold bg-error-container text-on-error-container">
+                      Turn-In Locked
+                    </span>
+                    <span className="text-xs font-code-inline text-on-surface-variant">
+                      Receipt #{existingSubmission.receiptCode || existingSubmission.id.slice(-6).toUpperCase()}
+                    </span>
+                  </div>
+                  <h2 className="font-headline-md text-xl font-bold text-on-surface pt-1">
+                    Assignment Submitted &amp; Permanently Locked
+                  </h2>
+                </div>
+              </div>
 
-        {/* Quick Stats Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm shrink-0">
-          <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Word Limit</span>
-            <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              {words} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">/ {currentTemplate.defaultWordLimit}</span>
-            </span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Discipline</span>
-            <span className="font-headline-sm text-headline-sm text-tertiary font-bold truncate max-w-[120px]">{currentTemplate.category.split(' ')[0]}</span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Status</span>
-            <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              {words > 0 ? 'Drafting' : 'Awaiting Input'}
-            </span>
-          </div>
-          <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Read Time</span>
-            <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              ~{readTime} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">min</span>
-            </span>
-          </div>
-        </div>
-      </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onOpenReceiptModal && onOpenReceiptModal(existingSubmission)}
+                  className="px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-xs font-semibold flex items-center gap-1.5 border border-surface-container transition-all"
+                >
+                  <span className="material-symbols-outlined text-[16px]">receipt</span>
+                  <span>Digital Receipt</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onNavigateToReport && onNavigateToReport(existingSubmission)}
+                  className="px-4 py-1.5 rounded-lg bg-primary text-on-primary hover:bg-primary-dim font-label-md text-xs font-semibold shadow-xs flex items-center gap-1.5 transition-all"
+                >
+                  <span>Inspect Feedback</span>
+                  <span className="material-symbols-outlined text-[15px]">arrow_forward</span>
+                </button>
+              </div>
+            </div>
 
-      {/* Error Banner */}
-      {errorMessage && (
-        <div className="p-space-sm rounded-lg bg-error-container text-on-error-container font-label-md text-label-md flex items-center gap-2 animate-fade-in">
-          <span className="material-symbols-outlined text-[20px]">error</span>
-          <span>{errorMessage}</span>
-        </div>
-      )}
+            {/* Academic Policy Banner */}
+            <div className="p-space-sm rounded-xl bg-surface-container-low border border-surface-container flex items-start gap-space-sm">
+              <span className="material-symbols-outlined text-secondary text-[22px] shrink-0 mt-0.5">policy</span>
+              <div className="text-xs space-y-1">
+                <span className="font-bold text-on-surface block">
+                  Collegiate Examination &amp; Submission Policy:
+                </span>
+                <p className="text-on-surface-variant">
+                  Once an assignment has been officially turned in to <strong className="text-on-surface font-semibold">{existingSubmission.teacherName || teacherProfile?.name || 'Dr. Eleanor Vance'}</strong>, it is permanently locked against alterations or resubmissions. This safeguards grading impartiality and institutional records.
+                </p>
+              </div>
+            </div>
 
-      {/* Student Name & Title Inputs */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md p-space-md bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm">
-        <div className="space-y-1">
-          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-            Student Name
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Maya Lin"
-            value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
-            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
-          />
-        </div>
+            {/* Submitted Metadata Card */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-space-md p-space-md rounded-xl bg-surface-container-low border border-surface-container text-xs">
+              <div>
+                <span className="text-on-surface-variant block font-medium">Submitted Title</span>
+                <span className="font-bold text-on-surface text-sm truncate block">
+                  “{existingSubmission.title || 'Assignment Draft'}”
+                </span>
+                <span className="text-[11px] font-code-inline text-on-surface-variant">
+                  {existingSubmission.wordCount || 0} words • {existingSubmission.rubric || 'Analytical Rubric'}
+                </span>
+              </div>
+              <div>
+                <span className="text-on-surface-variant block font-medium">Target Instructor &amp; Course</span>
+                <span className="font-bold text-on-surface text-sm block">
+                  {existingSubmission.teacherName || 'Dr. Eleanor Vance'}
+                </span>
+                <span className="text-[11px] text-on-surface-variant block truncate">
+                  {existingSubmission.subject || currentClass.subject} ({existingSubmission.className || currentClass.name})
+                </span>
+              </div>
+              <div>
+                <span className="text-on-surface-variant block font-medium">Turn-In Timestamp</span>
+                <span className="font-bold text-on-surface text-sm block font-code-inline">
+                  {existingSubmission.submittedAt || existingSubmission.timestamp || 'Today'}
+                </span>
+                <span className="inline-flex items-center gap-1 text-tertiary font-bold pt-0.5">
+                  <span className="material-symbols-outlined text-[13px]">verified</span>
+                  SHA-256 Verified Receipt
+                </span>
+              </div>
+            </div>
 
-        <div className="space-y-1">
-          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-            Assignment Title
-          </label>
-          <input
-            type="text"
-            placeholder="e.g. Analysis of The Great Gatsby"
-            value={assignmentTitle}
-            onChange={(e) => setAssignmentTitle(e.target.value)}
-            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
-          />
+            {/* Switch Enrolled Subject or Go To Portfolio */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pt-space-xs text-xs text-on-surface-variant border-t border-surface-container">
+              <div className="flex items-center gap-2">
+                <span>Want to turn in work for another course?</span>
+                <select
+                  value={selectedClassId}
+                  onChange={(e) => onSelectClass && onSelectClass(e.target.value)}
+                  className="px-2 py-1 rounded bg-surface-container text-on-surface border border-surface-container text-xs font-semibold cursor-pointer"
+                >
+                  {classes.map(c => (
+                    <option key={c.id} value={c.id}>
+                      {c.name} • {c.subject}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {onNavigateToHistory && (
+                <button
+                  type="button"
+                  onClick={onNavigateToHistory}
+                  className="text-primary hover:underline font-semibold flex items-center gap-1"
+                >
+                  <span>View All Past Submissions in Portfolio</span>
+                  <span className="material-symbols-outlined text-[14px]">chevron_right</span>
+                </button>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* ──── RECIPIENT INSTRUCTOR & ENROLLED COURSE IDENTIFIER ──── */}
+          <div className="p-space-lg rounded-2xl bg-surface-container-lowest border border-surface-container shadow-xs space-y-space-md">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md pb-space-sm border-b border-surface-container">
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-space-xs">
+                  <span className="px-2 py-0.5 rounded text-[11px] font-bold uppercase tracking-wider bg-primary-fixed text-primary flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[14px]">account_balance</span>
+                    {teacherProfile?.institution || 'Oakridge International Collegiate Academy'}
+                  </span>
+                  <span className="text-on-surface-variant">•</span>
+                  <span className="text-xs text-on-surface-variant font-medium">
+                    {teacherProfile?.department || 'Department of Humanities & Rhetoric'}
+                  </span>
+                </div>
+
+                <h1 className="font-headline-md text-xl font-bold text-on-surface tracking-tight">
+                  Turn In Assignment to: <span className="text-primary">{teacherProfile?.name || 'Dr. Eleanor Vance'}</span>
+                </h1>
+                
+                <p className="font-body-sm text-xs text-on-surface-variant">
+                  {role === 'student' ? (
+                    <>
+                      Submitting as <strong className="text-on-surface font-semibold">{studentProfile?.name || 'Aria Montgomery'}</strong> ({studentProfile?.rollNo || '11A-01'} • {studentProfile?.grade || currentClass.name}).
+                    </>
+                  ) : (
+                    'Faculty evaluation intake desk.'
+                  )} Your submission will be evaluated against standardized collegiate rubrics.
+                </p>
+              </div>
+
+              {/* Multi-Course Selector for Students */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 bg-surface-container-low p-2 rounded-xl border border-surface-container shrink-0">
+                <div className="flex items-center gap-1.5 px-1 text-xs font-semibold text-on-surface-variant">
+                  <span className="material-symbols-outlined text-[16px] text-secondary">menu_book</span>
+                  <span>Target Course:</span>
+                </div>
+                <select
+                  value={selectedClassId}
+                  onChange={(e) => onSelectClass && onSelectClass(e.target.value)}
+                  className="px-2.5 py-1.5 rounded-lg bg-surface-container text-on-surface text-xs font-bold border border-surface-container focus:outline-none cursor-pointer max-w-[240px] truncate"
+                >
+                  {classes.map((cls) => (
+                    <option key={cls.id} value={cls.id}>
+                      {cls.name} • {cls.subject}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Course Metadata Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-space-sm text-xs text-on-surface-variant pt-0.5">
+              <div className="flex flex-wrap items-center gap-space-md">
+                <span className="flex items-center gap-1 text-on-surface font-semibold">
+                  <span className="material-symbols-outlined text-[15px] text-secondary">class</span>
+                  {currentClass.subject || 'AP English Literature & Rhetoric'}
+                </span>
+                <span>•</span>
+                <span className="font-code-inline">
+                  {currentClass.period || 'Period 2'} • {currentClass.room || 'Hall 304'}
+                </span>
+                <span>•</span>
+                <span className="text-tertiary font-semibold flex items-center gap-1">
+                  <span className="material-symbols-outlined text-[14px]">event_available</span>
+                  Due: Friday 11:59 PM (Open)
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1 text-[11px] font-code-inline text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">
+                <span className="material-symbols-outlined text-[13px] text-primary">verified_user</span>
+                Permanent Lock Enforced Upon Submit
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Stats Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm">
+            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
+              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Word Limit</span>
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                {words} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">/ {currentTemplate.defaultWordLimit}</span>
+              </span>
+            </div>
+            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
+              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Discipline</span>
+              <span className="font-headline-sm text-headline-sm text-tertiary font-bold truncate max-w-[120px]">{currentTemplate.category.split(' ')[0]}</span>
+            </div>
+            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
+              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Status</span>
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                {words > 0 ? 'Drafting' : 'Awaiting Input'}
+              </span>
+            </div>
+            <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
+              <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Read Time</span>
+              <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                ~{readTime} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">min</span>
+              </span>
+            </div>
+          </div>
+
+          {/* Error Banner */}
+          {errorMessage && (
+            <div className="p-space-sm rounded-lg bg-error-container text-on-error-container font-label-md text-label-md flex items-center gap-2 animate-fade-in">
+              <span className="material-symbols-outlined text-[20px]">error</span>
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
+          {/* Student Name & Title Inputs */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md p-space-md bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm">
+            <div className="space-y-1">
+              <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                Submitting Scholar Name
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Aria Montgomery"
+                value={studentName}
+                onChange={(e) => setStudentName(e.target.value)}
+                className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
+              />
+            </div>
+
+            <div className="space-y-1">
+              <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
+                Assignment Title / Topic
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. Rhetorical Strategies in The Great Gatsby"
+                value={assignmentTitle}
+                onChange={(e) => setAssignmentTitle(e.target.value)}
+                className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
+              />
+            </div>
+          </div>
 
       {/* Preset Discipline & Tone Selectors */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md p-space-md bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm">
@@ -474,6 +712,28 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
         </div>
       </details>
 
+      {/* Academic Honor Pledge & Certification (Student Mode) */}
+      {role === 'student' && (
+        <div className="bg-surface-container-low p-space-md rounded-xl border border-surface-container space-y-2">
+          <label className="flex items-start gap-space-sm cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={honorPledge}
+              onChange={(e) => setHonorPledge(e.target.checked)}
+              className="mt-0.5 rounded text-primary focus:ring-primary w-4 h-4 cursor-pointer"
+            />
+            <div className="text-xs space-y-1">
+              <span className="font-bold text-on-surface block">
+                Collegiate Academic Integrity &amp; Permanent Turn-In Pledge:
+              </span>
+              <p className="text-on-surface-variant leading-relaxed">
+                I hereby certify that this draft represents my own original intellectual work and adheres to the Oakridge Academic Honor Code. I understand that once submitted, this assignment will be <strong>permanently locked</strong> against editing or resubmission.
+              </p>
+            </div>
+          </label>
+        </div>
+      )}
+
       {/* Rubric Selection & Submit Section */}
       <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-space-md border border-surface-container">
         <div className="space-y-1">
@@ -485,7 +745,7 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
             <select
               value={selectedRubric}
               onChange={(e) => setSelectedRubric(e.target.value)}
-              className="bg-surface-container py-2 pl-3 pr-8 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-high cursor-pointer border border-surface-container"
+              className="bg-surface-container py-2 pl-3 pr-8 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-high cursor-pointer border border-surface-container text-xs sm:text-sm"
             >
               <option>AP Lit Analytical Synthesis (Default)</option>
               <option>STEM &amp; Scientific Lab Report Standard</option>
@@ -500,22 +760,28 @@ export default function EssaySubmissionScreen({ onSubmitted, initialStudentName 
         <button
           onClick={handleSubmit}
           disabled={isEvaluating}
-          className="px-space-xl py-space-md rounded-xl bg-primary-container text-on-primary hover:bg-primary transition-all font-label-lg text-label-lg font-semibold shadow-md active:translate-y-0.5 flex items-center justify-center gap-2 self-stretch md:self-center"
+          className={`px-space-xl py-space-md rounded-xl transition-all font-label-lg text-label-lg font-semibold shadow-md active:translate-y-0.5 flex items-center justify-center gap-2 self-stretch md:self-center ${
+            role === 'student'
+              ? 'bg-secondary text-on-secondary hover:bg-secondary-dim'
+              : 'bg-primary-container text-on-primary hover:bg-primary'
+          }`}
           type="button"
         >
           {isEvaluating ? (
             <>
               <span className="material-symbols-outlined text-[22px] animate-spin">progress_activity</span>
-              <span>Evaluating Assignment...</span>
+              <span>Evaluating &amp; Locking Assignment...</span>
             </>
           ) : (
             <>
-              <span className="material-symbols-outlined text-[22px]">ink_pen</span>
-              <span>Submit for AI Evaluation</span>
+              <span className="material-symbols-outlined text-[22px]">{role === 'student' ? 'lock' : 'ink_pen'}</span>
+              <span>{role === 'student' ? 'Turn In & Lock Assignment' : 'Submit for AI Evaluation'}</span>
             </>
           )}
         </button>
       </div>
+        </>
+      )}
     </div>
   );
 }

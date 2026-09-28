@@ -10,9 +10,13 @@ export default function Sidebar({
   currentClassName = 'Grade 11 - Section A',
   currentSubject = 'AP English Literature',
   teacherProfile,
-  onOpenProfileModal
+  studentProfile,
+  role = 'teacher',
+  onOpenProfileModal,
+  onOpenStudentProfileModal,
+  studentSubmissionsCount = 0
 }) {
-  const navItems = [
+  const teacherNavItems = [
     { id: 'dashboard', label: 'Dashboard', icon: 'menu_book', badge: pendingCount > 0 ? `${pendingCount}` : null },
     { id: 'rubric', label: 'Grading Criteria', icon: 'tune' },
     { id: 'submit', label: 'Submit Assignment', icon: 'edit_note' },
@@ -20,6 +24,15 @@ export default function Sidebar({
     { id: 'analytics', label: 'Class Insights', icon: 'insights' },
     { id: 'lms', label: 'Gradebook Sync', icon: 'sync_alt', badge: syncStatus === 'Synced' ? '✓' : null }
   ];
+
+  const studentNavItems = [
+    { id: 'submit', label: 'Submit Assignment', icon: 'edit_note' },
+    { id: 'student_submissions', label: 'My Submissions', icon: 'inventory_2', badge: studentSubmissionsCount > 0 ? `${studentSubmissionsCount}` : null },
+    { id: 'report', label: 'Grading & Feedback', icon: 'rate_review', badge: 'Live' },
+    { id: 'rubric', label: 'Grading Criteria', icon: 'tune' }
+  ];
+
+  const navItems = role === 'student' ? studentNavItems : teacherNavItems;
 
   const getInitials = (name) => {
     if (!name) return 'EV';
@@ -33,13 +46,13 @@ export default function Sidebar({
       <div className="flex flex-col gap-space-lg">
         {/* Brand Header */}
         <div className="flex flex-col gap-space-xs">
-          <div className="flex items-center gap-space-sm cursor-pointer" onClick={() => onTabChange('dashboard')}>
+          <div className="flex items-center gap-space-sm cursor-pointer" onClick={() => onTabChange(role === 'student' ? 'submit' : 'dashboard')}>
             <span className="material-symbols-outlined text-primary text-[28px]">ink_pen</span>
             <span className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">RethoricalAI</span>
           </div>
           <div className="flex items-center gap-1.5 self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider font-semibold truncate max-w-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-secondary shrink-0"></span>
-            <span className="truncate">{currentSubject || currentClassName}</span>
+            <span className={`w-1.5 h-1.5 rounded-full ${role === 'student' ? 'bg-secondary' : 'bg-primary'} shrink-0`}></span>
+            <span className="truncate">{role === 'student' ? `${studentProfile?.grade || currentClassName} • Student` : (currentSubject || currentClassName)}</span>
           </div>
         </div>
 
@@ -111,27 +124,50 @@ export default function Sidebar({
           </div>
         </div>
 
-        {/* Teacher & Institution Profile Card */}
-        <div 
-          onClick={onOpenProfileModal}
-          className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group"
-          title="Click to view & edit teacher profile & institution"
-        >
-          <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center justify-center shrink-0">
-            {getInitials(teacherProfile?.name)}
-          </div>
-          <div className="flex flex-col min-w-0 flex-1">
-            <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
-              {teacherProfile?.name || 'Dr. Eleanor Vance'}
+        {/* Profile Card (Student Scholar or Teacher Instructor) */}
+        {role === 'student' ? (
+          <div 
+            onClick={onOpenStudentProfileModal}
+            className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group"
+            title="Click to view & switch student scholar profile"
+          >
+            <div className="w-8 h-8 rounded-full bg-secondary text-on-secondary font-label-md font-bold flex items-center justify-center shrink-0">
+              {getInitials(studentProfile?.name || 'Aria Montgomery')}
+            </div>
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-secondary transition-colors">
+                {studentProfile?.name || 'Aria Montgomery'}
+              </span>
+              <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
+                {studentProfile?.rollNo || '11A-01'} • Student Scholar
+              </span>
+            </div>
+            <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-secondary transition-colors">
+              edit
             </span>
-            <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
-              {teacherProfile?.institution || 'Oakridge Collegiate Academy'}
+          </div>
+        ) : (
+          <div 
+            onClick={onOpenProfileModal}
+            className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group"
+            title="Click to view & edit teacher profile & institution"
+          >
+            <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center justify-center shrink-0">
+              {getInitials(teacherProfile?.name)}
+            </div>
+            <div className="flex flex-col min-w-0 flex-1">
+              <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
+                {teacherProfile?.name || 'Dr. Eleanor Vance'}
+              </span>
+              <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
+                {teacherProfile?.institution || 'Oakridge Collegiate Academy'}
+              </span>
+            </div>
+            <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">
+              edit
             </span>
           </div>
-          <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">
-            edit
-          </span>
-        </div>
+        )}
       </div>
     </aside>
   );
