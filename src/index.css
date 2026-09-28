@@ -311,3 +311,18 @@ p, span, label, input, button, select, textarea {
   animation: spin 1s linear infinite;
 }
 
+/* Brand Name Typography */
+.font-brand {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+.app-brand-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+

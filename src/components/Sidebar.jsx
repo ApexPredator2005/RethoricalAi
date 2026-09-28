@@ -46,9 +46,18 @@ export default function Sidebar({
       <div className="flex flex-col gap-space-lg">
         {/* Brand Header */}
         <div className="flex flex-col gap-space-xs">
-          <div className="flex items-center gap-space-sm cursor-pointer" onClick={() => onTabChange(role === 'student' ? 'submit' : 'dashboard')}>
-            <span className="material-symbols-outlined text-primary text-[28px]">ink_pen</span>
-            <span className="font-headline-sm text-headline-sm text-primary tracking-tight font-bold">RethoricalAI</span>
+          <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => onTabChange(role === 'student' ? 'submit' : 'dashboard')}>
+            <div className="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
+              <span className="material-symbols-outlined text-[18px]">ink_pen</span>
+            </div>
+            <div className="flex items-baseline">
+              <span className="font-brand text-[21px] font-black text-primary tracking-tight leading-none">
+                Rethorical
+              </span>
+              <span className="ml-1 text-[9px] font-sans font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 leading-none">
+                AI
+              </span>
+            </div>
           </div>
           <div className="flex items-center gap-1.5 self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider font-semibold truncate max-w-full">
             <span className={`w-1.5 h-1.5 rounded-full ${role === 'student' ? 'bg-secondary' : 'bg-primary'} shrink-0`}></span>

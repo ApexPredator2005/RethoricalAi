@@ -26,10 +26,15 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
             <span className="material-symbols-outlined text-[24px]">ink_pen</span>
           </div>
           <div>
-            <span className="font-headline-sm text-lg font-bold text-primary tracking-tight block">
-              RethoricalAI
-            </span>
-            <span className="text-[11px] font-code-inline text-on-surface-variant block uppercase tracking-wider">
+            <div className="flex items-baseline">
+              <span className="font-brand text-2xl font-black text-primary tracking-tight leading-none">
+                Rethorical
+              </span>
+              <span className="ml-1 text-[10px] font-sans font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 leading-none">
+                AI
+              </span>
+            </div>
+            <span className="text-[10px] font-code-inline text-on-surface-variant block uppercase tracking-wider mt-1">
               Collegiate Assessment Engine
             </span>
           </div>
