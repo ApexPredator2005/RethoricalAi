@@ -89,11 +89,14 @@ export default function EssaySubmissionScreen({
     setTimeout(() => {
       setIsEvaluating(false);
       sounds.playSuccessChime();
-      const receiptCode = `OAK-${Math.floor(100000 + Math.random() * 900000)}`;
+      const receiptCode = `REC-${Math.floor(100000 + Math.random() * 900000)}`;
+      const matchedStudent = currentClass?.studentRoster?.find(
+        s => s.name.toLowerCase().trim() === studentName.toLowerCase().trim()
+      );
       const submissionData = {
-        studentId: role === 'student' ? (studentProfile?.id || 'stu-101') : 'sub-usr',
+        studentId: matchedStudent?.id || (role === 'student' ? (studentProfile?.id || 'stu-101') : 'stu-101'),
         studentName: (studentName.trim() || (role === 'student' ? (studentProfile?.name || 'Aria Montgomery') : 'Student Submission')),
-        rollNo: role === 'student' ? (studentProfile?.rollNo || '11A-01') : '11A-00',
+        rollNo: matchedStudent?.rollNo || (role === 'student' ? (studentProfile?.rollNo || '11A-01') : '11A-01'),
         classId: selectedClassId,
         className: currentClass.name,
         subject: currentClass.subject,

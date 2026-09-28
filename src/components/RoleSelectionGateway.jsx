@@ -202,7 +202,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
 
       {/* Footer */}
       <footer className="max-w-5xl mx-auto w-full py-3 text-center text-xs text-on-surface-variant border-t border-surface-container relative z-10">
-        <span>{institutionName} • Department of Humanities &amp; Rhetoric • 2026–2027 Academic Session</span>
+        <span>{institutionName ? `${institutionName} • ` : ''}Department of Humanities &amp; Rhetoric • 2026–2027 Academic Session</span>
       </footer>
     </div>
   );

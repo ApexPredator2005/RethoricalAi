@@ -158,7 +158,7 @@ export default function App() {
       subject: subData.subject || currentClass.subject,
       teacherName: subData.teacherName || teacherProfile.name,
       institution: subData.institution || teacherProfile.institution,
-      receiptCode: subData.receiptCode || `OAK-${Math.floor(100000 + Math.random() * 900000)}`,
+      receiptCode: subData.receiptCode || `REC-${Math.floor(100000 + Math.random() * 900000)}`,
       isLocked: true,
       submittedAt: subData.submittedAt || (new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ' + new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })),
       title: (subData.title || '').trim() || `${subData.rubric || 'Assignment'} Draft`,
