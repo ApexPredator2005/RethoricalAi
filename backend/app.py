@@ -250,8 +250,18 @@ if "lms_sync_log" not in st.session_state:
     ]
 
 # Theme & Styling Injections
-def inject_custom_css(dark_mode=False):
-    if not dark_mode:
+def inject_custom_css(dark_mode=False, dyslexia_font=False, high_contrast=False):
+    if high_contrast:
+        bg_paper = "#FFFFFF"
+        text_ink = "#000000"
+        card_bg = "#FFFFFF"
+        border_color = "#000000"
+        accent_red = "#D93025"
+        accent_gold = "#E37400"
+        accent_blue = "#1A73E8"
+        margin_bg = "#F8F9FA"
+        sidebar_bg = "#FFFFFF"
+    elif not dark_mode:
         bg_paper = "#FCFBF7"
         text_ink = "#1B2A3D"
         card_bg = "#FFFFFF"
@@ -272,6 +282,8 @@ def inject_custom_css(dark_mode=False):
         margin_bg = "#1F2F42"
         sidebar_bg = "#0E161F"
 
+    font_family_rule = "font-family: monospace !important; letter-spacing: 0.06em; word-spacing: 0.14em; line-height: 2.0;" if dyslexia_font else "font-family: 'Inter', sans-serif;"
+
     st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap');
@@ -279,7 +291,7 @@ def inject_custom_css(dark_mode=False):
     .stApp {{
         background-color: {bg_paper};
         color: {text_ink};
-        font-family: 'Inter', sans-serif;
+        {font_family_rule}
     }}
 
     section[data-testid="stSidebar"] {{
@@ -304,7 +316,6 @@ def inject_custom_css(dark_mode=False):
         border-radius: 6px;
         border: 1px solid {border_color};
         box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        font-family: 'Source Serif 4', serif;
         color: {text_ink};
     }}
 
@@ -333,7 +344,6 @@ def inject_custom_css(dark_mode=False):
         padding: 16px 20px;
         border-radius: 0 6px 6px 0;
         border: 1px solid {border_color};
-        font-family: 'Source Serif 4', serif;
     }}
 
     .metric-card {{
@@ -365,7 +375,11 @@ with st.sidebar:
     st.markdown("---")
 
     dark_mode = st.toggle("🌙 Night Grading Mode", value=False)
-    inject_custom_css(dark_mode)
+    dyslexia_mode = st.toggle("📖 Dyslexia-Friendly Typography", value=False)
+    high_contrast = st.toggle("👁️ High Contrast Mode", value=False)
+    sound_effects = st.toggle("🔊 Paper & Pen Sound Cues", value=True)
+
+    inject_custom_css(dark_mode, dyslexia_font=dyslexia_mode, high_contrast=high_contrast)
 
     menu = st.radio(
         "Navigation",
@@ -379,6 +393,17 @@ with st.sidebar:
         ],
         index=0
     )
+
+    with st.expander("⚡ Flight Control (Shortcuts)"):
+        st.markdown("""
+        - `[` / `]`: Previous / Next student
+        - `Space` / `A`: Quick-approve grade
+        - `1` - `5`: Apply quick stamps
+        - `S`: Insert feedback snippet
+        - `C`: Split-screen source diff
+        - `D`: Draft revision diff
+        - `?`: Toggle shortcuts cheatsheet
+        """)
 
     st.markdown("---")
     st.markdown("<div style='font-size:0.8rem; color:#8898AA;'>System Status: 🟢 <b>Gemini 2.5 Flash Active</b><br/>Gradebook: " + ("🟢 Connected" if st.session_state.lms_connected else "⚪ Offline / Demo") + "</div>", unsafe_allow_html=True)
@@ -613,8 +638,8 @@ elif menu == "🔍 Assignment Feedback":
     st.markdown(f"<h1>Assignment Feedback: <i>{sub.get('title', 'Assignment')}</i></h1>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:#526477; font-size:1.05rem;'>Student: <b>{sub.get('student_name', 'Student')}</b> | Assessed: {sub.get('timestamp', 'Recent')} | Criteria: <span class='badge-pill'>{sub.get('rubric_name', 'Standard')}</span></p>", unsafe_allow_html=True)
 
-    # View Mode Toggle: Single Report vs Draft 1 vs 2 Comparison
-    feedback_mode = st.radio("View Mode", ["Single Feedback Report", "Draft 1 vs Draft 2 Revision Comparison"], horizontal=True)
+    # View Mode Toggle: Single Report vs Draft 1 vs 2 Comparison vs Split-Screen Comparison
+    feedback_mode = st.radio("View Mode", ["Single Feedback Report", "Draft 1 vs Draft 2 Revision Comparison", "Split-Screen Source Comparison"], horizontal=True)
 
     if feedback_mode == "Draft 1 vs Draft 2 Revision Comparison":
         st.markdown("### 🔄 Revision Progress & Score Delta")
@@ -628,6 +653,35 @@ elif menu == "🔍 Assignment Feedback":
         st.success("✅ **Comma Splice**: Fixed using semicolon in paragraph 2")
         st.success("✅ **Quotation Frame**: Introduced active signal verb for primary quote")
         st.success("✅ **Transition Bridge**: Smooth paragraph connection added linking West Egg geography")
+
+    elif feedback_mode == "Split-Screen Source Comparison":
+        st.markdown("### 🪟 Synchronized Split-Screen Source Comparison")
+        split_c1, split_c2 = st.columns(2)
+        with split_c1:
+            st.markdown("**📖 Reference Source Passage (Chapter 5)**")
+            st.markdown("""<div class='ruled-paper' style='font-size:0.9rem;'>
+            He hadn't once ceased looking at Daisy, and I think <span style='background:#C1DBB3; padding:2px 4px; border-radius:3px;'><b>he revalued everything in his house according to the measure of response it drew from her well-loved eyes</b></span>.<br/><br/>
+            "If it wasn't for the mist we could see your home across the bay," said Gatsby. <span style='background:#C4DDF5; padding:2px 4px; border-radius:3px;'><b>"You always have a green light that burns all night at the end of your dock."</b></span><br/><br/>
+            Daisy put her arm through his abruptly... His count of enchanted objects had diminished by one.
+            </div>""", unsafe_allow_html=True)
+        with split_c2:
+            st.markdown(f"**📝 Student Draft: {sub.get('student_name', 'Student')}**")
+            st.markdown("""<div class='ruled-paper' style='font-size:0.9rem;'>
+            When Fitzgerald writes that Gatsby <span style='background:#C1DBB3; padding:2px 4px; border-radius:3px;'><b>"revalued everything in his house according to the measure of response it drew from her well-loved eyes,"</b></span> (✓ 100% Quote Match) he explicitly subordinates material splendor to an unattainable spectral ideal.<br/><br/>
+            Furthermore, the persistent chromatic motif of green—<span style='background:#C4DDF5; padding:2px 4px; border-radius:3px;'><b>dock light across the bay</b></span> (✓ Grounded Motif)—functions as both a compass for yearning and an indictment.
+            </div>""", unsafe_allow_html=True)
+
+    # Quick-Feedback Snippets Library
+    with st.expander("📌 Quick-Feedback Snippets Library (Insert with 1-Click)"):
+        snip_col1, snip_col2 = st.columns(2)
+        with snip_col1:
+            st.markdown("- `@signal`: *Integrate an active signal phrase (e.g. 'Fitzgerald illustrates...') before introducing quotes.*")
+            st.markdown("- `@splice`: *Comma splice: separate two independent clauses with a semicolon or coordinating conjunction.*")
+        with snip_col2:
+            st.markdown("- `@unpack`: *Unpack this claim further: connect this motif back to your broader thesis on class.*")
+            st.markdown("- `@praise`: *Exemplary critical synthesis! Distinguished academic tone and sentence rhythm.*")
+        if st.button("➕ Insert '@signal' Snippet to Margin Notes"):
+            st.toast("Inserted '@signal' snippet into active teacher feedback notes!", icon="✍️")
 
     # Score Banner
     overall_score = fb.get("overall_score", sub.get("score", 7.5))

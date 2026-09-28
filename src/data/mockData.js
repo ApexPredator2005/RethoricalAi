@@ -429,3 +429,60 @@ export const LMS_SYNC_DATA = {
     { id: 'l4', timestamp: '2026-09-22 11:05:00', course: 'AP English Literature (Period 3)', assignment: 'Diagnostic Essay #1', itemsSynced: 28, status: 'Success' }
   ]
 };
+
+export const QUICK_FEEDBACK_SNIPPETS = [
+  {
+    id: 'snip-1',
+    category: 'Evidence & Citations',
+    tag: 'Signal Phrases',
+    text: "Integrate an active signal phrase (e.g., 'Fitzgerald illustrates...') before introducing this quotation to frame your analytical point.",
+    shortcut: '@signal'
+  },
+  {
+    id: 'snip-2',
+    category: 'Grammar & Mechanics',
+    tag: 'Comma Splice',
+    text: "Comma splice detected: separate these two independent clauses with a semicolon or coordinating conjunction (FANBOYS).",
+    shortcut: '@splice'
+  },
+  {
+    id: 'snip-3',
+    category: 'Analytical Depth',
+    tag: 'Unpack Claim',
+    text: "Unpack this observation further: how does this specific textual motif connect back to your broader thesis on class disillusionment?",
+    shortcut: '@unpack'
+  },
+  {
+    id: 'snip-4',
+    category: 'Organization & Flow',
+    tag: 'Transitions',
+    text: "Smooth the transition between these paragraphs with a conjunctive bridge that contrasts the previous point with this new finding.",
+    shortcut: '@bridge'
+  },
+  {
+    id: 'snip-5',
+    category: 'Praise & Voice',
+    tag: 'Distinct Voice',
+    text: "Exemplary critical synthesis! Your sentence rhythm and analytical register elevate this entire paragraph.",
+    shortcut: '@praise'
+  },
+  {
+    id: 'snip-6',
+    category: 'Evidence & Citations',
+    tag: 'MLA 9th Edition',
+    text: "Parenthetical citation check: ensure page number follows author surname with no internal comma, e.g. (Fitzgerald 115).",
+    shortcut: '@mla'
+  }
+];
+
+export const KEYBOARD_SHORTCUTS = [
+  { key: '[', action: 'Previous Student Submission' },
+  { key: ']', action: 'Next Student Submission' },
+  { key: 'Space / A', action: 'Approve Submission & Advance' },
+  { key: '1 - 5', action: 'Apply Quick-Stamp (🌟 Evidence, ⚠️ Citation, 🔍 Deepen)' },
+  { key: 'S', action: 'Open Quick-Feedback Snippets Library' },
+  { key: 'C', action: 'Toggle Split-Screen Source Comparison' },
+  { key: 'D', action: 'Toggle Draft 1 vs Draft 2 Revision Diff' },
+  { key: 'M', action: 'Toggle Tactile Paper Sound Effects (Mute/Unmute)' },
+  { key: '?', action: 'Toggle Flight Control Speed-Grading Cheatsheet' }
+];

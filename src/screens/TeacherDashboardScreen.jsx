@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BATCH_SUBMISSIONS_QUEUE } from '../data/mockData';
+import { sounds } from '../utils/soundEffects';
+import FlightControlModal from '../components/FlightControlModal';
 
 export default function TeacherDashboardScreen({
   classes,
@@ -13,8 +15,42 @@ export default function TeacherDashboardScreen({
   const [isGradingBatch, setIsGradingBatch] = useState(false);
   const [syncedNotification, setSyncedNotification] = useState(false);
   const [activeTabSection, setActiveTabSection] = useState('overview'); // 'overview' | 'batch_queue'
+  const [showFlightControl, setShowFlightControl] = useState(false);
+  const [activeQueueIndex, setActiveQueueIndex] = useState(0);
+
+  // Keyboard navigation when in batch queue
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (['INPUT', 'TEXTAREA'].includes(e.target.tagName)) return;
+
+      if (e.key === '?') {
+        e.preventDefault();
+        setShowFlightControl(prev => !prev);
+      } else if (activeTabSection === 'batch_queue') {
+        if (e.key === '[' || e.key === '{') {
+          e.preventDefault();
+          sounds.playPaperRustle();
+          setActiveQueueIndex(prev => (prev > 0 ? prev - 1 : queue.length - 1));
+        } else if (e.key === ']' || e.key === '}') {
+          e.preventDefault();
+          sounds.playPaperRustle();
+          setActiveQueueIndex(prev => (prev < queue.length - 1 ? prev + 1 : 0));
+        } else if (e.key === ' ' || e.key === 'a' || e.key === 'A') {
+          e.preventDefault();
+          const target = queue[activeQueueIndex];
+          if (target) {
+            handleApproveToggle(target.id);
+          }
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeTabSection, queue, activeQueueIndex]);
 
   const handleApproveToggle = (id) => {
+    sounds.playStampThud();
     setQueue(queue.map(item => item.id === id ? { ...item, approved: !item.approved } : item));
   };
 
@@ -23,14 +59,17 @@ export default function TeacherDashboardScreen({
   };
 
   const handleGradeBatch = () => {
+    sounds.playPenScratch();
     setIsGradingBatch(true);
     setTimeout(() => {
       setIsGradingBatch(false);
+      sounds.playSuccessChime();
       setQueue(queue.map(item => ({ ...item, status: 'Graded', approved: true })));
     }, 1400);
   };
 
   const handleSyncAllApproved = () => {
+    sounds.playSuccessChime();
     setSyncedNotification(true);
     setTimeout(() => setSyncedNotification(false), 3500);
   };
@@ -58,6 +97,17 @@ export default function TeacherDashboardScreen({
         </div>
 
         <div className="flex items-center flex-wrap gap-space-sm">
+          <button
+            type="button"
+            onClick={() => setShowFlightControl(true)}
+            className="group flex items-center gap-space-xs px-space-md py-space-sm rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-all shadow-[0_2px_0_rgba(31,27,21,0.06)] active:translate-y-0.5 font-semibold text-xs font-label-md"
+            title="Open Speed-Grading Keyboard Shortcuts (Press ?)"
+          >
+            <span className="material-symbols-outlined text-[18px] text-primary">keyboard</span>
+            <span>Flight Control</span>
+            <kbd className="px-1.5 py-0.5 rounded bg-surface-container-highest text-[10px] font-bold">?</kbd>
+          </button>
+
           <button 
             onClick={onNavigateToLms}
             className="group flex items-center gap-space-xs px-space-md py-space-sm rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-all shadow-[0_2px_0_rgba(31,27,21,0.06)] active:translate-y-0.5" 
@@ -504,6 +554,12 @@ export default function TeacherDashboardScreen({
           </div>
         </div>
       )}
+
+      {/* Flight Control Cheatsheet Modal */}
+      <FlightControlModal
+        isOpen={showFlightControl}
+        onClose={() => setShowFlightControl(false)}
+      />
     </div>
   );
 }
