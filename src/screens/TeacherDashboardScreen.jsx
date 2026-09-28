@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { BATCH_SUBMISSIONS_QUEUE } from '../data/mockData';
 import { sounds } from '../utils/soundEffects';
 import FlightControlModal from '../components/FlightControlModal';
 
 export default function TeacherDashboardScreen({
-  classes,
+  classes = [],
+  assignments = [],
+  submissions = [],
+  queue = [],
+  setQueue,
   selectedClassId,
   onOpenNewAssignment,
   onNavigateToReport,
-  onNavigateToLms
+  onNavigateToLms,
+  onNavigateToSubmit
 }) {
-  const currentClass = classes.find(c => c.id === selectedClassId) || classes[0];
-  const [queue, setQueue] = useState(BATCH_SUBMISSIONS_QUEUE);
+  const currentClass = classes.find(c => c.id === selectedClassId) || classes[0] || { name: 'Classroom Desk' };
   const [isGradingBatch, setIsGradingBatch] = useState(false);
   const [syncedNotification, setSyncedNotification] = useState(false);
   const [activeTabSection, setActiveTabSection] = useState('overview'); // 'overview' | 'batch_queue'
@@ -26,7 +29,7 @@ export default function TeacherDashboardScreen({
       if (e.key === '?') {
         e.preventDefault();
         setShowFlightControl(prev => !prev);
-      } else if (activeTabSection === 'batch_queue') {
+      } else if (activeTabSection === 'batch_queue' && queue.length > 0) {
         if (e.key === '[' || e.key === '{') {
           e.preventDefault();
           sounds.playPaperRustle();
@@ -51,11 +54,15 @@ export default function TeacherDashboardScreen({
 
   const handleApproveToggle = (id) => {
     sounds.playStampThud();
-    setQueue(queue.map(item => item.id === id ? { ...item, approved: !item.approved } : item));
+    if (setQueue) {
+      setQueue(queue.map(item => item.id === id ? { ...item, approved: !item.approved } : item));
+    }
   };
 
   const handleScoreChange = (id, newScore) => {
-    setQueue(queue.map(item => item.id === id ? { ...item, score: Number(newScore) || 0 } : item));
+    if (setQueue) {
+      setQueue(queue.map(item => item.id === id ? { ...item, score: Number(newScore) || 0, overallScore: Number(newScore) || 0 } : item));
+    }
   };
 
   const handleGradeBatch = () => {
@@ -64,8 +71,10 @@ export default function TeacherDashboardScreen({
     setTimeout(() => {
       setIsGradingBatch(false);
       sounds.playSuccessChime();
-      setQueue(queue.map(item => ({ ...item, status: 'Graded', approved: true })));
-    }, 1400);
+      if (setQueue) {
+        setQueue(queue.map(item => ({ ...item, status: 'Graded', approved: true })));
+      }
+    }, 1200);
   };
 
   const handleSyncAllApproved = () => {
@@ -74,7 +83,12 @@ export default function TeacherDashboardScreen({
     setTimeout(() => setSyncedNotification(false), 3500);
   };
 
+  const totalSubs = submissions.length;
+  const avgScore = totalSubs > 0
+    ? (submissions.reduce((acc, s) => acc + (s.overallScore || s.score || 0), 0) / totalSubs).toFixed(1)
+    : null;
   const approvedCount = queue.filter(q => q.approved).length;
+  const pendingReviewCount = queue.filter(q => !q.approved).length;
 
   return (
     <div className="w-full px-gutter lg:px-margin-desktop py-space-xl space-y-space-xl animate-fade-in">
@@ -83,16 +97,16 @@ export default function TeacherDashboardScreen({
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-sm">
             <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
-              Desk / Term 1 Autumn Review
+              Instructor Desk • Assessment Workspace
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">Week 8 of 16</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant">Live Active Session</span>
           </div>
           <h1 className="font-display-lg text-display-lg text-on-surface tracking-tight font-semibold">
-            Welcome back, Ms. Holloway
+            Welcome to your Grading Desk
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant italic">
-            {currentClass.name} — 49 registered scholars.
+            {currentClass.name} — {totalSubs} evaluated {totalSubs === 1 ? 'assignment' : 'assignments'} on record.
           </p>
         </div>
 
@@ -114,7 +128,7 @@ export default function TeacherDashboardScreen({
             type="button"
           >
             <span className="material-symbols-outlined text-[18px] text-tertiary">cloud_sync</span>
-            <span className="font-label-md text-label-md">Import from Classroom</span>
+            <span className="font-label-md text-label-md">Gradebook Sync</span>
           </button>
           
           <button 
@@ -133,7 +147,7 @@ export default function TeacherDashboardScreen({
         <div className="p-space-sm rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center justify-between shadow-sm animate-fade-in">
           <span className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[18px]">check_circle</span>
-            All {approvedCount} approved assignment grades and margin feedback successfully synced to Classroom!
+            All {approvedCount} approved assignment marks and margin feedback successfully synced to Gradebook!
           </span>
           <span className="font-code-inline text-xs font-bold">Live Synchronized</span>
         </div>
@@ -157,14 +171,24 @@ export default function TeacherDashboardScreen({
           </div>
           <div className="mt-space-lg flex items-baseline justify-between">
             <div className="font-display-lg text-display-lg text-on-surface font-semibold tracking-tight">
-              88.4<span className="font-body-sm text-body-sm font-normal text-on-surface-variant">%</span>
+              {avgScore !== null ? (
+                <>
+                  {avgScore}<span className="font-body-sm text-body-sm font-normal text-on-surface-variant">%</span>
+                </>
+              ) : (
+                <span className="text-on-surface-variant text-2xl font-normal">—</span>
+              )}
             </div>
-            <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
-              <span className="material-symbols-outlined text-[14px]">trending_up</span> +2.4% vs last cycle
-            </span>
+            {avgScore !== null && (
+              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
+                <span className="material-symbols-outlined text-[14px]">trending_up</span> Baseline Computed
+              </span>
+            )}
           </div>
           <p className="mt-space-sm font-annotation-note text-annotation-note text-on-surface-variant">
-            Based on 142 graded assignments across both periods.
+            {totalSubs > 0 
+              ? `Based on ${totalSubs} evaluated assignment${totalSubs === 1 ? '' : 's'}.` 
+              : 'Awaiting evaluated student submissions.'}
           </p>
         </div>
 
@@ -184,14 +208,18 @@ export default function TeacherDashboardScreen({
           </div>
           <div className="mt-space-lg flex items-baseline justify-between">
             <div className="font-display-lg text-display-lg text-primary font-semibold tracking-tight">
-              {queue.filter(q => q.status === 'Needs Review').length || 1} <span className="font-body-md text-body-md text-on-surface-variant font-normal">submissions</span>
+              {pendingReviewCount} <span className="font-body-md text-body-md text-on-surface-variant font-normal">pending</span>
             </div>
-            <span className="inline-flex items-center px-space-xs py-0.5 rounded bg-primary-container text-on-primary font-label-sm text-label-sm font-semibold tracking-wide">
-              Action needed
+            <span className={`inline-flex items-center px-space-xs py-0.5 rounded font-label-sm text-label-sm font-semibold tracking-wide ${
+              pendingReviewCount > 0 ? 'bg-primary-container text-on-primary' : 'bg-surface-container text-on-surface-variant'
+            }`}>
+              {pendingReviewCount > 0 ? 'Action needed' : 'All caught up'}
             </span>
           </div>
           <p className="mt-space-sm font-annotation-note text-annotation-note text-on-surface-variant">
-            Pending teacher sign-off before gradebook publishing.
+            {pendingReviewCount > 0 
+              ? 'Pending teacher approval before gradebook sync.' 
+              : 'No pending submissions requiring manual sign-off.'}
           </p>
         </div>
 
@@ -203,7 +231,7 @@ export default function TeacherDashboardScreen({
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-secondary font-semibold">
                 Gradebook Sync
               </span>
-              <div className="font-headline-sm text-headline-sm text-on-surface font-bold">Synced to Gradebook</div>
+              <div className="font-headline-sm text-headline-sm text-on-surface font-bold">Approved for Sync</div>
             </div>
             <span className="p-space-xs rounded bg-secondary-fixed text-on-secondary-container">
               <span className="material-symbols-outlined text-[20px]">sync_saved_locally</span>
@@ -215,11 +243,14 @@ export default function TeacherDashboardScreen({
             </div>
             <div className="flex items-center gap-1.5 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
               <span className="w-1.5 h-1.5 rounded-full bg-tertiary-container animate-pulse"></span>
-              Auto-sync active
+              Sync Ready
             </div>
           </div>
           <div className="mt-space-md w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
-            <div className="bg-tertiary h-full rounded-full transition-all" style={{ width: `${(approvedCount / queue.length) * 100}%` }}></div>
+            <div 
+              className="bg-tertiary h-full rounded-full transition-all" 
+              style={{ width: `${queue.length > 0 ? (approvedCount / queue.length) * 100 : 0}%` }}
+            />
           </div>
         </div>
       </div>
@@ -252,7 +283,7 @@ export default function TeacherDashboardScreen({
           </button>
         </div>
 
-        {activeTabSection === 'batch_queue' && (
+        {activeTabSection === 'batch_queue' && queue.length > 0 && (
           <div className="flex items-center gap-space-sm">
             <button
               type="button"
@@ -263,7 +294,7 @@ export default function TeacherDashboardScreen({
               {isGradingBatch ? (
                 <>
                   <span className="material-symbols-outlined text-[16px] animate-spin">progress_activity</span>
-                  <span>Scoring All 6 Submissions...</span>
+                  <span>Scoring All {queue.length} Submissions...</span>
                 </>
               ) : (
                 <>
@@ -275,7 +306,8 @@ export default function TeacherDashboardScreen({
             <button
               type="button"
               onClick={handleSyncAllApproved}
-              className="px-space-md py-1.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-xs font-semibold hover:bg-tertiary-fixed-dim shadow-xs flex items-center gap-1.5"
+              disabled={approvedCount === 0}
+              className="px-space-md py-1.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-xs font-semibold hover:bg-tertiary-fixed-dim shadow-xs flex items-center gap-1.5 disabled:opacity-50"
             >
               <span className="material-symbols-outlined text-[16px]">cloud_upload</span>
               <span>Approve &amp; Sync to Gradebook ({approvedCount})</span>
@@ -301,72 +333,93 @@ export default function TeacherDashboardScreen({
             </span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-surface-container font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider bg-surface-container-low/50">
-                  <th className="py-3 px-4">Approve</th>
-                  <th className="py-3 px-4">Student &amp; Title</th>
-                  <th className="py-3 px-4">Word Count</th>
-                  <th className="py-3 px-4">Diagnostic Flag</th>
-                  <th className="py-3 px-4 text-right">Score (/100)</th>
-                  <th className="py-3 px-4 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-surface-container">
-                {queue.map((item) => (
-                  <tr key={item.id} className="hover:bg-surface-container-low transition-colors">
-                    <td className="py-3 px-4">
-                      <input
-                        type="checkbox"
-                        checked={item.approved}
-                        onChange={() => handleApproveToggle(item.id)}
-                        className="w-4 h-4 text-primary rounded cursor-pointer"
-                      />
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className="font-label-md text-sm font-bold text-on-surface block">{item.studentName}</span>
-                      <span className="font-annotation-note text-xs text-on-surface-variant truncate block max-w-sm">
-                        {item.title}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 font-code-inline text-xs text-on-surface-variant">
-                      {item.wordCount} words
-                    </td>
-                    <td className="py-3 px-4">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold ${
-                        item.status === 'Needs Review'
-                          ? 'bg-primary-fixed text-primary'
-                          : 'bg-tertiary-fixed text-on-tertiary-container'
-                      }`}>
-                        {item.flag}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <input
-                        type="number"
-                        min="0"
-                        max="100"
-                        value={item.score}
-                        onChange={(e) => handleScoreChange(item.id, e.target.value)}
-                        className="w-16 text-right px-2 py-1 rounded bg-surface-container border border-surface-container font-code-inline text-sm font-bold text-on-surface focus:outline-none focus:bg-surface-container-lowest"
-                      />
-                    </td>
-                    <td className="py-3 px-4 text-center">
-                      <button
-                        type="button"
-                        onClick={onNavigateToReport}
-                        className="p-1 rounded text-primary hover:bg-surface-container font-label-sm text-xs font-semibold"
-                        title="View Detailed Student Report"
-                      >
-                        Inspect ➔
-                      </button>
-                    </td>
+          {queue.length === 0 ? (
+            <div className="p-space-xl text-center flex flex-col items-center justify-center space-y-space-sm py-16">
+              <div className="w-14 h-14 rounded-full bg-surface-container flex items-center justify-center text-primary">
+                <span className="material-symbols-outlined text-[28px]">dynamic_feed</span>
+              </div>
+              <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface">
+                Batch Grading Queue is Empty
+              </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                Upload student files or submit assignments to review, adjust scores inline, and approve in bulk.
+              </p>
+              <button
+                type="button"
+                onClick={onNavigateToSubmit}
+                className="px-space-md py-space-xs rounded bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary transition-all mt-2"
+              >
+                Go to Submission Page ➔
+              </button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-surface-container font-label-sm text-xs font-bold text-on-surface-variant uppercase tracking-wider bg-surface-container-low/50">
+                    <th className="py-3 px-4">Approve</th>
+                    <th className="py-3 px-4">Student &amp; Title</th>
+                    <th className="py-3 px-4">Word Count</th>
+                    <th className="py-3 px-4">Diagnostic Flag</th>
+                    <th className="py-3 px-4 text-right">Score (/100)</th>
+                    <th className="py-3 px-4 text-center">Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-surface-container">
+                  {queue.map((item) => (
+                    <tr key={item.id} className="hover:bg-surface-container-low transition-colors">
+                      <td className="py-3 px-4">
+                        <input
+                          type="checkbox"
+                          checked={item.approved}
+                          onChange={() => handleApproveToggle(item.id)}
+                          className="w-4 h-4 text-primary rounded cursor-pointer"
+                        />
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className="font-label-md text-sm font-bold text-on-surface block">{item.studentName}</span>
+                        <span className="font-annotation-note text-xs text-on-surface-variant truncate block max-w-sm">
+                          {item.title}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-code-inline text-xs text-on-surface-variant">
+                        {item.wordCount || 0} words
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold ${
+                          item.status === 'Needs Review'
+                            ? 'bg-primary-fixed text-primary'
+                            : 'bg-tertiary-fixed text-on-tertiary-container'
+                        }`}>
+                          {item.flag || 'Evaluated'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value={item.overallScore || item.score || 0}
+                          onChange={(e) => handleScoreChange(item.id, e.target.value)}
+                          className="w-16 text-right px-2 py-1 rounded bg-surface-container border border-surface-container font-code-inline text-sm font-bold text-on-surface focus:outline-none focus:bg-surface-container-lowest"
+                        />
+                      </td>
+                      <td className="py-3 px-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => onNavigateToReport(item)}
+                          className="p-1 rounded text-primary hover:bg-surface-container font-label-sm text-xs font-semibold"
+                          title="View Detailed Student Report"
+                        >
+                          Inspect ➔
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
       )}
 
@@ -379,7 +432,7 @@ export default function TeacherDashboardScreen({
               <div className="flex items-center gap-space-sm">
                 <h2 className="font-headline-md text-headline-md text-on-surface font-bold">Active Assignments</h2>
                 <span className="px-space-xs py-0.5 rounded bg-surface-container font-label-sm text-label-sm text-on-surface-variant">
-                  3 Active
+                  {assignments.length} Active
                 </span>
               </div>
               <button 
@@ -391,105 +444,56 @@ export default function TeacherDashboardScreen({
               </button>
             </div>
 
-            {/* Card: The Great Gatsby */}
-            <div className="bg-surface-container-lowest p-space-lg rounded shadow-[0_2px_8px_rgba(31,27,21,0.04)] hover:shadow-[0_6px_16px_rgba(31,27,21,0.06)] transition-all flex flex-col gap-space-md border border-surface-container">
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-space-sm">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-space-sm">
-                    <span className="px-space-xs py-0.5 rounded bg-secondary-fixed text-on-secondary-container font-label-sm text-label-sm font-semibold">
-                      Literature Analysis
-                    </span>
-                    <span className="font-annotation-note text-annotation-note text-error flex items-center gap-1 font-semibold">
-                      <span className="w-1.5 h-1.5 rounded-full bg-error"></span> Due Yesterday, 11:59 PM
-                    </span>
-                  </div>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                    The Great Gatsby: Character Moral Ambiguity
-                  </h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Synthesize textual evidence examining whether Fitzgerald constructs Jay Gatsby as a sympathetic romantic idealist or a cynical racketeer.
-                  </p>
+            {assignments.length === 0 ? (
+              <div className="bg-surface-container-lowest p-space-xl rounded-xl border border-dashed border-surface-container flex flex-col items-center justify-center text-center space-y-space-sm py-12">
+                <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span className="material-symbols-outlined text-[24px]">assignment</span>
                 </div>
-                <button 
-                  onClick={onNavigateToReport}
-                  className="self-start shrink-0 px-space-md py-space-xs rounded bg-primary-container text-on-primary hover:bg-primary font-label-md text-label-md shadow-[0_2px_0_rgba(86,20,0,0.2)] active:translate-y-0.5 transition-all font-semibold" 
+                <h3 className="font-headline-sm text-headline-sm font-bold text-on-surface">No Assignments Created Yet</h3>
+                <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
+                  Create structured assignments with custom guidelines and rubrics, or jump directly into grading.
+                </p>
+                <button
                   type="button"
+                  onClick={onOpenNewAssignment}
+                  className="px-space-md py-space-xs rounded bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary shadow-xs transition-all mt-2"
                 >
-                  Grade Submissions (5)
+                  + Create Assignment
                 </button>
               </div>
-              <div className="pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low p-space-sm rounded">
-                <div className="flex items-center gap-space-md">
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface">
-                    <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-                    <span><strong>28</strong> submitted</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-primary">
-                    <span className="material-symbols-outlined text-[16px]">pending</span>
-                    <span><strong>5</strong> to grade</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface">
-                    <span className="material-symbols-outlined text-[16px] text-secondary">grade</span>
-                    <span>Avg: <strong>88%</strong></span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-space-xs">
-                  <button className="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container" type="button">
-                    <span className="material-symbols-outlined text-[18px]">more_horiz</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Card: King Lear */}
-            <div className="bg-surface-container-lowest p-space-lg rounded shadow-[0_2px_8px_rgba(31,27,21,0.04)] hover:shadow-[0_6px_16px_rgba(31,27,21,0.06)] transition-all flex flex-col gap-space-md border border-surface-container">
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-space-sm">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-space-sm">
-                    <span className="px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
-                      Scientific / DBQ
-                    </span>
-                    <span className="font-annotation-note text-annotation-note text-on-surface-variant">
-                      Due Oct 24 • Period 3
-                    </span>
-                  </div>
-                  <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                    King Lear: Madness vs. Wisdom
-                  </h3>
-                  <p className="font-body-sm text-body-sm text-on-surface-variant">
-                    Analyze Shakespeare's linguistic inversion of the Fool and Lear regarding the epistemology of courtly insight and blind pride.
-                  </p>
-                </div>
-                <button 
-                  onClick={onNavigateToReport}
-                  className="self-start shrink-0 px-space-md py-space-xs rounded bg-surface-container text-on-surface hover:bg-surface-container-high font-label-md text-label-md transition-all shadow-[0_1px_2px_rgba(31,27,21,0.06)] font-semibold" 
-                  type="button"
-                >
-                  Continue Grading (2)
-                </button>
-              </div>
-              <div className="pt-space-sm flex flex-wrap items-center justify-between gap-space-sm bg-surface-container-low p-space-sm rounded">
-                <div className="flex items-center gap-space-md">
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface">
-                    <span className="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
-                    <span><strong>24</strong> submitted</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-primary">
-                    <span className="material-symbols-outlined text-[16px]">pending</span>
-                    <span><strong>2</strong> to grade</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 font-label-sm text-label-sm text-on-surface">
-                    <span className="material-symbols-outlined text-[16px] text-secondary">grade</span>
-                    <span>Avg: <strong>82%</strong></span>
+            ) : (
+              assignments.map((asg) => (
+                <div key={asg.id} className="bg-surface-container-lowest p-space-lg rounded shadow-[0_2px_8px_rgba(31,27,21,0.04)] hover:shadow-[0_6px_16px_rgba(31,27,21,0.06)] transition-all flex flex-col gap-space-md border border-surface-container">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-space-sm">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-space-sm">
+                        <span className="px-space-xs py-0.5 rounded bg-secondary-fixed text-on-secondary-container font-label-sm text-label-sm font-semibold">
+                          {asg.rubricName || 'Assignment'}
+                        </span>
+                        <span className="font-annotation-note text-annotation-note text-on-surface-variant">
+                          Due {asg.dueDate}
+                        </span>
+                      </div>
+                      <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
+                        {asg.title}
+                      </h3>
+                      {asg.instructions && (
+                        <p className="font-body-sm text-body-sm text-on-surface-variant">
+                          {asg.instructions}
+                        </p>
+                      )}
+                    </div>
+                    <button 
+                      onClick={onNavigateToSubmit}
+                      className="self-start shrink-0 px-space-md py-space-xs rounded bg-primary-container text-on-primary hover:bg-primary font-label-md text-label-md shadow-[0_2px_0_rgba(86,20,0,0.2)] active:translate-y-0.5 transition-all font-semibold" 
+                      type="button"
+                    >
+                      Submit Student Work
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-space-xs">
-                  <button className="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container" type="button">
-                    <span className="material-symbols-outlined text-[18px]">more_horiz</span>
-                  </button>
-                </div>
-              </div>
-            </div>
+              ))
+            )}
           </div>
 
           {/* Right Column: Recent Submissions & Editorial Stream (5 cols) */}
@@ -504,52 +508,69 @@ export default function TeacherDashboardScreen({
 
             {/* Desk Ledger Paper Card */}
             <div className="bg-surface-container-lowest rounded shadow-[0_2px_12px_rgba(31,27,21,0.05)] overflow-hidden border border-surface-container">
-              {/* Column Headings */}
               <div className="px-space-md py-space-sm bg-surface-container-low flex items-center justify-between text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider font-bold">
                 <span>Student &amp; Passage Note</span>
                 <span>Score • Assessment</span>
               </div>
 
-              {/* Submission Rows */}
-              <div className="divide-y-0 flex flex-col">
-                {queue.slice(0, 4).map((sub, sIdx) => (
-                  <React.Fragment key={sub.id}>
-                    <div 
-                      onClick={onNavigateToReport}
-                      className="p-space-md hover:bg-surface-container-low transition-colors group flex items-start justify-between gap-space-sm cursor-pointer"
-                    >
-                      <div className="flex items-start gap-space-sm min-w-0">
-                        <div className="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-label-md text-label-md shrink-0 font-bold">
-                          {sub.studentName.split(' ').map(n => n[0]).join('')}
+              {submissions.length === 0 ? (
+                <div className="p-space-xl text-center flex flex-col items-center justify-center space-y-space-sm py-12">
+                  <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                    <span className="material-symbols-outlined text-[24px]">history_edu</span>
+                  </div>
+                  <h4 className="font-headline-sm text-headline-sm font-bold text-on-surface">No Submissions in Ledger</h4>
+                  <p className="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
+                    Evaluated student drafts and AI feedback reports will be logged here.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={onNavigateToSubmit}
+                    className="px-space-md py-space-xs rounded bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md font-semibold border border-surface-container mt-2"
+                  >
+                    Submit Student Assignment ➔
+                  </button>
+                </div>
+              ) : (
+                <div className="divide-y-0 flex flex-col">
+                  {submissions.slice(0, 5).map((sub, sIdx) => (
+                    <React.Fragment key={sub.id}>
+                      <div 
+                        onClick={() => onNavigateToReport(sub)}
+                        className="p-space-md hover:bg-surface-container-low transition-colors group flex items-start justify-between gap-space-sm cursor-pointer"
+                      >
+                        <div className="flex items-start gap-space-sm min-w-0">
+                          <div className="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-label-md text-label-md shrink-0 font-bold">
+                            {(sub.studentName || 'S').split(' ').map(n => n[0]).join('')}
+                          </div>
+                          <div className="space-y-1 min-w-0">
+                            <div className="flex items-center gap-space-xs">
+                              <span className="font-label-md text-label-md text-on-surface font-semibold truncate">{sub.studentName}</span>
+                              <span className="font-annotation-note text-annotation-note text-on-surface-variant">• {sub.timestamp || 'Recent'}</span>
+                            </div>
+                            <div className="font-annotation-note text-annotation-note text-on-surface-variant italic truncate max-w-[200px] sm:max-w-xs">
+                              “{sub.title}”
+                            </div>
+                            <div className="pt-0.5">
+                              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
+                                <span className="material-symbols-outlined text-[13px]">verified</span> {sub.flag || 'Evaluated'}
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div className="space-y-1 min-w-0">
-                          <div className="flex items-center gap-space-xs">
-                            <span className="font-label-md text-label-md text-on-surface font-semibold truncate">{sub.studentName}</span>
-                            <span className="font-annotation-note text-annotation-note text-on-surface-variant">• {20 * (sIdx + 1)}m ago</span>
-                          </div>
-                          <div className="font-annotation-note text-annotation-note text-on-surface-variant italic truncate max-w-[200px] sm:max-w-xs">
-                            “{sub.title}”
-                          </div>
-                          <div className="pt-0.5">
-                            <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
-                              <span className="material-symbols-outlined text-[13px]">verified</span> {sub.flag}
-                            </span>
-                          </div>
+                        <div className="flex flex-col items-end shrink-0 gap-1">
+                          <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">
+                            {sub.overallScore || sub.score || 88}<span className="font-label-sm text-label-sm text-on-surface-variant font-normal">/100</span>
+                          </span>
+                          <span className="font-label-sm text-label-sm text-primary group-hover:underline flex items-center gap-0.5">
+                            Report <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                          </span>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end shrink-0 gap-1">
-                        <span className="font-headline-sm text-headline-sm text-on-surface font-semibold">
-                          {sub.score}<span className="font-label-sm text-label-sm text-on-surface-variant font-normal">/100</span>
-                        </span>
-                        <span className="font-label-sm text-label-sm text-primary group-hover:underline flex items-center gap-0.5">
-                          Report <span className="material-symbols-outlined text-[14px]">open_in_new</span>
-                        </span>
-                      </div>
-                    </div>
-                    {sIdx < 3 && <div className="h-px bg-surface-container mx-space-md"></div>}
-                  </React.Fragment>
-                ))}
-              </div>
+                      {sIdx < Math.min(submissions.length - 1, 4) && <div className="h-px bg-surface-container mx-space-md"></div>}
+                    </React.Fragment>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

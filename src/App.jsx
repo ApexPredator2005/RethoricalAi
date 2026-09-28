@@ -14,14 +14,23 @@ import FeedbackReportScreen from './screens/FeedbackReportScreen';
 import AnalyticsDashboardScreen from './screens/AnalyticsDashboardScreen';
 import LmsSyncScreen from './screens/LmsSyncScreen';
 
-import { INITIAL_CLASSES, INITIAL_ASSIGNMENTS } from './data/mockData';
+const DEFAULT_CLASSES = [
+  { id: 'c1', name: 'Primary Classroom', studentCount: 0, pending: 0, avgScore: 0 }
+];
 
 export default function App() {
   const [theme, setTheme] = useState('day'); // 'day' | 'night'
   const [activeTab, setActiveTab] = useState('dashboard');
   const [role, setRole] = useState('teacher'); // 'teacher' | 'student'
-  const [selectedClassId, setSelectedClassId] = useState(INITIAL_CLASSES[0].id);
+  const [classes, setClasses] = useState(DEFAULT_CLASSES);
+  const [selectedClassId, setSelectedClassId] = useState(DEFAULT_CLASSES[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Live dynamic data state (starts completely clean — no synthetic mock submissions)
+  const [assignments, setAssignments] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [batchQueue, setBatchQueue] = useState([]);
+  const [currentSubmission, setCurrentSubmission] = useState(null);
 
   // Modal states
   const [showQuizModal, setShowQuizModal] = useState(false);
@@ -48,26 +57,52 @@ export default function App() {
     });
   };
 
-  const currentClass = INITIAL_CLASSES.find((c) => c.id === selectedClassId) || INITIAL_CLASSES[0];
+  const handleCreateAssignment = (newAsg) => {
+    setAssignments((prev) => [newAsg, ...prev]);
+  };
 
-  const pendingCount = INITIAL_ASSIGNMENTS.reduce((sum, a) => {
-    if (a.classId === selectedClassId) {
-      return sum + (a.submittedCount - a.gradedCount);
-    }
-    return sum;
-  }, 0);
+  const handleAssignmentSubmitted = (subData) => {
+    const newSub = {
+      id: `sub-${Date.now()}`,
+      studentName: (subData.studentName || '').trim() || 'Student Submission',
+      title: (subData.title || '').trim() || `${subData.rubric || 'Assignment'} Draft`,
+      text: subData.text || '',
+      referenceText: subData.referenceText || '',
+      rubric: subData.rubric || 'Standard Criteria',
+      wordCount: subData.wordCount || 0,
+      overallScore: subData.overallScore || 89,
+      status: 'Needs Review',
+      approved: false,
+      timestamp: 'Just now',
+      flag: (subData.wordCount || 0) > 300 ? 'Original Work' : 'Initial Draft'
+    };
+    setSubmissions((prev) => [newSub, ...prev]);
+    setBatchQueue((prev) => [newSub, ...prev]);
+    setCurrentSubmission(newSub);
+    setActiveTab('report');
+  };
+
+  const currentClass = classes.find((c) => c.id === selectedClassId) || classes[0];
+  const pendingCount = batchQueue.filter((q) => !q.approved).length;
 
   const renderScreen = () => {
     switch (activeTab) {
       case 'dashboard':
         return (
           <TeacherDashboardScreen
-            classes={INITIAL_CLASSES}
-            assignments={INITIAL_ASSIGNMENTS}
+            classes={classes}
+            assignments={assignments}
+            submissions={submissions}
+            queue={batchQueue}
+            setQueue={setBatchQueue}
             selectedClassId={selectedClassId}
             onOpenNewAssignment={() => setShowNewAssignment(true)}
-            onNavigateToReport={() => setActiveTab('report')}
+            onNavigateToReport={(studentSub) => {
+              if (studentSub) setCurrentSubmission(studentSub);
+              setActiveTab('report');
+            }}
             onNavigateToLms={() => setActiveTab('lms')}
+            onNavigateToSubmit={() => setActiveTab('submit')}
           />
         );
       case 'rubric':
@@ -75,23 +110,30 @@ export default function App() {
       case 'submit':
         return (
           <EssaySubmissionScreen
-            onSubmitted={() => setActiveTab('report')}
+            onSubmitted={handleAssignmentSubmitted}
           />
         );
       case 'report':
         return (
           <FeedbackReportScreen
+            submission={currentSubmission}
+            onNavigateToSubmit={() => setActiveTab('submit')}
             onOpenQuiz={() => setShowQuizModal(true)}
           />
         );
       case 'analytics':
         return (
           <AnalyticsDashboardScreen
-            onNavigateToReport={() => setActiveTab('report')}
+            submissions={submissions}
+            onNavigateToReport={(studentSub) => {
+              if (studentSub) setCurrentSubmission(studentSub);
+              setActiveTab('report');
+            }}
+            onNavigateToSubmit={() => setActiveTab('submit')}
           />
         );
       case 'lms':
-        return <LmsSyncScreen />;
+        return <LmsSyncScreen submissions={submissions} />;
       default:
         return null;
     }
@@ -114,7 +156,7 @@ export default function App() {
       <div className="pl-[260px]">
         {/* Stitch Fixed Top Header */}
         <Header
-          classes={INITIAL_CLASSES}
+          classes={classes}
           selectedClassId={selectedClassId}
           onSelectClass={setSelectedClassId}
           role={role}
@@ -135,13 +177,17 @@ export default function App() {
 
       {/* ──── INTERACTIVE MODALS ──── */}
       {showQuizModal && (
-        <GrammarQuizModal onClose={() => setShowQuizModal(false)} />
+        <GrammarQuizModal
+          submission={currentSubmission}
+          onClose={() => setShowQuizModal(false)}
+        />
       )}
 
       {showNewAssignment && (
         <NewAssignmentModal
-          classes={INITIAL_CLASSES}
+          classes={classes}
           selectedClassId={selectedClassId}
+          onCreateAssignment={handleCreateAssignment}
           onClose={() => setShowNewAssignment(false)}
         />
       )}

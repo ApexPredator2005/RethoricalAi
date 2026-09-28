@@ -153,87 +153,13 @@ SUBJECT_PRESETS = {
 
 # Initialize Session State
 if "submissions" not in st.session_state:
-    st.session_state.submissions = [
-        {
-            "id": "sub-101",
-            "student_name": "Julian Vance",
-            "title": "The Gilded Mirage: Fabricated Identity in West Egg",
-            "timestamp": "2026-09-26 14:15",
-            "score": 9.1,
-            "rubric_name": "Literature & Analytical Synthesis",
-            "essay_text": "F. Scott Fitzgerald constructs Jay Gatsby not merely as an embodiment of romantic disillusionment, but as an architect of self-erasure. In Chapter 5, the reunion at Nick Carraway’s cottage exposes the fragile infrastructure of Gatsby’s persona...",
-            "feedback": {
-                "overall_score": 9.1,
-                "criterion_scores": {"thesis": 9, "evidence": 9, "organization": 9, "style": 9},
-                "strengths": [
-                    {"title": "Compelling Thesis Articulation", "detail": "The central claim sets a distinct scholarly trajectory with precise academic vocabulary."},
-                    {"title": "Contextual Textual Synthesis", "detail": "Primary evidence is skillfully woven into the analytical argument rather than dropped as standalone quotes."}
-                ],
-                "improvements": [
-                    {"title": "Transitional Rhythm Between Paragraphs 2 & 3", "detail": "Add a conjunctive bridge linking West Egg geography to Gatsby's delusion."},
-                    {"title": "Quotation Signal Verbs", "detail": "Introduce active signal verbs when citing Daisy's dialogue."}
-                ],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "revalued everything in his house", "note": "Skillful close reading of Fitzgerald's economic phrasing."}],
-                "pedagogical_insight": "Exceptional literary voice and strong conceptual maturity. Ready for independent comparative synthesis.",
-                "confidence": 0.95,
-                "ensemble_agreement": "Very High (96%)"
-            }
-        },
-        {
-            "id": "sub-102",
-            "student_name": "Maya Lin",
-            "title": "Spatial Stratification & Moral Decay in Gatsby",
-            "timestamp": "2026-09-26 13:40",
-            "score": 9.4,
-            "rubric_name": "Literature & Analytical Synthesis",
-            "essay_text": "The physical geography of Long Island Sound serves as a moral topography in The Great Gatsby...",
-            "feedback": {
-                "overall_score": 9.4,
-                "criterion_scores": {"thesis": 10, "evidence": 9, "organization": 9, "style": 9},
-                "strengths": [{"title": "Exemplary Spatial Argumentation", "detail": "Clean distinctions between East and West Egg moral geography."}],
-                "improvements": [{"title": "Counter-Perspective", "detail": "Consider exploring George Wilson's valley of ashes as a third pole."}],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "moral topography", "note": "Brilliant phrasing."}],
-                "pedagogical_insight": "Masterclass in thematic spatial analysis.",
-                "confidence": 0.96,
-                "ensemble_agreement": "High (95%)"
-            }
-        },
-        {
-            "id": "sub-103",
-            "student_name": "Marcus Sterling",
-            "title": "Romantic Idealism vs Economic Corruption",
-            "timestamp": "2026-09-26 11:20",
-            "score": 7.2,
-            "rubric_name": "Literature & Analytical Synthesis",
-            "essay_text": "Fitzgerald shows that the american dream is fake because Gatsby dies at the end and no one comes to his funeral...",
-            "feedback": {
-                "overall_score": 7.2,
-                "criterion_scores": {"thesis": 7, "evidence": 6, "organization": 7, "style": 7},
-                "strengths": [{"title": "Thematic Awareness", "detail": "Directly links funeral attendance to superficiality."}],
-                "improvements": [
-                    {"title": "Quote Integration", "detail": "Quotes stand alone as full sentences without analytical frames."},
-                    {"title": "Comma Splices", "detail": "Missing semicolon before conjunctive adverb 'however'."}
-                ],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "represents hope however it is out of reach", "note": "Place semicolon before 'however'."}],
-                "pedagogical_insight": "Good thematic grasp. Needs practice on compound sentence punctuation.",
-                "confidence": 0.89,
-                "ensemble_agreement": "High (91%)"
-            }
-        }
-    ]
+    st.session_state.submissions = []
 
 if "batch_queue" not in st.session_state:
-    st.session_state.batch_queue = [
-        {"id": "sub-01", "student": "Julian Vance", "title": "The Gilded Mirage: Fabricated Identity in West Egg", "words": 1420, "score": 91, "status": "Graded", "approved": True},
-        {"id": "sub-02", "student": "Maya Lin", "title": "Spatial Stratification & Moral Decay in Gatsby", "words": 1380, "score": 94, "status": "Graded", "approved": True},
-        {"id": "sub-03", "student": "Marcus Sterling", "title": "Romantic Idealism vs Economic Corruption", "words": 1120, "score": 72, "status": "Needs Review", "approved": False},
-        {"id": "sub-04", "student": "Sofia Rodriguez", "title": "The Auditory Siren: Daisy’s Commodification", "words": 1510, "score": 96, "status": "Graded", "approved": True},
-        {"id": "sub-05", "student": "Devon Carter", "title": "Nick Carraway as Uncredited Director", "words": 1290, "score": 85, "status": "Graded", "approved": True},
-        {"id": "sub-06", "student": "Chloe Bennett", "title": "The Valley of Ashes: Industrial Purgatory", "words": 1340, "score": 88, "status": "Graded", "approved": True}
-    ]
+    st.session_state.batch_queue = []
 
 if "active_submission" not in st.session_state:
-    st.session_state.active_submission = st.session_state.submissions[0]
+    st.session_state.active_submission = None
 
 if "quiz_data" not in st.session_state:
     st.session_state.quiz_data = None
@@ -417,58 +343,65 @@ if menu == "📊 Teacher Dashboard":
     dash_tab1, dash_tab2 = st.tabs(["📋 Overview & Individual Reports", "⚡ Batch Ingestion & Grading Queue"])
 
     with dash_tab1:
-        col1, col2, col3, col4 = st.columns(4)
-        total_subs = len(st.session_state.submissions)
-        avg_score = round(sum(s["score"] for s in st.session_state.submissions) / max(1, total_subs), 1)
-        needs_review = sum(1 for s in st.session_state.submissions if s["score"] < 7.5)
+        if len(st.session_state.submissions) == 0:
+            st.info("ℹ️ No student assignments evaluated yet. Navigate to '📝 Submit Assignment' to submit student work for AI evaluation.")
+        else:
+            col1, col2, col3, col4 = st.columns(4)
+            total_subs = len(st.session_state.submissions)
+            avg_score = round(sum(s["score"] for s in st.session_state.submissions) / max(1, total_subs), 1)
+            needs_review = sum(1 for s in st.session_state.submissions if s["score"] < 7.5)
 
-        with col1:
-            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Total Submissions</div><div style='font-size:1.8rem; font-weight:700; color:#1B2A3D;'>{total_subs}</div></div>", unsafe_allow_html=True)
-        with col2:
-            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Class Average</div><div style='font-size:1.8rem; font-weight:700; color:#3E6E8E;'>{avg_score} / 10</div></div>", unsafe_allow_html=True)
-        with col3:
-            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Needs Revision (<7.5)</div><div style='font-size:1.8rem; font-weight:700; color:#B0503A;'>{needs_review}</div></div>", unsafe_allow_html=True)
-        with col4:
-            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>AI Grading Agreement</div><div style='font-size:1.8rem; font-weight:700; color:#B4872E;'>95% (±1)</div></div>", unsafe_allow_html=True)
+            with col1:
+                st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Total Submissions</div><div style='font-size:1.8rem; font-weight:700; color:#1B2A3D;'>{total_subs}</div></div>", unsafe_allow_html=True)
+            with col2:
+                st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Class Average</div><div style='font-size:1.8rem; font-weight:700; color:#3E6E8E;'>{avg_score} / 10</div></div>", unsafe_allow_html=True)
+            with col3:
+                st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Needs Revision (&lt;7.5)</div><div style='font-size:1.8rem; font-weight:700; color:#B0503A;'>{needs_review}</div></div>", unsafe_allow_html=True)
+            with col4:
+                st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>AI Grading Agreement</div><div style='font-size:1.8rem; font-weight:700; color:#B4872E;'>95% (±1)</div></div>", unsafe_allow_html=True)
 
-        st.markdown("<br/>", unsafe_allow_html=True)
-        st.subheader("Recent Evaluated Submissions")
+            st.markdown("<br/>", unsafe_allow_html=True)
+            st.subheader("Recent Evaluated Submissions")
 
-        for sub in st.session_state.submissions:
-            with st.container():
-                c1, c2, c3, c4, c5 = st.columns([3, 3, 2, 2, 2])
-                c1.markdown(f"**{sub['student_name']}**<br/><span style='font-size:0.8rem; color:#708090;'>{sub['timestamp']}</span>", unsafe_allow_html=True)
-                c2.markdown(f"*{sub['title']}*")
-                c3.markdown(f"<span class='badge-pill'>{sub['rubric_name']}</span>", unsafe_allow_html=True)
-                c4.markdown(f"**Score: {sub['score']} / 10**")
-                if c5.button("Inspect Report ➔", key=f"btn_{sub['id']}"):
-                    st.session_state.active_submission = sub
-                    st.session_state.quiz_data = None
-                    st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Assignment Feedback' tab to review.", icon="✅")
+            for sub in st.session_state.submissions:
+                with st.container():
+                    c1, c2, c3, c4, c5 = st.columns([3, 3, 2, 2, 2])
+                    c1.markdown(f"**{sub['student_name']}**<br/><span style='font-size:0.8rem; color:#708090;'>{sub['timestamp']}</span>", unsafe_allow_html=True)
+                    c2.markdown(f"*{sub['title']}*")
+                    c3.markdown(f"<span class='badge-pill'>{sub['rubric_name']}</span>", unsafe_allow_html=True)
+                    c4.markdown(f"**Score: {sub['score']} / 10**")
+                    if c5.button("Inspect Report ➔", key=f"btn_{sub['id']}"):
+                        st.session_state.active_submission = sub
+                        st.session_state.quiz_data = None
+                        st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Assignment Feedback' tab to review.", icon="✅")
 
     with dash_tab2:
         st.subheader("Batch Ingestion & Cohort Queue")
         st.markdown("Adjust scores inline, review AI suggestions, and bulk-sync approved grades to Classroom.")
 
-        b_c1, b_c2 = st.columns([3, 1])
-        b_c1.markdown(f"**Cohort Progress: 6 of 6 Graded** • 5 of 6 Approved for Sync")
-        if b_c2.button("🚀 Bulk Sync Approved (5)", type="primary"):
-            st.success("✅ Successfully synced 5 approved grades to Google Classroom gradebook!")
-            st.session_state.lms_sync_log.insert(0, {
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
-                "course": "AP Literature - Period 3 (Batch)",
-                "status": "Success",
-                "records_synced": 5
-            })
+        if len(st.session_state.batch_queue) == 0:
+            st.info("ℹ️ No batch assignments in queue. Ingest multi-student documents in '📝 Submit Assignment' to populate the queue.")
+        else:
+            b_c1, b_c2 = st.columns([3, 1])
+            approved_count = sum(1 for item in st.session_state.batch_queue if item.get('approved', False))
+            b_c1.markdown(f"**Cohort Progress: {len(st.session_state.batch_queue)} in queue** • {approved_count} Approved for Sync")
+            if b_c2.button(f"🚀 Bulk Sync Approved ({approved_count})", type="primary"):
+                st.success(f"✅ Successfully synced {approved_count} approved grades to Google Classroom gradebook!")
+                st.session_state.lms_sync_log.insert(0, {
+                    "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                    "course": "AP Literature - Period 3 (Batch)",
+                    "status": "Success",
+                    "records_synced": approved_count
+                })
 
-        st.markdown("---")
-        for item in st.session_state.batch_queue:
-            q_col1, q_col2, q_col3, q_col4, q_col5 = st.columns([3, 3, 2, 2, 2])
-            q_col1.markdown(f"**{item['student']}**<br/><span style='font-size:0.8rem; color:#708090;'>{item['words']} words</span>", unsafe_allow_html=True)
-            q_col2.markdown(f"*{item['title']}*")
-            item['score'] = q_col3.number_input(f"Score ({item['id']})", value=int(item['score']), min_value=0, max_value=100, label_visibility="collapsed")
-            q_col4.markdown(f"<span class='badge-pill'>{'Approved ✓' if item['approved'] else 'Needs Review ⚠️'}</span>", unsafe_allow_html=True)
-            item['approved'] = q_col5.checkbox("Approve", value=item['approved'], key=f"app_{item['id']}")
+            st.markdown("---")
+            for item in st.session_state.batch_queue:
+                q_col1, q_col2, q_col3, q_col4, q_col5 = st.columns([3, 3, 2, 2, 2])
+                q_col1.markdown(f"**{item['student']}**<br/><span style='font-size:0.8rem; color:#708090;'>{item['words']} words</span>", unsafe_allow_html=True)
+                q_col2.markdown(f"*{item['title']}*")
+                item['score'] = q_col3.number_input(f"Score ({item['id']})", value=int(item['score']), min_value=0, max_value=100, label_visibility="collapsed")
+                q_col4.markdown(f"<span class='badge-pill'>{'Approved ✓' if item['approved'] else 'Needs Review ⚠️'}</span>", unsafe_allow_html=True)
+                item['approved'] = q_col5.checkbox("Approve", value=item['approved'], key=f"app_{item['id']}")
 
 
 # SCREEN 2: GRADING CRITERIA
@@ -563,8 +496,8 @@ elif menu == "📝 Submit Assignment":
 
     with st.container():
         st.markdown("<div class='ruled-paper'>", unsafe_allow_html=True)
-        student_name = st.text_input("Student Name", value="Alex Chen")
-        essay_title = st.text_input("Assignment Title", value="The Paradox of Digital Connection")
+        student_name = st.text_input("Student Name", value="", placeholder="e.g. Maya Lin")
+        essay_title = st.text_input("Assignment Title", value="", placeholder="e.g. Analysis of The Great Gatsby")
 
         tab_text, tab_photo, tab_batch = st.tabs(["✍️ Paste Plaintext", "📸 Upload Handwritten / PDF Photo", "📁 Batch Files Ingestion"])
 
@@ -572,7 +505,8 @@ elif menu == "📝 Submit Assignment":
         with tab_text:
             essay_input = st.text_area(
                 "Assignment Content",
-                value="While social media platforms promise global connectivity, they frequently engender profound psychological isolation. Recent sociological studies indicate that passive consumption of curated profiles exacerbates social anxiety, however individuals continue to spend hours daily scrolling through feeds. Furthermore, algorithmic amplification favors contentious discourse over empathetic dialogue, which distorts public perception. To mitigate these adverse outcomes, digital literacy must prioritize mindful engagement over mere screen time.",
+                value="",
+                placeholder="Enter or paste student assignment text here...",
                 height=240,
                 help="Enter or paste student assignment text."
             )
@@ -584,8 +518,7 @@ elif menu == "📝 Submit Assignment":
                 if st.button("✨ Transcribe with Gemini Vision OCR"):
                     with st.spinner("Extracting handwritten/printed text..."):
                         time.sleep(1.5)
-                        essay_input = "Handwritten transcription: The paradox of digital connectivity is that while we are constantly reachable, genuine interpersonal intimacy declines..."
-                        st.text_area("Extracted OCR Text Preview", value=essay_input, height=180)
+                        st.info("Document image received. OCR engine ready for text extraction.")
 
         with tab_batch:
             batch_files = st.file_uploader("Upload multiple student submissions (.pdf, .docx, .txt, .zip)", accept_multiple_files=True)
@@ -612,8 +545,8 @@ elif menu == "📝 Submit Assignment":
 
                 new_submission = {
                     "id": f"sub-{int(time.time())}",
-                    "student_name": student_name,
-                    "title": essay_title,
+                    "student_name": student_name.strip() or "Student Submission",
+                    "title": essay_title.strip() or f"{selected_discipline} Assessment",
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "score": feedback.get("overall_score", 7.5),
                     "rubric_name": selected_discipline,
@@ -632,8 +565,11 @@ elif menu == "📝 Submit Assignment":
 
 # SCREEN 4: ASSIGNMENT FEEDBACK
 elif menu == "🔍 Assignment Feedback":
-    sub = st.session_state.active_submission
-    fb = sub.get("feedback", {})
+    if st.session_state.active_submission is None:
+        st.info("ℹ️ No assignment evaluated yet. Navigate to '📝 Submit Assignment' to submit student work for evaluation.")
+    else:
+        sub = st.session_state.active_submission
+        fb = sub.get("feedback", {})
 
     st.markdown(f"<h1>Assignment Feedback: <i>{sub.get('title', 'Assignment')}</i></h1>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:#526477; font-size:1.05rem;'>Student: <b>{sub.get('student_name', 'Student')}</b> | Assessed: {sub.get('timestamp', 'Recent')} | Criteria: <span class='badge-pill'>{sub.get('rubric_name', 'Standard')}</span></p>", unsafe_allow_html=True)

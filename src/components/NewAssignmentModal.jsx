@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
 
-export default function NewAssignmentModal({ classes, selectedClassId, onClose }) {
+export default function NewAssignmentModal({ classes, selectedClassId, onClose, onCreateAssignment }) {
   const [title, setTitle] = useState('');
   const [classId, setClassId] = useState(selectedClassId || (classes[0] && classes[0].id));
   const [selectedTemplateId, setSelectedTemplateId] = useState('ap_lit');
   const [selectedToneId, setSelectedToneId] = useState('standard');
   const [dueDate, setDueDate] = useState('2026-10-31');
-  const [rubric, setRubric] = useState('AP Lit Analytical Synthesis (Default)');
+  const [rubric, setRubric] = useState('Literature & Analytical Synthesis Standard');
   const [wordLimit, setWordLimit] = useState(1500);
   const [instructions, setInstructions] = useState('');
   const [saved, setSaved] = useState(false);
@@ -27,9 +27,22 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
   const handleSubmit = (e) => {
     e.preventDefault();
     setSaved(true);
+    if (onCreateAssignment) {
+      onCreateAssignment({
+        id: `asg-${Date.now()}`,
+        classId: classId || 'c1',
+        title: title || 'New Assignment',
+        dueDate,
+        submittedCount: 0,
+        gradedCount: 0,
+        rubricName: rubric,
+        wordLimit,
+        instructions
+      });
+    }
     setTimeout(() => {
       onClose();
-    }, 1200);
+    }, 800);
   };
 
   return (

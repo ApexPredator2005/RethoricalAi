@@ -1,46 +1,31 @@
 import React, { useState } from 'react';
 import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
 
-const SAMPLE_ESSAY = `F. Scott Fitzgerald constructs Jay Gatsby not merely as an embodiment of romantic disillusionment, but as an architect of self-erasure. In Chapter 5, the reunion at Nick Carraway’s cottage exposes the fragile infrastructure of Gatsby’s persona: his mansion, his imported silk shirts, and his punctilious demeanor are not manifestations of genuine aristocratic confidence, but rather desperate armaments assembled to contest the immutable finality of time. When Fitzgerald writes that Gatsby "revalued everything in his house according to the measure of response it drew from her well-loved eyes," he explicitly subordinates material splendor to an unattainable spectral ideal.
-
-Furthermore, the persistent chromatic motif of green—epitomized by the dock light across the bay—functions as both an compass for yearning and an indictment of the commodified American dream. Gatsby mistranslates moral elevation into geographic and economic accumulation; he presumes that by sheer momentum of will and bootleg lucre, the social chasm dividing West Egg's nouveau riche vulgarity from East Egg’s dynastic complacency can be erased. Yet Daisy's voice, famously described as "full of money," remains an auditory reminder that the aristocracy will never absorb him. Her tonal inflection possesses an ingrained security that capital alone cannot purchase.
-
-Ultimately, Fitzgerald reveals that Gatsby's tragic hubris is rooted in the refusal to accept chronological linearity. To Nick’s cautious caution, "You can’t repeat the past," Gatsby’s defiant response—"Why of course you can!"—serves as the tragic apex of his delusion. By treating human biography as malleable script, Gatsby dooms himself to be crushed between the indifferent inertia of Tom Buchanan’s old-money ruthlessness and the phantom radiance of his own untamed imagination.`;
-
-const DEFAULT_REFERENCE_TEXT = `He hadn't once ceased looking at Daisy, and I think he revalued everything in his house according to the measure of response it drew from her well-loved eyes. Sometimes, too, he stared around at his possessions in a dazed way, as though in her actual and astounding presence none of it was any longer real. Once he nearly toppled down a flight of stairs.
-
-His bedroom was the simplest room of all—except where the dresser was garnished with a toilet set of pure dull gold. Daisy took the brush with delight, and smoothed her hair, whereupon Gatsby sat down and shaded his eyes and began to laugh.
-
-"If it wasn't for the mist we could see your home across the bay," said Gatsby. "You always have a green light that burns all night at the end of your dock."
-
-Daisy put her arm through his abruptly, but he seemed absorbed in what he had just said. Possibly it had occurred to him that the colossal significance of that light had now vanished forever. Compared to the great distance that had separated him from Daisy it had seemed very near to her, almost touching her. It had seemed as close as a star to the moon. Now it was again a green light on a dock. His count of enchanted objects had diminished by one.`;
-
 export default function EssaySubmissionScreen({ onSubmitted }) {
   const [inputMode, setInputMode] = useState('type'); // 'type' | 'upload' | 'batch'
   const [selectedTemplate, setSelectedTemplate] = useState('ap_lit');
   const [selectedTone, setSelectedTone] = useState('standard');
-  const [essayText, setEssayText] = useState(SAMPLE_ESSAY);
-  const [fileName, setFileName] = useState('Gatsby_Draft_page1.jpg');
-  const [batchFiles, setBatchFiles] = useState([
-    { name: 'Vance_Julian_Gatsby_Draft.docx', size: '24 KB', status: 'Ready to Process' },
-    { name: 'Lin_Maya_Spatial_Stratification.pdf', size: '1.2 MB', status: 'Ready to Process' },
-    { name: 'Sterling_Marcus_Romantic_Idealism.docx', size: '19 KB', status: 'Ready to Process' }
-  ]);
+  const [studentName, setStudentName] = useState('');
+  const [assignmentTitle, setAssignmentTitle] = useState('');
+  const [essayText, setEssayText] = useState('');
+  const [fileName, setFileName] = useState(null);
+  const [batchFiles, setBatchFiles] = useState([]);
   const [isEvaluating, setIsEvaluating] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [selectedRubric, setSelectedRubric] = useState('AP Lit Analytical Synthesis (Default)');
 
   // Reference Document State
-  const [refText, setRefText] = useState(DEFAULT_REFERENCE_TEXT);
-  const [refFileName, setRefFileName] = useState('The_Great_Gatsby_Chapter_5_Excerpts.pdf');
+  const [refText, setRefText] = useState('');
+  const [refFileName, setRefFileName] = useState(null);
 
   const currentTemplate = ASSIGNMENT_TEMPLATES.find(t => t.id === selectedTemplate) || ASSIGNMENT_TEMPLATES[0];
 
-  const words = essayText.trim().split(/\s+/).filter(Boolean).length;
+  const words = essayText.trim() ? essayText.trim().split(/\s+/).filter(Boolean).length : 0;
   const chars = essayText.length;
-  const paragraphs = essayText.split(/\n+/).filter(Boolean).length;
-  const readTime = (words / 220).toFixed(1);
+  const paragraphs = essayText.trim() ? essayText.split(/\n+/).filter(Boolean).length : 0;
+  const readTime = words > 0 ? (words / 220).toFixed(1) : '0.0';
 
-  const refWords = refText.trim().split(/\s+/).filter(Boolean).length;
+  const refWords = refText.trim() ? refText.trim().split(/\s+/).filter(Boolean).length : 0;
   const refMode = refWords <= 3000 ? 'direct' : 'chunked';
 
   const handleTemplateChange = (e) => {
@@ -54,10 +39,26 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!essayText.trim() && batchFiles.length === 0) {
+      setErrorMessage('Please enter assignment text or upload a document to proceed.');
+      return;
+    }
+    setErrorMessage('');
     setIsEvaluating(true);
     setTimeout(() => {
       setIsEvaluating(false);
-      if (onSubmitted) onSubmitted();
+      if (onSubmitted) {
+        onSubmitted({
+          studentName: studentName.trim() || 'Student Submission',
+          title: assignmentTitle.trim() || `${currentTemplate.name} Submission`,
+          text: essayText,
+          template: currentTemplate,
+          rubric: selectedRubric,
+          tone: selectedTone,
+          refText: refText,
+          wordCount: words
+        });
+      }
     }, 1200);
   };
 
@@ -66,6 +67,14 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
     if (file) {
       setFileName(file.name);
       setInputMode('type');
+      // Read text if plain text file
+      if (file.type.includes('text') || file.name.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setEssayText(event.target.result || '');
+        };
+        reader.readAsText(file);
+      }
     }
   };
 
@@ -77,7 +86,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
         size: `${Math.round(f.size / 1024)} KB`,
         status: 'Ready to Process'
       }));
-      setBatchFiles(formatted);
+      setBatchFiles(prev => [...prev, ...formatted]);
     }
   };
 
@@ -85,6 +94,13 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
     const file = e.target.files?.[0];
     if (file) {
       setRefFileName(file.name);
+      if (file.type.includes('text') || file.name.endsWith('.txt')) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          setRefText(event.target.result || '');
+        };
+        reader.readAsText(file);
+      }
     }
   };
 
@@ -101,7 +117,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             Submit Assignment: {currentTemplate.name}
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Submit your completed assignment text, photo scan, or multi-student batch for AI-assisted evaluation and citation verification.
+            Enter or paste student writing, upload documents, or ingest multi-student batches for AI-assisted evaluation and citation verification.
           </p>
         </div>
 
@@ -118,9 +134,9 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             <span className="font-headline-sm text-headline-sm text-tertiary font-bold truncate max-w-[120px]">{currentTemplate.category.split(' ')[0]}</span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Draft Version</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Status</span>
             <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              v2.0 <span className="font-label-sm text-label-sm text-secondary font-normal">(Revised)</span>
+              {words > 0 ? 'Drafting' : 'Awaiting Input'}
             </span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
@@ -129,6 +145,43 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               ~{readTime} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">min</span>
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* Error Banner */}
+      {errorMessage && (
+        <div className="p-space-sm rounded-lg bg-error-container text-on-error-container font-label-md text-label-md flex items-center gap-2 animate-fade-in">
+          <span className="material-symbols-outlined text-[20px]">error</span>
+          <span>{errorMessage}</span>
+        </div>
+      )}
+
+      {/* Student Name & Title Inputs */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md p-space-md bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm">
+        <div className="space-y-1">
+          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
+            Student Name
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Maya Lin"
+            value={studentName}
+            onChange={(e) => setStudentName(e.target.value)}
+            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
+          />
+        </div>
+
+        <div className="space-y-1">
+          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
+            Assignment Title
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Analysis of The Great Gatsby"
+            value={assignmentTitle}
+            onChange={(e) => setAssignmentTitle(e.target.value)}
+            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high"
+          />
         </div>
       </div>
 
@@ -208,12 +261,8 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             }`}
           >
             <span className="material-symbols-outlined text-[18px] text-tertiary">folder_zip</span>
-            <span>Batch Upload ({batchFiles.length} Submissions)</span>
+            <span>Batch Upload ({batchFiles.length})</span>
           </button>
-        </div>
-        <div className="hidden md:flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm pr-space-sm">
-          <span className="material-symbols-outlined text-[16px] text-tertiary">verified</span>
-          <span>Stationery Mode Active</span>
         </div>
       </div>
 
@@ -223,7 +272,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           <span className="material-symbols-outlined text-[48px] text-primary">cloud_upload</span>
           <h3 className="font-headline-sm text-headline-sm text-on-surface">Upload Assignment, PDF, or Photo Scan</h3>
           <p className="font-body-sm text-body-sm text-on-surface-variant max-w-md">
-            Our multi-modal vision OCR automatically digitizes handwritten pages, typed assignments, and documents into clear text.
+            Our multi-modal vision OCR digitizes handwritten pages, typed assignments, and documents into clear text.
           </p>
           <label className="mt-space-sm px-space-md py-space-xs rounded bg-primary-container text-on-primary font-label-md text-label-md cursor-pointer hover:bg-primary shadow-sm">
             Choose File from Device
@@ -235,84 +284,81 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
       {/* Batch Upload Zone (Visible if batch mode chosen) */}
       {inputMode === 'batch' && (
         <div className="p-space-lg bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm space-y-space-md animate-fade-in">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
             <div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold flex items-center gap-2">
                 <span className="material-symbols-outlined text-primary">dynamic_feed</span>
                 Batch Multi-Student Ingestion
               </h3>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Upload multiple student submissions (.pdf, .docx, .txt, or a single .zip) to evaluate the entire cohort simultaneously.
+                Upload multiple student submissions (.pdf, .docx, .txt, or .zip) to evaluate simultaneously.
               </p>
             </div>
-            <label className="px-space-md py-2 rounded-lg bg-primary text-white font-label-md text-label-md cursor-pointer hover:bg-primary/90 shadow-sm flex items-center gap-1.5">
+            <label className="px-space-md py-2 rounded-lg bg-primary text-white font-label-md text-label-md cursor-pointer hover:bg-primary/90 shadow-sm flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
               <span className="material-symbols-outlined text-[18px]">add</span>
               <span>Upload Files / ZIP</span>
               <input type="file" multiple className="hidden" accept=".pdf,.docx,.txt,.zip" onChange={handleBatchUpload} />
             </label>
           </div>
 
-          <div className="divide-y divide-surface-container border border-surface-container rounded-lg overflow-hidden">
-            {batchFiles.map((file, idx) => (
-              <div key={idx} className="p-space-sm flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors">
-                <div className="flex items-center gap-space-sm">
-                  <span className="material-symbols-outlined text-secondary text-[20px]">description</span>
-                  <div>
-                    <div className="font-label-md text-label-md font-semibold text-on-surface">{file.name}</div>
-                    <div className="font-body-sm text-body-sm text-on-surface-variant">{file.size}</div>
+          {batchFiles.length === 0 ? (
+            <div className="p-8 text-center border border-dashed border-surface-container-highest rounded-lg text-on-surface-variant font-body-sm">
+              No files uploaded yet. Click <strong>Upload Files / ZIP</strong> above to add student submissions.
+            </div>
+          ) : (
+            <div className="divide-y divide-surface-container border border-surface-container rounded-lg overflow-hidden">
+              {batchFiles.map((file, idx) => (
+                <div key={idx} className="p-space-sm flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors">
+                  <div className="flex items-center gap-space-sm">
+                    <span className="material-symbols-outlined text-secondary text-[20px]">description</span>
+                    <div>
+                      <div className="font-label-md text-label-md font-semibold text-on-surface">{file.name}</div>
+                      <div className="font-body-sm text-body-sm text-on-surface-variant">{file.size}</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
+                      {file.status}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setBatchFiles(batchFiles.filter((_, i) => i !== idx))}
+                      className="p-1 rounded text-on-surface-variant hover:text-error hover:bg-surface-container-high"
+                    >
+                      <span className="material-symbols-outlined text-[18px]">delete</span>
+                    </button>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
-                    {file.status}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setBatchFiles(batchFiles.filter((_, i) => i !== idx))}
-                    className="p-1 rounded text-on-surface-variant hover:text-error hover:bg-surface-container-high"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">delete</span>
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* OCR Scan Notification & Sync Banner */}
-      <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md border border-surface-container">
-        <div className="flex items-center gap-space-md min-w-0">
-          <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-secondary-container flex items-center justify-center">
-            <span className="material-symbols-outlined text-secondary text-[28px]">document_scanner</span>
-            <div className="absolute bottom-0 inset-x-0 bg-tertiary/90 text-on-tertiary text-center text-[9px] font-label-sm uppercase py-0.5 font-bold">
-              Scanned
+      {/* OCR Scan Notification Banner (Rendered ONLY if a file is actually uploaded) */}
+      {fileName && (
+        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-space-md border border-surface-container animate-fade-in">
+          <div className="flex items-center gap-space-md min-w-0">
+            <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0 bg-secondary-container flex items-center justify-center">
+              <span className="material-symbols-outlined text-secondary text-[28px]">document_scanner</span>
             </div>
-          </div>
-          <div className="flex flex-col min-w-0">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col min-w-0">
               <span className="font-label-md text-label-md text-on-surface font-semibold truncate">
                 {fileName}
               </span>
-              <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
-                98.4% OCR Confidence
-              </span>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                Document loaded. You may review and refine the text below before submitting.
+              </p>
             </div>
-            <p className="font-body-sm text-body-sm text-on-surface-variant truncate">
-              Handwriting converted into editable transcription below. Stylistic line breaks and paragraph indentations preserved.
-            </p>
+          </div>
+          <div className="flex items-center gap-space-sm shrink-0">
+            <label className="px-space-sm py-1.5 rounded-lg bg-surface-container font-label-sm text-label-sm text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer">
+              Replace File
+              <input type="file" className="hidden" accept="image/*,.pdf,.txt" onChange={handleFileUpload} />
+            </label>
           </div>
         </div>
-        <div className="flex items-center gap-space-sm shrink-0">
-          <label className="px-space-sm py-1.5 rounded-lg bg-surface-container font-label-sm text-label-sm text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer">
-            Replace File
-            <input type="file" className="hidden" accept="image/*,.pdf,.txt" onChange={handleFileUpload} />
-          </label>
-          <span className="inline-flex items-center gap-1 font-label-sm text-label-sm text-tertiary font-semibold">
-            <span className="material-symbols-outlined text-[16px]">check_circle</span> Transcribed
-          </span>
-        </div>
-      </div>
+      )}
 
       {/* Ruled Notebook Editor Sheet */}
       <div className="relative bg-[#FFFDF5] rounded-xl shadow-md overflow-hidden flex flex-col border border-[#E8DFC8]">
@@ -329,12 +375,8 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             </span>
           </div>
           <div className="flex items-center gap-space-sm">
-            <button className="p-1 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-lowest" title="Spellcheck & Grammar rules" type="button">
-              <span className="material-symbols-outlined text-[18px]">spellcheck</span>
-            </button>
-            <div className="h-4 w-px bg-surface-container-highest"></div>
             <span className="font-label-sm text-label-sm text-secondary font-semibold flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live Count
+              <span className="w-1.5 h-1.5 rounded-full bg-secondary"></span> Live Word Count: {words}
             </span>
           </div>
         </div>
@@ -354,8 +396,11 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           <textarea
             className="w-full bg-transparent resize-y outline-none font-body-md text-body-md text-on-surface leading-[28px] focus:outline-none min-h-[420px] pt-1"
             value={essayText}
-            onChange={(e) => setEssayText(e.target.value)}
-            placeholder="Enter or paste your assignment text here..."
+            onChange={(e) => {
+              setEssayText(e.target.value);
+              if (errorMessage) setErrorMessage('');
+            }}
+            placeholder="Enter or paste student assignment text here..."
             spellCheck="false"
           />
         </div>
@@ -370,16 +415,13 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             <span>{paragraphs} paragraphs</span>
           </div>
           <div className="flex items-center gap-space-sm font-label-sm">
-            <span className="w-2 h-2 rounded-full bg-tertiary-container"></span>
-            <span>Writing Rhythm: Balanced</span>
-            <span className="mx-1">•</span>
             <span>Est. Reading: {readTime} min</span>
           </div>
         </div>
       </div>
 
       {/* Reference Material / Source Document (Optional Grounding) */}
-      <details className="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container" open>
+      <details className="group bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container">
         <summary className="flex items-center justify-between cursor-pointer list-none select-none text-on-surface font-label-md text-label-md font-bold">
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[20px] text-primary transition-transform group-open:rotate-90">
@@ -396,7 +438,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
                 ? 'bg-tertiary-fixed text-on-tertiary-container' 
                 : 'bg-secondary-fixed text-on-secondary-fixed'
             }`}>
-              {refMode === 'direct' ? 'Mode A: Direct Check' : 'Mode B: Search Chunk Retrieval'}
+              {refWords > 0 ? (refMode === 'direct' ? 'Mode A: Direct Check' : 'Mode B: Chunk Retrieval') : 'Optional'}
             </span>
             <span className="font-annotation-note text-on-surface-variant">
               ({refWords} words)
@@ -406,7 +448,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
 
         <div className="pt-space-md space-y-space-md">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Upload the primary text, prompt passage, lab protocol, or chapter. The engine will automatically check and verify student claims directly against the source material.
+            Upload the primary text, prompt passage, lab protocol, or textbook chapter. The engine will check and verify student claims directly against the source material.
           </p>
 
           <div className="flex items-center gap-space-sm">
@@ -415,9 +457,11 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               <span>Upload PDF/DOCX/TXT</span>
               <input type="file" className="hidden" accept=".pdf,.docx,.txt" onChange={handleRefUpload} />
             </label>
-            <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">
-              Loaded: <strong>{refFileName}</strong>
-            </span>
+            {refFileName && (
+              <span className="font-label-sm text-label-sm text-on-surface-variant font-medium">
+                Loaded: <strong>{refFileName}</strong>
+              </span>
+            )}
           </div>
 
           <textarea
@@ -425,7 +469,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             value={refText}
             onChange={(e) => setRefText(e.target.value)}
             className="w-full p-3 rounded-lg bg-surface-container-low border border-surface-container font-body-sm text-body-sm text-on-surface focus:outline-none resize-y"
-            placeholder="Paste source passage or reference excerpt here..."
+            placeholder="Paste source passage, chapter, or reference excerpt here..."
           />
         </div>
       </details>

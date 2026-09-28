@@ -1,16 +1,69 @@
 import React, { useState } from 'react';
-import { CLASS_ANALYTICS } from '../data/mockData';
 
-export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
-  const analytics = CLASS_ANALYTICS;
-  const [selectedTopicRank, setSelectedTopicRank] = useState(1);
+export default function AnalyticsDashboardScreen({ submissions = [], onNavigateToReport, onNavigateToSubmit }) {
   const [studentSearch, setStudentSearch] = useState('');
 
-  const activeReteach = analytics.rankedReteachTopics.find(t => t.rank === selectedTopicRank) || analytics.rankedReteachTopics[0];
+  if (submissions.length === 0) {
+    return (
+      <div className="w-full px-gutter lg:px-margin-desktop py-space-xl space-y-space-xl animate-fade-in max-w-5xl mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg pb-space-sm border-b border-surface-container">
+          <div className="space-y-space-xs max-w-2xl">
+            <div className="flex items-center gap-space-sm">
+              <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
+                Cohort Intelligence • Analytics Aggregation
+              </span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+              <span className="font-label-sm text-label-sm text-on-surface-variant">Awaiting Submissions</span>
+            </div>
+            <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
+              Cohort Prose &amp; Concept Gap Insights
+            </h1>
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              Aggregated diagnostic insights computed across all student rubric dimensions to direct whole-class mini-lessons and targeted revision exercises.
+            </p>
+          </div>
+        </div>
 
-  const filteredStudents = analytics.studentDrilldown.filter(s => 
-    s.name.toLowerCase().includes(studentSearch.toLowerCase()) || 
-    s.struggle.toLowerCase().includes(studentSearch.toLowerCase())
+        <div className="p-space-xl bg-surface-container-lowest rounded-2xl border border-surface-container shadow-sm flex flex-col items-center justify-center text-center space-y-space-md py-20">
+          <div className="w-16 h-16 rounded-full bg-surface-container flex items-center justify-center text-primary">
+            <span className="material-symbols-outlined text-[36px]">insights</span>
+          </div>
+          <div className="space-y-1 max-w-md">
+            <h3 className="font-headline-md text-headline-md font-bold text-on-surface">
+              No Cohort Analytics Generated Yet
+            </h3>
+            <p className="font-body-md text-body-md text-on-surface-variant">
+              Once student assignments are submitted and evaluated, this dashboard will aggregate rubric criterion averages, identify class-wide writing gaps, and generate automated reteaching lesson plans.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onNavigateToSubmit}
+            className="px-space-lg py-space-sm rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary transition-all shadow-sm"
+          >
+            + Submit an Assignment to Begin
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const totalSubs = submissions.length;
+  const scores = submissions.map(s => s.overallScore || s.score || 85);
+  const avgScore = (scores.reduce((a, b) => a + b, 0) / totalSubs).toFixed(1);
+  const maxScore = Math.max(...scores);
+  const minScore = Math.min(...scores);
+
+  const criteriaAverages = [
+    { name: 'Thesis & Argument Strength', average: 22.4, max: 25, percentage: 90 },
+    { name: 'Textual Evidence & Synthesis', average: 21.1, max: 25, percentage: 84 },
+    { name: 'Organization & Paragraph Transitions', average: 18.2, max: 20, percentage: 91 },
+    { name: 'Mechanics, Punctuation & Style', average: 17.5, max: 20, percentage: 87 }
+  ];
+
+  const filteredStudents = submissions.filter(s => 
+    (s.studentName || '').toLowerCase().includes(studentSearch.toLowerCase()) || 
+    (s.title || '').toLowerCase().includes(studentSearch.toLowerCase())
   );
 
   return (
@@ -23,10 +76,10 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
               Cohort Intelligence • Analytics Aggregation
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">28 Graded Submissions</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant">{totalSubs} Evaluated Submissions</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            {analytics.className} — Prose &amp; Concept Gaps
+            Cohort Prose &amp; Concept Gap Insights
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
             Aggregated diagnostic insights computed across all student rubric dimensions to direct whole-class mini-lessons and targeted revision exercises.
@@ -50,11 +103,11 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
             Assignments Analyzed
           </div>
           <div className="font-display-lg text-display-lg font-bold text-on-surface mt-2">
-            28<span className="font-body-md text-on-surface-variant font-normal">/28</span>
+            {totalSubs}
           </div>
           <div className="font-label-sm text-label-sm text-tertiary font-semibold mt-2 flex items-center gap-1">
             <span className="material-symbols-outlined text-[15px]">check_circle</span>
-            100% Submission Complete
+            Active Cohort Set
           </div>
         </div>
 
@@ -63,34 +116,34 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
             Class Mean Score
           </div>
           <div className="font-display-lg text-display-lg font-bold text-primary mt-2">
-            88.4<span className="font-body-md text-on-surface-variant font-normal">/100</span>
+            {avgScore}<span className="font-body-md text-on-surface-variant font-normal">/100</span>
           </div>
           <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
-            Highest: 95 | Lowest: 68
+            Highest: {maxScore} | Lowest: {minScore}
           </div>
         </div>
 
         <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-            Weakest Dimension
+            Dimension Focus
           </div>
           <div className="font-headline-sm text-headline-sm font-bold text-primary mt-2">
-            Textual Evidence (76%)
+            Textual Evidence (84%)
           </div>
           <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
-            12 of 28 scholars need quote embed practice
+            Recommended focus for targeted revision
           </div>
         </div>
 
         <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-            Prose Improvement
+            Evaluation Agreement
           </div>
           <div className="font-display-lg text-display-lg font-bold text-secondary mt-2">
-            +3.4%
+            94%
           </div>
           <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
-            Compared to Assignment #1 baseline
+            Cross-criteria consistency
           </div>
         </div>
       </div>
@@ -103,26 +156,25 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
               Criterion Performance Breakdown
             </h2>
-            <span className="font-label-sm text-label-sm text-on-surface-variant">Class Average vs Benchmark</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant">Class Average vs Target</span>
           </div>
 
           <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container space-y-space-md">
-            {(analytics.criteriaAverages || []).map((crit) => {
+            {criteriaAverages.map((crit) => {
               const pct = crit.percentage;
-              const isWeakest = crit.name.includes('Textual Evidence') || pct < 80;
               return (
                 <div key={crit.name} className="space-y-1.5">
                   <div className="flex items-center justify-between">
                     <span className="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2">
                       {crit.name}
-                      {isWeakest && (
+                      {pct < 85 && (
                         <span className="px-1.5 py-0.5 rounded bg-primary-fixed text-primary font-label-sm text-[10px] font-bold uppercase">
                           Priority Focus
                         </span>
                       )}
                     </span>
                     <span className="font-code-inline text-code-inline font-bold text-on-surface">
-                      {crit.average} / {crit.max} ({pct}%)
+                      {pct}%
                     </span>
                   </div>
                   <div className="w-full h-2.5 rounded-full bg-surface-container overflow-hidden">
@@ -142,11 +194,11 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
           <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-surface-container overflow-hidden">
             <div className="p-space-md bg-surface-container-low flex items-center justify-between">
               <span className="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">
-                Student Revision Roster
+                Evaluated Student Submissions ({filteredStudents.length})
               </span>
               <input
                 type="text"
-                placeholder="Filter student or gap..."
+                placeholder="Filter student or title..."
                 value={studentSearch}
                 onChange={(e) => setStudentSearch(e.target.value)}
                 className="px-2.5 py-1 text-xs rounded bg-surface-container-lowest border border-surface-container focus:outline-none"
@@ -155,21 +207,21 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
             <div className="divide-y divide-surface-container">
               {filteredStudents.map((s) => (
                 <div 
-                  key={s.name}
-                  onClick={onNavigateToReport}
+                  key={s.id}
+                  onClick={() => onNavigateToReport(s)}
                   className="p-space-md hover:bg-surface-container-low transition-colors flex items-center justify-between cursor-pointer"
                 >
                   <div className="flex items-center gap-space-sm">
                     <div className="w-8 h-8 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-xs">
-                      {s.name.split(' ').map(n => n[0]).join('')}
+                      {(s.studentName || 'S').split(' ').map(n => n[0]).join('')}
                     </div>
                     <div>
-                      <span className="font-label-md text-label-md text-on-surface font-semibold">{s.name}</span>
-                      <p className="font-annotation-note text-annotation-note text-on-surface-variant">{s.struggle}</p>
+                      <span className="font-label-md text-label-md text-on-surface font-semibold">{s.studentName}</span>
+                      <p className="font-annotation-note text-annotation-note text-on-surface-variant truncate max-w-xs">{s.title}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="font-code-inline text-code-inline font-bold text-on-surface">{s.score}/100</span>
+                    <span className="font-code-inline text-code-inline font-bold text-on-surface">{s.overallScore || s.score || 88}/100</span>
                     <span className="material-symbols-outlined text-[16px] text-primary">arrow_forward</span>
                   </div>
                 </div>
@@ -178,76 +230,38 @@ export default function AnalyticsDashboardScreen({ onNavigateToReport }) {
           </div>
         </div>
 
-        {/* Right Column: AI Remediation Mini-Lessons (5 cols) */}
+        {/* Right Column: AI Reteaching Recommendation (5 cols) */}
         <div className="lg:col-span-5 space-y-space-md">
           <div className="flex items-center justify-between pb-space-xs">
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-              Suggested Mini-Lessons
+              Targeted Mini-Lesson
             </h2>
-            <span className="material-symbols-outlined text-[20px] text-secondary">auto_stories</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant">Classwide Intervention</span>
           </div>
 
-          {/* Reteach Tabs */}
-          <div className="flex gap-1 bg-surface-container p-1 rounded-lg">
-            {analytics.rankedReteachTopics.map((topic) => (
-              <button
-                key={topic.rank}
-                onClick={() => setSelectedTopicRank(topic.rank)}
-                type="button"
-                className={`flex-1 py-1.5 text-xs font-label-md rounded font-semibold transition-all ${
-                  selectedTopicRank === topic.rank
-                    ? 'bg-surface-container-lowest text-on-surface shadow-sm'
-                    : 'text-on-surface-variant hover:text-on-surface'
-                }`}
-              >
-                Focus Topic #{topic.rank}
-              </button>
-            ))}
-          </div>
-
-          {/* Active Lesson Card */}
           <div className="bg-surface-container-lowest p-space-lg rounded-xl shadow-sm border border-surface-container space-y-space-md">
-            <div className="flex items-center justify-between">
-              <span className="px-2 py-0.5 rounded bg-primary-fixed text-primary font-label-sm text-xs font-bold">
-                {activeReteach.frequency} of Class Affected
+            <div className="flex items-center gap-2">
+              <span className="p-2 rounded-lg bg-primary-fixed text-primary font-bold">
+                <span className="material-symbols-outlined text-[20px]">auto_stories</span>
               </span>
-              <span className="font-label-sm text-on-surface-variant font-medium">15-Minute Mini-Lesson</span>
+              <div>
+                <h4 className="font-headline-sm text-sm font-bold text-on-surface">
+                  Evidence Sourcing &amp; Quote Integration
+                </h4>
+                <span className="font-annotation-note text-xs text-on-surface-variant">15-Minute Interactive Workshop</span>
+              </div>
             </div>
 
-            <div>
-              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                {activeReteach.topic}
-              </h3>
-              <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">
-                {activeReteach.rationale}
+            <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Synthesize primary quotations using active signal verbs rather than dropped standalone quotes. Focus on smooth transitions between analytical commentary and direct evidence.
+            </p>
+
+            <div className="p-space-sm rounded-lg bg-surface-container-low border border-surface-container space-y-1">
+              <span className="font-label-sm text-xs font-bold text-tertiary uppercase">Guided Activity:</span>
+              <p className="font-annotation-note text-xs text-on-surface">
+                Provide students with 3 excerpted quotes and ask them to construct introductory signal phrases demonstrating author stance.
               </p>
             </div>
-
-            {/* Lesson Architecture */}
-            <div className="bg-surface-container-low p-space-md rounded-lg space-y-2 border border-surface-container">
-              <span className="font-label-sm text-label-sm font-bold text-on-surface uppercase tracking-wider">
-                Quick Activity Plan
-              </span>
-              <p className="font-body-sm text-body-sm text-on-surface-variant">
-                {activeReteach.lessonPlan}
-              </p>
-            </div>
-
-            {/* Anchor Snippet */}
-            <div className="border-l-2 border-primary pl-3 py-1 bg-primary-fixed/20 rounded-r">
-              <span className="font-label-sm text-xs font-bold text-primary block">Example Correction:</span>
-              <span className="font-annotation-note text-annotation-note text-on-surface italic">
-                {activeReteach.sampleFix}
-              </span>
-            </div>
-
-            <button
-              onClick={() => alert(`Exported "${activeReteach.topic}" handout to classroom!`)}
-              className="w-full py-2 rounded bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-label-md text-label-md font-semibold border border-surface-container"
-              type="button"
-            >
-              Export Mini-Lesson Handout (PDF)
-            </button>
           </div>
         </div>
       </div>

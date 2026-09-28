@@ -37,7 +37,7 @@ export default function Header({
           >
             {classes.map((cls) => (
               <option key={cls.id} value={cls.id}>
-                {cls.name} ({cls.students} Scholars)
+                {cls.name} ({cls.students || cls.studentCount || 0} Scholars)
               </option>
             ))}
           </select>
@@ -49,7 +49,7 @@ export default function Header({
         {/* LMS Connectivity Status */}
         <div className="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-on-surface-variant bg-surface-container-low px-2.5 py-1 rounded border border-surface-container">
           <span className="w-2 h-2 rounded-full bg-tertiary-container animate-pulse"></span>
-          <span>Google Classroom • Synced 12m ago</span>
+          <span>Gradebook Sync • Active</span>
         </div>
 
         {/* Action: New Assignment button for Teachers */}

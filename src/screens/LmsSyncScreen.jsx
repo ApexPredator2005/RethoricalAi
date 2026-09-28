@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { LMS_SYNC_DATA } from '../data/mockData';
 
-export default function LmsSyncScreen() {
+export default function LmsSyncScreen({ submissions = [] }) {
   const [isSyncing, setIsSyncing] = useState(false);
-  const [autoSync, setAutoSync] = useState(LMS_SYNC_DATA.connectedLms.autoSync);
-  const [lastSynced, setLastSynced] = useState('14 mins ago');
+  const [autoSync, setAutoSync] = useState(true);
+  const [lastSynced, setLastSynced] = useState('Never');
   const [selectedProvider, setSelectedProvider] = useState('google_classroom');
-  const [syncLogs, setSyncLogs] = useState(LMS_SYNC_DATA.syncLogs);
+  const [syncLogs, setSyncLogs] = useState([]);
+
+  const approvedSubmissions = submissions.filter(s => s.approved);
 
   const handleManualSync = () => {
     setIsSyncing(true);
@@ -15,11 +16,19 @@ export default function LmsSyncScreen() {
       setLastSynced('Just now');
       const now = new Date();
       const ts = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
-      setSyncLogs([
-        { id: `l_${Date.now()}`, timestamp: ts, course: 'AP English Literature (Period 3)', assignment: "The Great Gatsby — AI Grades", itemsSynced: 28, status: 'Success' },
-        ...syncLogs
+      const count = approvedSubmissions.length || submissions.length || 0;
+      setSyncLogs(prev => [
+        { 
+          id: `l_${Date.now()}`, 
+          timestamp: ts, 
+          course: 'Primary Classroom', 
+          assignment: submissions[0]?.title || "Assignment Gradebook Sync", 
+          itemsSynced: count, 
+          status: 'Success' 
+        },
+        ...prev
       ]);
-    }, 1500);
+    }, 1200);
   };
 
   const providers = [
@@ -113,7 +122,7 @@ export default function LmsSyncScreen() {
                 </span>
               </div>
               <p className="font-body-sm text-body-sm text-on-surface-variant">
-                Account: claire.holloway@westlakehigh.edu • Scopes: coursework.students, courses.readonly
+                Account: connected.educator@institution.edu • Scopes: coursework.students, courses.readonly
               </p>
             </div>
           </div>
@@ -145,15 +154,15 @@ export default function LmsSyncScreen() {
 
           <div className="p-space-sm rounded-lg bg-surface-container-low border border-surface-container">
             <span className="font-label-md text-label-md text-on-surface font-semibold block">Active Assignment</span>
-            <span className="font-annotation-note text-annotation-note text-secondary font-medium">
-              The Great Gatsby: Character Moral Ambiguity
+            <span className="font-annotation-note text-annotation-note text-secondary font-medium truncate block">
+              {submissions[0]?.title || 'All Approved Submissions'}
             </span>
           </div>
 
           <div className="p-space-sm rounded-lg bg-surface-container-low border border-surface-container">
             <span className="font-label-md text-label-md text-on-surface font-semibold block">Target Grade Category</span>
             <span className="font-annotation-note text-annotation-note text-on-surface-variant">
-              Major Assignments (40% of Final Grade)
+              Major Assignments (Standard Gradebook)
             </span>
           </div>
         </div>
@@ -165,24 +174,36 @@ export default function LmsSyncScreen() {
           <span>Audit Log • Sync Event</span>
           <span>Items Transmitted • Status</span>
         </div>
-        <div className="divide-y divide-surface-container">
-          {syncLogs.map((log) => (
-            <div key={log.id} className="p-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
-              <div className="space-y-0.5">
-                <span className="font-label-md text-label-md text-on-surface font-semibold block">{log.assignment}</span>
-                <span className="font-annotation-note text-annotation-note text-on-surface-variant">
-                  {log.course} • {log.timestamp}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <span className="font-code-inline text-code-inline text-on-surface">{log.itemsSynced} records</span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-xs font-bold">
-                  <span className="material-symbols-outlined text-[14px]">check</span> {log.status}
-                </span>
-              </div>
+        {syncLogs.length === 0 ? (
+          <div className="p-space-xl text-center flex flex-col items-center justify-center space-y-space-sm py-12">
+            <div className="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+              <span className="material-symbols-outlined text-[24px]">sync</span>
             </div>
-          ))}
-        </div>
+            <h4 className="font-headline-sm text-headline-sm font-bold text-on-surface">No Synchronizations Yet</h4>
+            <p className="font-body-sm text-body-sm text-on-surface-variant max-w-sm">
+              Click 'Sync Grades Now' to transmit verified student evaluations and margin feedback to your gradebook.
+            </p>
+          </div>
+        ) : (
+          <div className="divide-y divide-surface-container">
+            {syncLogs.map((log) => (
+              <div key={log.id} className="p-space-md flex items-center justify-between hover:bg-surface-container-low transition-colors">
+                <div className="space-y-0.5">
+                  <span className="font-label-md text-label-md text-on-surface font-semibold block">{log.assignment}</span>
+                  <span className="font-annotation-note text-annotation-note text-on-surface-variant">
+                    {log.course} • {log.timestamp}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="font-code-inline text-code-inline text-on-surface">{log.itemsSynced} records</span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-xs font-bold">
+                    <span className="material-symbols-outlined text-[14px]">check</span> {log.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

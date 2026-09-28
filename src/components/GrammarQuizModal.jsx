@@ -1,16 +1,55 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { SAMPLE_ESSAY_REPORT } from '../data/mockData';
 
-export default function GrammarQuizModal({ onClose }) {
-  const questions = SAMPLE_ESSAY_REPORT.grammarQuiz;
+const UNIVERSAL_PRACTICE_QUESTIONS = [
+  {
+    id: 'q1',
+    type: 'Punctuation & Syntax',
+    question: 'Which of the following sentences correctly remedies a comma splice between two independent clauses?',
+    options: [
+      { text: 'The empirical evidence was compelling, however the sample size was limited.', correct: false },
+      { text: 'The empirical evidence was compelling; however, the sample size was limited.', correct: true },
+      { text: 'The empirical evidence was compelling, therefore the sample size was limited.', correct: false },
+      { text: 'The empirical evidence was compelling but however, the sample size was limited.', correct: false }
+    ],
+    explanation: 'A semicolon (or period) is required before a conjunctive adverb like "however" when connecting two complete independent clauses.'
+  },
+  {
+    id: 'q2',
+    type: 'Style & Voice',
+    question: 'Which revision best converts the passive construction into direct, active academic prose?',
+    options: [
+      { text: 'A strong refutation of the counter-argument was presented by the researcher.', correct: false },
+      { text: 'The researcher presented a decisive refutation of the counter-argument.', correct: true },
+      { text: 'The counter-argument was being refuted with strong evidence by the researcher.', correct: false },
+      { text: 'It was by the researcher that a refutation of the argument was made.', correct: false }
+    ],
+    explanation: 'Placing the agent ("The researcher") as the subject performing the active verb ("presented") eliminates wordiness and increases rhetorical impact.'
+  },
+  {
+    id: 'q3',
+    type: 'Parallel Structure',
+    question: 'Identify the sentence that maintains flawless parallel grammatical structure:',
+    options: [
+      { text: 'The policy aimed to reduce carbon emissions, stimulate clean energy investments, and creating sustainable urban jobs.', correct: false },
+      { text: 'The policy aimed to reduce carbon emissions, stimulate clean energy investments, and create sustainable urban jobs.', correct: true },
+      { text: 'The policy aimed at reducing carbon emissions, to stimulate clean energy, and creating jobs.', correct: false },
+      { text: 'The policy aimed to reduce carbon emissions, clean energy was stimulated, and to create jobs.', correct: false }
+    ],
+    explanation: 'Parallel series require matching verb forms: "to reduce", "[to] stimulate", and "[to] create".'
+  }
+];
+
+export default function GrammarQuizModal({ onClose, submission }) {
+  const studentName = submission?.studentName || 'Student';
+  const questions = submission?.grammarQuiz || UNIVERSAL_PRACTICE_QUESTIONS;
   const [currentQ, setCurrentQ] = useState(0);
   const [selected, setSelected] = useState(null);
   const [confirmed, setConfirmed] = useState(false);
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const q = questions[currentQ];
+  const q = questions[currentQ] || questions[0];
 
   const handleSelect = (optionIdx) => {
     if (confirmed) return;
@@ -56,10 +95,10 @@ export default function GrammarQuizModal({ onClose }) {
             <span className="material-symbols-outlined text-primary text-[24px]">quiz</span>
             <div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                Practice Writing Skills
+                Writing Skills Diagnostic
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Targeting flagged writing patterns from Julian's submission
+                Targeting core syntax, active voice, and structural mechanics
               </span>
             </div>
           </div>
@@ -163,9 +202,9 @@ export default function GrammarQuizModal({ onClose }) {
               </div>
 
               <div className="p-space-md rounded-xl bg-surface-container-low border border-surface-container text-left space-y-1 max-w-md mx-auto">
-                <span className="font-label-sm text-xs font-bold text-tertiary uppercase">Next Step Recommendation:</span>
+                <span className="font-label-sm text-xs font-bold text-tertiary uppercase">Recommended Revision Focus:</span>
                 <p className="font-annotation-note text-annotation-note text-on-surface-variant">
-                  Julian has demonstrated strong command over clear pronoun usage. Next recommended topic: Active Voice in Paragraph Transitions.
+                  {studentName} demonstrated solid understanding of parallel structure. Continue practicing active voice and transitional clarity in multi-clause sentences.
                 </p>
               </div>
             </div>

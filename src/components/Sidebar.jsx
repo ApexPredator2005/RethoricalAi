@@ -104,11 +104,11 @@ export default function Sidebar({
         {/* Teacher Profile Card */}
         <div className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors">
           <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center justify-center shrink-0">
-            CH
+            ED
           </div>
           <div className="flex flex-col min-w-0">
-            <span className="font-label-md text-label-md text-on-surface font-semibold truncate">Ms. Claire Holloway</span>
-            <span className="font-label-sm text-label-sm text-on-surface-variant truncate">Westlake High School</span>
+            <span className="font-label-md text-label-md text-on-surface font-semibold truncate">Educator Desk</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant truncate">RethoricalAI Workspace</span>
           </div>
         </div>
       </div>
