@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ASSIGNMENT_TEMPLATES } from '../data/mockData';
 
 const INITIAL_CRITERIA = [
   {
@@ -55,10 +56,39 @@ export default function RubricBuilderScreen() {
   const [criteria, setCriteria] = useState(INITIAL_CRITERIA);
   const [rubricTitle, setRubricTitle] = useState('Grading Criteria: AP Literature Analytical Synthesis');
   const [rubricDesc, setRubricDesc] = useState('Crafted for multi-source comparative prose analysis. Balances argumentative rigor, close-reading textual defense, and rhetorical cadence.');
+  const [selectedTemplateId, setSelectedTemplateId] = useState('ap_lit');
   const [savedNotification, setSavedNotification] = useState(false);
 
   const totalWeight = criteria.reduce((sum, c) => sum + Number(c.weight || 0), 0);
   const isWeightValid = totalWeight === 100;
+
+  const handleTemplatePresetChange = (templateId) => {
+    setSelectedTemplateId(templateId);
+    const tmpl = ASSIGNMENT_TEMPLATES.find(t => t.id === templateId);
+    if (!tmpl) return;
+
+    setRubricTitle(`Grading Criteria: ${tmpl.name}`);
+    setRubricDesc(`Standardized rubric benchmark for ${tmpl.category}. Configured with ${tmpl.criteria.length} calibrated analytical dimensions.`);
+
+    const convertedCriteria = tmpl.criteria.map((c, i) => {
+      const w = c.weight;
+      const highMin = Math.round(w * 0.9);
+      const midMin = Math.round(w * 0.7);
+      return {
+        id: `CRIT-0${i + 1}`,
+        name: c.name,
+        description: c.description,
+        weight: w,
+        highAnchor: `Demonstrates exemplary mastery of ${c.name.toLowerCase()} with compelling precision and nuance.`,
+        highRange: `${highMin}–${w} pts`,
+        midAnchor: `Satisfactory execution of ${c.name.toLowerCase()} with standard analytical clarity and minor gaps.`,
+        midRange: `${midMin}–${highMin - 1} pts`,
+        lowAnchor: `Emerging development; lacks consistent evidence or execution for ${c.name.toLowerCase()}.`,
+        lowRange: `0–${midMin - 1} pts`
+      };
+    });
+    setCriteria(convertedCriteria);
+  };
 
   const handleWeightChange = (index, val) => {
     const next = [...criteria];
@@ -141,6 +171,30 @@ export default function RubricBuilderScreen() {
         </div>
       </div>
 
+      {/* Preset Loader Banner */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm bg-surface-container-lowest p-space-md rounded-xl border border-surface-container shadow-sm">
+        <div className="flex items-center gap-space-sm">
+          <span className="material-symbols-outlined text-primary text-[22px]">auto_stories</span>
+          <div>
+            <span className="font-label-md text-label-md font-bold text-on-surface">Load Preset Template</span>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">Switch subject criteria across STEM, Humanities, DBQ, Business &amp; Creative writing in 1 click.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <select
+            value={selectedTemplateId}
+            onChange={(e) => handleTemplatePresetChange(e.target.value)}
+            className="bg-surface-container py-2 px-3 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high cursor-pointer font-medium"
+          >
+            {ASSIGNMENT_TEMPLATES.map(tmpl => (
+              <option key={tmpl.id} value={tmpl.id}>
+                {tmpl.name} ({tmpl.category.split(' ')[0]})
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Save Notification Toast */}
       {savedNotification && (
         <div className="p-space-sm rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center justify-between shadow-sm animate-fade-in">
@@ -165,13 +219,15 @@ export default function RubricBuilderScreen() {
           <span className="opacity-30">•</span>
           <div className="flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px] text-tertiary">library_books</span>
-            <span className="text-on-surface">Target Course:</span>
-            <span className="font-semibold text-on-surface">AP English Literature &amp; Comp</span>
+            <span className="text-on-surface">Discipline:</span>
+            <span className="font-semibold text-on-surface">
+              {ASSIGNMENT_TEMPLATES.find(t => t.id === selectedTemplateId)?.category || 'Humanities & English'}
+            </span>
           </div>
           <span className="opacity-30">•</span>
           <div className="flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px] text-outline">calendar_today</span>
-            <span>Active Term: Fall 2024</span>
+            <span>Active Term: Fall 2026</span>
           </div>
         </div>
 

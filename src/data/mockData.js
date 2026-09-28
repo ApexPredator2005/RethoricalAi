@@ -1,5 +1,128 @@
 // RethoricalAI Mock Data Engine
 
+export const FEEDBACK_TONES = [
+  { id: 'standard', name: 'Standard Academic', icon: 'school', desc: 'Balanced, objective evaluation with clear improvement targets.' },
+  { id: 'encouraging', name: 'Encouraging & Growth-Mindset', icon: 'favorite', desc: 'Supportive praise, constructive nudges, and confidence-building highlights.' },
+  { id: 'rigorous', name: 'Rigorous AP & Honors', icon: 'workspace_premium', desc: 'High-level rhetorical critique, nuanced logic analysis, and college-ready standards.' },
+  { id: 'multilingual', name: 'ELL & Language Learner Friendly', icon: 'translate', desc: 'Simplified explanations, clear grammar mechanics, and supportive vocabulary definitions.' }
+];
+
+export const ASSIGNMENT_TEMPLATES = [
+  {
+    id: 'ap_lit',
+    name: 'Literature & Analytical Synthesis',
+    category: 'Humanities & English',
+    icon: 'menu_book',
+    defaultWordLimit: 1500,
+    criteria: [
+      { id: 'c1', name: 'Thesis & Main Argument', description: 'Nuanced, defensible claim that addresses prompt tensions without formulaic phrasing.', weight: 25, maxScore: 25 },
+      { id: 'c2', name: 'Textual Evidence & Quotes', description: 'Specific quotes smoothly integrated with active verbs to support analytical points.', weight: 35, maxScore: 35 },
+      { id: 'c3', name: 'Organization & Structure', description: 'Cohesive paragraph progression with natural rhetorical transitions.', weight: 20, maxScore: 20 },
+      { id: 'c4', name: 'Style, Voice & Grammar', description: 'Academic register, sentence rhythm, precise vocabulary, and accurate mechanics.', weight: 20, maxScore: 20 }
+    ]
+  },
+  {
+    id: 'stem_lab',
+    name: 'STEM & Scientific Lab Report',
+    category: 'Sciences & Engineering',
+    icon: 'science',
+    defaultWordLimit: 2000,
+    criteria: [
+      { id: 'c1', name: 'Hypothesis & Variable Control', description: 'Testable scientific hypothesis with clearly identified independent/dependent variables.', weight: 20, maxScore: 20 },
+      { id: 'c2', name: 'Methodology & Experimental Procedure', description: 'Replicable experimental protocol, control groups, and systematic error minimisation.', weight: 25, maxScore: 25 },
+      { id: 'c3', name: 'Data Analysis & Quantitative Evidence', description: 'Precise tabular/graphical representation, statistical error margins, and trend analysis.', weight: 30, maxScore: 30 },
+      { id: 'c4', name: 'Scientific Conclusion & Discussion', description: 'Evidence-grounded hypothesis validation, limitation acknowledgment, and future research direction.', weight: 25, maxScore: 25 }
+    ]
+  },
+  {
+    id: 'history_dbq',
+    name: 'History Document-Based Question (DBQ)',
+    category: 'Social Studies & History',
+    icon: 'account_balance',
+    defaultWordLimit: 1800,
+    criteria: [
+      { id: 'c1', name: 'Historical Contextualization', description: 'Accurate broader historical context connecting events across time and geography.', weight: 20, maxScore: 20 },
+      { id: 'c2', name: 'Primary Source Corroboration', description: 'Uses at least 4-6 primary source documents to support the central historical thesis.', weight: 30, maxScore: 30 },
+      { id: 'c3', name: 'Historical Sourcing (HIPP)', description: 'Analyzes author Point of View, Purpose, Historical Situation, and Audience.', weight: 30, maxScore: 30 },
+      { id: 'c4', name: 'Complex Understanding & Synthesis', description: 'Nuanced counter-perspectives, corroboration, and cross-era synthesis.', weight: 20, maxScore: 20 }
+    ]
+  },
+  {
+    id: 'business_case',
+    name: 'Business Case Study & Strategy Brief',
+    category: 'Business, Econ & Policy',
+    icon: 'trending_up',
+    defaultWordLimit: 1600,
+    criteria: [
+      { id: 'c1', name: 'Executive Summary & Problem Framing', description: 'Concise, high-impact identification of core business bottleneck or market challenge.', weight: 25, maxScore: 25 },
+      { id: 'c2', name: 'Financial & Strategic Reasoning', description: 'Rigorous application of data, ROI models, competitive analysis, and market metrics.', weight: 35, maxScore: 35 },
+      { id: 'c3', name: 'Actionable Implementation Roadmap', description: 'Phased operational timeline with resource allocation, risk mitigation, and KPI milestones.', weight: 25, maxScore: 25 },
+      { id: 'c4', name: 'Clarity, Brevity & Professional Tone', description: 'Scannable headings, bulleted takeaways, and boardroom-ready executive communication.', weight: 15, maxScore: 15 }
+    ]
+  },
+  {
+    id: 'creative_writing',
+    name: 'Creative Prose & Narrative Writing',
+    category: 'Creative Arts & Writing',
+    icon: 'auto_stories',
+    defaultWordLimit: 2200,
+    criteria: [
+      { id: 'c1', name: 'Characterization & Dialogue Voice', description: 'Distinct, authentic dialogue and multi-dimensional character motivation.', weight: 25, maxScore: 25 },
+      { id: 'c2', name: 'Sensory Imagery & World-Building', description: 'Evocative sensory details, immersive setting establishment, and "show-don\'t-tell" technique.', weight: 30, maxScore: 30 },
+      { id: 'c3', name: 'Narrative Arc & Pacing', description: 'Compelling rising tension, climactic turning point, and intentional scene pacing.', weight: 25, maxScore: 25 },
+      { id: 'c4', name: 'Thematic Resonance & Prose Polish', description: 'Subtle thematic subtext, stylistic cadence, and intentional syntactical choices.', weight: 20, maxScore: 20 }
+    ]
+  }
+];
+
+export const ORIGINALITY_METRICS = {
+  originalityScore: 96,
+  breakdown: [
+    { label: 'Original Critical Synthesis', percentage: 78, color: '#137333', desc: 'Unique argumentation and personal prose' },
+    { label: 'Cited Textual Passages', percentage: 18, color: '#1A73E8', desc: 'Verbatim quotes with proper MLA citations' },
+    { label: 'Standard Academic Idioms', percentage: 4, color: '#F29900', desc: 'Common transitional & contextual phrases' },
+    { label: 'Uncited Match / AI Paraphrase', percentage: 0, color: '#D93025', desc: 'Zero uncredited text detected' }
+  ],
+  citationHealth: 'Passed (MLA 9th Edition Standard)',
+  sourceOverlapCount: 3
+};
+
+export const DRAFT_COMPARISON = {
+  previousDraft: {
+    version: 'v1.0 (Initial Draft)',
+    submittedAt: 'Sept 18, 2026',
+    score: 82,
+    wordCount: 1240,
+    weaknesses: [
+      'Comma splices in paragraph 2 connecting independent clauses',
+      'Floating quotation in paragraph 3 without analytical setup',
+      'Abrupt transition between Gatsby’s economic status and tragic fate'
+    ]
+  },
+  currentDraft: {
+    version: 'v2.0 (Revised Submission)',
+    submittedAt: 'Sept 24, 2026',
+    score: 91,
+    wordCount: 1420,
+    scoreDelta: '+9 pts',
+    resolvedCount: '3 of 3 Action Items Resolved',
+    resolvedImprovements: [
+      { item: 'Comma splice resolved using semicolon in paragraph 2', status: 'Fixed ✓' },
+      { item: 'Signal verb introduced for Daisy quotation in paragraph 3', status: 'Fixed ✓' },
+      { item: 'Smooth paragraph bridge added linking West Egg geography to Gatsby’s delusion', status: 'Fixed ✓' }
+    ]
+  }
+};
+
+export const BATCH_SUBMISSIONS_QUEUE = [
+  { id: 'sub-01', studentName: 'Julian Vance', title: 'The Gilded Mirage: Fabricated Identity in West Egg', wordCount: 1420, score: 91, status: 'Graded', flag: 'High Originality', approved: true },
+  { id: 'sub-02', studentName: 'Maya Lin', title: 'Spatial Stratification & Moral Decay in Gatsby', wordCount: 1380, score: 94, status: 'Graded', flag: 'Top Score', approved: true },
+  { id: 'sub-03', studentName: 'Marcus Sterling', title: 'Romantic Idealism vs Economic Corruption', wordCount: 1120, score: 72, status: 'Needs Review', flag: 'Needs Quote Help', approved: false },
+  { id: 'sub-04', studentName: 'Sofia Rodriguez', title: 'The Auditory Siren: Daisy’s Commodification', wordCount: 1510, score: 96, status: 'Graded', flag: 'Exemplary Synthesis', approved: true },
+  { id: 'sub-05', studentName: 'Devon Carter', title: 'Nick Carraway as Uncredited Director', wordCount: 1290, score: 85, status: 'Graded', flag: 'Good Analysis', approved: true },
+  { id: 'sub-06', studentName: 'Chloe Bennett', title: 'The Valley of Ashes: Industrial Purgatory', wordCount: 1340, score: 88, status: 'Graded', flag: 'Strong Voice', approved: true }
+];
+
 export const INITIAL_CLASSES = [
   { id: 'ap-lit', name: 'AP English Literature (Period 3)', students: 28, pending: 4, avgScore: 88.4 },
   { id: 'eng-101', name: 'College Composition 101 (Sec 04)', students: 32, pending: 0, avgScore: 84.1 },

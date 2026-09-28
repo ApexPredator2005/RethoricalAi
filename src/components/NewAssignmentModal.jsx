@@ -1,13 +1,28 @@
 import React, { useState } from 'react';
+import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
 
 export default function NewAssignmentModal({ classes, selectedClassId, onClose }) {
   const [title, setTitle] = useState('');
   const [classId, setClassId] = useState(selectedClassId || (classes[0] && classes[0].id));
+  const [selectedTemplateId, setSelectedTemplateId] = useState('ap_lit');
+  const [selectedToneId, setSelectedToneId] = useState('standard');
   const [dueDate, setDueDate] = useState('2026-10-31');
   const [rubric, setRubric] = useState('AP Lit Analytical Synthesis (Default)');
   const [wordLimit, setWordLimit] = useState(1500);
   const [instructions, setInstructions] = useState('');
   const [saved, setSaved] = useState(false);
+
+  const handleTemplateChange = (tmplId) => {
+    setSelectedTemplateId(tmplId);
+    const tmpl = ASSIGNMENT_TEMPLATES.find(t => t.id === tmplId);
+    if (tmpl) {
+      setWordLimit(tmpl.defaultWordLimit);
+      setRubric(`${tmpl.name} Standard`);
+      if (!title) {
+        setTitle(`${tmpl.name} Benchmark #1`);
+      }
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +34,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-surface-container-lowest border border-surface-container rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col">
+      <div className="bg-surface-container-lowest border border-surface-container rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
         <div className="bg-surface-container-low px-space-lg py-space-md flex items-center justify-between border-b border-surface-container">
           <div className="flex items-center gap-space-sm">
@@ -29,7 +44,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
                 Create New Assignment
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Configure assignment guidelines, word limits, and grading criteria
+                Configure assignment guidelines, subject discipline, and grading criteria
               </span>
             </div>
           </div>
@@ -43,13 +58,32 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
         </div>
 
         {/* Form Body */}
-        <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md">
+        <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md overflow-y-auto">
           {saved && (
             <div className="p-space-sm rounded-lg bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center gap-2">
               <span className="material-symbols-outlined text-[18px]">check_circle</span>
               Assignment published to Classroom and ready for student drafting!
             </div>
           )}
+
+          {/* Discipline Template Preset */}
+          <div className="space-y-1">
+            <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[16px] text-primary">category</span>
+              Discipline Template
+            </label>
+            <select
+              value={selectedTemplateId}
+              onChange={(e) => handleTemplateChange(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-surface-container-low border border-surface-container font-label-md text-label-md text-on-surface focus:outline-none"
+            >
+              {ASSIGNMENT_TEMPLATES.map((tmpl) => (
+                <option key={tmpl.id} value={tmpl.id}>
+                  {tmpl.name} ({tmpl.category})
+                </option>
+              ))}
+            </select>
+          </div>
 
           <div className="space-y-1">
             <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
@@ -99,17 +133,18 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
           <div className="grid grid-cols-2 gap-space-sm">
             <div className="space-y-1">
               <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
-                Grading Criteria
+                Feedback Tone
               </label>
               <select
-                value={rubric}
-                onChange={(e) => setRubric(e.target.value)}
+                value={selectedToneId}
+                onChange={(e) => setSelectedToneId(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-surface-container-low border border-surface-container font-label-md text-label-md text-on-surface focus:outline-none"
               >
-                <option>AP Lit Analytical Synthesis (Default)</option>
-                <option>AP Lang Rhetorical Analysis</option>
-                <option>Comparative Literature &amp; Motif Study</option>
-                <option>Standard High School Assignment Rubric</option>
+                {FEEDBACK_TONES.map((t) => (
+                  <option key={t.id} value={t.id}>
+                    {t.name}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -140,7 +175,7 @@ export default function NewAssignmentModal({ classes, selectedClassId, onClose }
           </div>
 
           {/* Footer Buttons */}
-          <div className="flex items-center justify-end gap-space-sm pt-2">
+          <div className="flex items-center justify-end gap-space-sm pt-2 border-t border-surface-container">
             <button
               onClick={onClose}
               type="button"

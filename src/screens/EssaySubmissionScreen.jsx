@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
 
 const SAMPLE_ESSAY = `F. Scott Fitzgerald constructs Jay Gatsby not merely as an embodiment of romantic disillusionment, but as an architect of self-erasure. In Chapter 5, the reunion at Nick Carraway’s cottage exposes the fragile infrastructure of Gatsby’s persona: his mansion, his imported silk shirts, and his punctilious demeanor are not manifestations of genuine aristocratic confidence, but rather desperate armaments assembled to contest the immutable finality of time. When Fitzgerald writes that Gatsby "revalued everything in his house according to the measure of response it drew from her well-loved eyes," he explicitly subordinates material splendor to an unattainable spectral ideal.
 
@@ -15,15 +16,24 @@ His bedroom was the simplest room of all—except where the dresser was garnishe
 Daisy put her arm through his abruptly, but he seemed absorbed in what he had just said. Possibly it had occurred to him that the colossal significance of that light had now vanished forever. Compared to the great distance that had separated him from Daisy it had seemed very near to her, almost touching her. It had seemed as close as a star to the moon. Now it was again a green light on a dock. His count of enchanted objects had diminished by one.`;
 
 export default function EssaySubmissionScreen({ onSubmitted }) {
-  const [inputMode, setInputMode] = useState('type'); // 'type' | 'upload'
+  const [inputMode, setInputMode] = useState('type'); // 'type' | 'upload' | 'batch'
+  const [selectedTemplate, setSelectedTemplate] = useState('ap_lit');
+  const [selectedTone, setSelectedTone] = useState('standard');
   const [essayText, setEssayText] = useState(SAMPLE_ESSAY);
   const [fileName, setFileName] = useState('Gatsby_Draft_page1.jpg');
+  const [batchFiles, setBatchFiles] = useState([
+    { name: 'Vance_Julian_Gatsby_Draft.docx', size: '24 KB', status: 'Ready to Process' },
+    { name: 'Lin_Maya_Spatial_Stratification.pdf', size: '1.2 MB', status: 'Ready to Process' },
+    { name: 'Sterling_Marcus_Romantic_Idealism.docx', size: '19 KB', status: 'Ready to Process' }
+  ]);
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [selectedRubric, setSelectedRubric] = useState('AP Lit Analytical Synthesis (Default)');
 
   // Reference Document State
   const [refText, setRefText] = useState(DEFAULT_REFERENCE_TEXT);
   const [refFileName, setRefFileName] = useState('The_Great_Gatsby_Chapter_5_Excerpts.pdf');
+
+  const currentTemplate = ASSIGNMENT_TEMPLATES.find(t => t.id === selectedTemplate) || ASSIGNMENT_TEMPLATES[0];
 
   const words = essayText.trim().split(/\s+/).filter(Boolean).length;
   const chars = essayText.length;
@@ -32,6 +42,15 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
 
   const refWords = refText.trim().split(/\s+/).filter(Boolean).length;
   const refMode = refWords <= 3000 ? 'direct' : 'chunked';
+
+  const handleTemplateChange = (e) => {
+    const templateId = e.target.value;
+    setSelectedTemplate(templateId);
+    const tmpl = ASSIGNMENT_TEMPLATES.find(t => t.id === templateId);
+    if (tmpl) {
+      setSelectedRubric(`${tmpl.name} Standard`);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -50,6 +69,18 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
     }
   };
 
+  const handleBatchUpload = (e) => {
+    const files = Array.from(e.target.files || []);
+    if (files.length > 0) {
+      const formatted = files.map(f => ({
+        name: f.name,
+        size: `${Math.round(f.size / 1024)} KB`,
+        status: 'Ready to Process'
+      }));
+      setBatchFiles(formatted);
+    }
+  };
+
   const handleRefUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -64,13 +95,13 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
         <div className="space-y-space-xs max-w-2xl">
           <div className="flex items-center gap-space-xs font-label-sm text-label-sm text-secondary font-semibold uppercase tracking-wider">
             <span className="material-symbols-outlined text-[16px]">edit_note</span>
-            <span>Student Submission</span>
+            <span>Student &amp; Class Submission</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            Submit Assignment: The Great Gatsby Analysis
+            Submit Assignment: {currentTemplate.name}
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Submit your completed assignment text or scan for AI-assisted evaluation and source verification.
+            Submit your completed assignment text, photo scan, or multi-student batch for AI-assisted evaluation and citation verification.
           </p>
         </div>
 
@@ -79,17 +110,17 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
             <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Word Limit</span>
             <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              {words} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">/ 1,500</span>
+              {words} <span className="font-body-sm text-body-sm text-on-surface-variant font-normal">/ {currentTemplate.defaultWordLimit}</span>
             </span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
-            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Target Level</span>
-            <span className="font-headline-sm text-headline-sm text-tertiary font-bold">Grade A Target</span>
+            <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Discipline</span>
+            <span className="font-headline-sm text-headline-sm text-tertiary font-bold truncate max-w-[120px]">{currentTemplate.category.split(' ')[0]}</span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
             <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">Draft Version</span>
             <span className="font-headline-sm text-headline-sm text-on-surface font-bold">
-              v1.3 <span className="font-label-sm text-label-sm text-secondary font-normal">(Revised)</span>
+              v2.0 <span className="font-label-sm text-label-sm text-secondary font-normal">(Revised)</span>
             </span>
           </div>
           <div className="bg-surface-container-low p-space-sm rounded-lg flex flex-col border border-surface-container">
@@ -101,13 +132,52 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
         </div>
       </div>
 
+      {/* Preset Discipline & Tone Selectors */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-space-md p-space-md bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm">
+        <div className="space-y-1">
+          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[16px] text-primary">category</span>
+            Assignment Discipline Template
+          </label>
+          <select
+            value={selectedTemplate}
+            onChange={handleTemplateChange}
+            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high cursor-pointer"
+          >
+            {ASSIGNMENT_TEMPLATES.map((tmpl) => (
+              <option key={tmpl.id} value={tmpl.id}>
+                {tmpl.name} ({tmpl.category})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="space-y-1">
+          <label className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[16px] text-secondary">tune</span>
+            Feedback Tone &amp; Level
+          </label>
+          <select
+            value={selectedTone}
+            onChange={(e) => setSelectedTone(e.target.value)}
+            className="w-full bg-surface-container p-2.5 rounded-lg font-label-md text-label-md text-on-surface border border-surface-container focus:outline-none focus:bg-surface-container-high cursor-pointer"
+          >
+            {FEEDBACK_TONES.map((t) => (
+              <option key={t.id} value={t.id}>
+                {t.name} — {t.desc.slice(0, 45)}...
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+
       {/* Segmented Input Mode Tabs */}
       <div className="flex items-center justify-between bg-surface-container p-1 rounded-xl shadow-inner border border-surface-container-high">
-        <div className="flex items-center gap-1 w-full sm:w-auto">
+        <div className="flex items-center gap-1 w-full sm:w-auto overflow-x-auto">
           <button
             onClick={() => setInputMode('type')}
             type="button"
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 shrink-0 ${
               inputMode === 'type'
                 ? 'bg-surface-container-lowest text-on-surface shadow-sm font-semibold'
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
@@ -119,14 +189,26 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
           <button
             onClick={() => setInputMode('upload')}
             type="button"
-            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 ${
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 shrink-0 ${
               inputMode === 'upload'
                 ? 'bg-surface-container-lowest text-on-surface shadow-sm font-semibold'
                 : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
             }`}
           >
             <span className="material-symbols-outlined text-[18px] text-secondary">photo_camera</span>
-            <span>Upload Document, Scan or Photo</span>
+            <span>Document / Photo Scan</span>
+          </button>
+          <button
+            onClick={() => setInputMode('batch')}
+            type="button"
+            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-space-md py-2.5 rounded-lg font-label-md text-label-md transition-all duration-200 shrink-0 ${
+              inputMode === 'batch'
+                ? 'bg-surface-container-lowest text-on-surface shadow-sm font-semibold'
+                : 'text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high'
+            }`}
+          >
+            <span className="material-symbols-outlined text-[18px] text-tertiary">folder_zip</span>
+            <span>Batch Upload ({batchFiles.length} Submissions)</span>
           </button>
         </div>
         <div className="hidden md:flex items-center gap-space-xs text-on-surface-variant font-label-sm text-label-sm pr-space-sm">
@@ -135,7 +217,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
         </div>
       </div>
 
-      {/* Upload Zone (Visible if upload mode chosen) */}
+      {/* Upload Zone (Visible if single upload mode chosen) */}
       {inputMode === 'upload' && (
         <div className="p-space-xl border-2 border-dashed border-primary/40 rounded-xl bg-surface-container-lowest flex flex-col items-center justify-center gap-space-sm text-center animate-fade-in shadow-sm">
           <span className="material-symbols-outlined text-[48px] text-primary">cloud_upload</span>
@@ -147,6 +229,54 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
             Choose File from Device
             <input type="file" className="hidden" accept="image/*,.pdf,.docx,.txt" onChange={handleFileUpload} />
           </label>
+        </div>
+      )}
+
+      {/* Batch Upload Zone (Visible if batch mode chosen) */}
+      {inputMode === 'batch' && (
+        <div className="p-space-lg bg-surface-container-lowest rounded-xl border border-surface-container shadow-sm space-y-space-md animate-fade-in">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">dynamic_feed</span>
+                Batch Multi-Student Ingestion
+              </h3>
+              <p className="font-body-sm text-body-sm text-on-surface-variant">
+                Upload multiple student submissions (.pdf, .docx, .txt, or a single .zip) to evaluate the entire cohort simultaneously.
+              </p>
+            </div>
+            <label className="px-space-md py-2 rounded-lg bg-primary text-white font-label-md text-label-md cursor-pointer hover:bg-primary/90 shadow-sm flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[18px]">add</span>
+              <span>Upload Files / ZIP</span>
+              <input type="file" multiple className="hidden" accept=".pdf,.docx,.txt,.zip" onChange={handleBatchUpload} />
+            </label>
+          </div>
+
+          <div className="divide-y divide-surface-container border border-surface-container rounded-lg overflow-hidden">
+            {batchFiles.map((file, idx) => (
+              <div key={idx} className="p-space-sm flex items-center justify-between bg-surface-container-low hover:bg-surface-container transition-colors">
+                <div className="flex items-center gap-space-sm">
+                  <span className="material-symbols-outlined text-secondary text-[20px]">description</span>
+                  <div>
+                    <div className="font-label-md text-label-md font-semibold text-on-surface">{file.name}</div>
+                    <div className="font-body-sm text-body-sm text-on-surface-variant">{file.size}</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded text-[11px] font-label-sm font-semibold bg-tertiary-fixed text-on-tertiary-fixed">
+                    {file.status}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setBatchFiles(batchFiles.filter((_, i) => i !== idx))}
+                    className="p-1 rounded text-on-surface-variant hover:text-error hover:bg-surface-container-high"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 
@@ -195,7 +325,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               <span className="w-3 h-3 rounded-full bg-tertiary-container inline-block"></span>
             </div>
             <span className="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">
-              Assignment Sheet • AP Literature &amp; Comp
+              Assignment Sheet • {currentTemplate.name}
             </span>
           </div>
           <div className="flex items-center gap-space-sm">
@@ -276,7 +406,7 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
 
         <div className="pt-space-md space-y-space-md">
           <p className="font-body-sm text-body-sm text-on-surface-variant">
-            Upload the primary text, prompt passage, or chapter. The engine will automatically check and verify student claims directly against the source material.
+            Upload the primary text, prompt passage, lab protocol, or chapter. The engine will automatically check and verify student claims directly against the source material.
           </p>
 
           <div className="flex items-center gap-space-sm">
@@ -314,8 +444,10 @@ export default function EssaySubmissionScreen({ onSubmitted }) {
               className="bg-surface-container py-2 pl-3 pr-8 rounded-lg font-label-md text-label-md text-on-surface focus:outline-none focus:bg-surface-container-high cursor-pointer border border-surface-container"
             >
               <option>AP Lit Analytical Synthesis (Default)</option>
-              <option>AP Lang Rhetorical Analysis (6-Point Scale)</option>
-              <option>Comparative Literature &amp; Motif Study</option>
+              <option>STEM &amp; Scientific Lab Report Standard</option>
+              <option>History Document-Based Question (DBQ)</option>
+              <option>Business Case Study &amp; Strategy Brief</option>
+              <option>Creative Prose &amp; Narrative Standard</option>
               <option>Standard High School Assignment Rubric</option>
             </select>
           </div>

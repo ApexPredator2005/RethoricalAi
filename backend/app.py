@@ -117,69 +117,119 @@ except ImportError:
             "ensemble_agreement": "High (94% cross-pass consensus)"
         }
 
+# Pre-defined Subject Templates
+SUBJECT_PRESETS = {
+    "ap_lit": {
+        "name": "Literature & Analytical Synthesis",
+        "category": "Humanities & English",
+        "criteria": [
+            {"id": "thesis", "name": "Thesis & Main Argument", "description": "Nuanced, defensible claim addressing prompt tensions.", "weight": 0.25, "anchors": {"low": "Restates prompt without distinct claim.", "mid": "Clear thesis but conventional logic.", "high": "Insightful thesis with nuanced reasoning."}},
+            {"id": "evidence", "name": "Textual Evidence & Quotes", "description": "Specific quotes smoothly integrated with active verbs.", "weight": 0.35, "anchors": {"low": "Sparse quotes used as plot recap.", "mid": "Adequate quotes with surface explanation.", "high": "Seamlessly woven evidence with close analysis."}},
+            {"id": "organization", "name": "Organization & Structure", "description": "Cohesive paragraph progression with natural transitions.", "weight": 0.20, "anchors": {"low": "Disjointed sequence of points.", "mid": "Functional transitions and topic sentences.", "high": "Natural rhetorical transitions and flow."}},
+            {"id": "style", "name": "Style, Voice & Grammar", "description": "Academic register, sentence rhythm, precise vocabulary.", "weight": 0.20, "anchors": {"low": "Frequent mechanical errors and informal register.", "mid": "Clear, grammatically sound prose.", "high": "Distinguished academic tone and vivid vocabulary."}}
+        ]
+    },
+    "stem_lab": {
+        "name": "STEM & Scientific Lab Report",
+        "category": "Sciences & Engineering",
+        "criteria": [
+            {"id": "hypothesis", "name": "Hypothesis & Variables", "description": "Testable hypothesis with isolated independent/dependent variables.", "weight": 0.20, "anchors": {"low": "Untestable or vague statement.", "mid": "Testable hypothesis with minor variable ambiguity.", "high": "Flawlessly operationalized variables."}},
+            {"id": "methodology", "name": "Experimental Procedure", "description": "Replicable protocol, control groups, error minimization.", "weight": 0.25, "anchors": {"low": "Missing key steps or control groups.", "mid": "Adequate procedure with minor gaps.", "high": "Fully replicable scientific protocol."}},
+            {"id": "data_analysis", "name": "Data Analysis & Evidence", "description": "Quantitative graphs, error margins, statistical trends.", "weight": 0.30, "anchors": {"low": "Raw numbers without trend analysis.", "mid": "Basic charts with standard interpretations.", "high": "Rigorous quantitative and statistical analysis."}},
+            {"id": "conclusion", "name": "Scientific Conclusion", "description": "Evidence-grounded hypothesis validation and limitation review.", "weight": 0.25, "anchors": {"low": "Unsupported summary of outcomes.", "mid": "Valid conclusions with brief limitations.", "high": "Deep scientific synthesis and future directions."}}
+        ]
+    },
+    "history_dbq": {
+        "name": "History Document-Based Question (DBQ)",
+        "category": "Social Studies & History",
+        "criteria": [
+            {"id": "context", "name": "Historical Contextualization", "description": "Broader historical context connecting events across time.", "weight": 0.20, "anchors": {"low": "Fails to situate topic in era.", "mid": "Basic historical framing.", "high": "Rich, multi-layered historical grounding."}},
+            {"id": "primary_sources", "name": "Primary Source Corroboration", "description": "Uses 4-6 primary source documents to support thesis.", "weight": 0.30, "anchors": {"low": "Quotes 1-2 docs without analysis.", "mid": "Uses docs as basic proof.", "high": "Subtle corroboration across multiple docs."}},
+            {"id": "hipp_sourcing", "name": "Historical Sourcing (HIPP)", "description": "Analyzes Point of View, Purpose, Situation, and Audience.", "weight": 0.30, "anchors": {"low": "No author perspective analysis.", "mid": "Identifies bias superficially.", "high": "Deep HIPP contextualization of all sources."}},
+            {"id": "synthesis", "name": "Complex Synthesis", "description": "Nuanced counter-perspectives and cross-era synthesis.", "weight": 0.20, "anchors": {"low": "One-sided perspective.", "mid": "Mentions alternative viewpoint.", "high": "Sophisticated thematic and era synthesis."}}
+        ]
+    }
+}
+
 # Initialize Session State
 if "submissions" not in st.session_state:
     st.session_state.submissions = [
         {
             "id": "sub-101",
-            "student_name": "Maya Lin",
-            "title": "Technological Determinism in the Industrial Age",
+            "student_name": "Julian Vance",
+            "title": "The Gilded Mirage: Fabricated Identity in West Egg",
             "timestamp": "2026-09-26 14:15",
-            "score": 8.5,
-            "rubric_name": "Default 4-Criteria",
-            "essay_text": "The industrial revolution was not merely a transition in mechanical power, but a fundamental realignment of human social relations. While early factories concentrated labor, they simultaneously dismantled artisanal autonomy...",
+            "score": 9.1,
+            "rubric_name": "Literature & Analytical Synthesis",
+            "essay_text": "F. Scott Fitzgerald constructs Jay Gatsby not merely as an embodiment of romantic disillusionment, but as an architect of self-erasure. In Chapter 5, the reunion at Nick Carraway’s cottage exposes the fragile infrastructure of Gatsby’s persona...",
             "feedback": {
-                "overall_score": 8.5,
-                "criterion_scores": {"grammar": 9, "coherence": 8, "argument_strength": 9, "originality": 8},
-                "strengths": [{"title": "Nuanced Historical Argumentation", "detail": "Draws clean distinctions between mechanical and social shifts."}],
-                "improvements": [{"title": "Counterargument Deepening", "detail": "Briefly acknowledges agrarian resistance but moves on quickly."}],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "dismantled artisanal autonomy", "note": "Excellent academic phrasing."}],
-                "pedagogical_insight": "Exceptional historical voice. Ready for independent primary source critique.",
-                "confidence": 0.94,
+                "overall_score": 9.1,
+                "criterion_scores": {"thesis": 9, "evidence": 9, "organization": 9, "style": 9},
+                "strengths": [
+                    {"title": "Compelling Thesis Articulation", "detail": "The central claim sets a distinct scholarly trajectory with precise academic vocabulary."},
+                    {"title": "Contextual Textual Synthesis", "detail": "Primary evidence is skillfully woven into the analytical argument rather than dropped as standalone quotes."}
+                ],
+                "improvements": [
+                    {"title": "Transitional Rhythm Between Paragraphs 2 & 3", "detail": "Add a conjunctive bridge linking West Egg geography to Gatsby's delusion."},
+                    {"title": "Quotation Signal Verbs", "detail": "Introduce active signal verbs when citing Daisy's dialogue."}
+                ],
+                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "revalued everything in his house", "note": "Skillful close reading of Fitzgerald's economic phrasing."}],
+                "pedagogical_insight": "Exceptional literary voice and strong conceptual maturity. Ready for independent comparative synthesis.",
+                "confidence": 0.95,
                 "ensemble_agreement": "Very High (96%)"
             }
         },
         {
             "id": "sub-102",
-            "student_name": "Marcus Vance",
-            "title": "Echoes of the Great Gatsby",
+            "student_name": "Maya Lin",
+            "title": "Spatial Stratification & Moral Decay in Gatsby",
             "timestamp": "2026-09-26 13:40",
-            "score": 6.8,
-            "rubric_name": "Default 4-Criteria",
-            "essay_text": "Fitzgerald shows that the american dream is fake because Gatsby dies at the end and no one comes to his funeral. The green light represents hope however it is out of reach...",
+            "score": 9.4,
+            "rubric_name": "Literature & Analytical Synthesis",
+            "essay_text": "The physical geography of Long Island Sound serves as a moral topography in The Great Gatsby...",
             "feedback": {
-                "overall_score": 6.8,
-                "criterion_scores": {"grammar": 6, "coherence": 7, "argument_strength": 7, "originality": 7},
-                "strengths": [{"title": "Symbolic Awareness", "detail": "Directly links Gatsby's funeral attendance to thematic superficiality."}],
-                "improvements": [
-                    {"title": "Capitalization & Mechanics", "detail": "Missed capitalizing 'American Dream' and informal wording."},
-                    {"title": "Comma Splices & Run-ons", "detail": "Missing semicolon before conjunctive adverb 'however'."}
-                ],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "represents hope however it is out of reach", "note": "Punctuation: Place a semicolon before 'however'."}],
-                "pedagogical_insight": "Good thematic grasp. Needs practice on compound-complex sentence mechanics.",
-                "confidence": 0.88,
-                "ensemble_agreement": "High (91%)"
+                "overall_score": 9.4,
+                "criterion_scores": {"thesis": 10, "evidence": 9, "organization": 9, "style": 9},
+                "strengths": [{"title": "Exemplary Spatial Argumentation", "detail": "Clean distinctions between East and West Egg moral geography."}],
+                "improvements": [{"title": "Counter-Perspective", "detail": "Consider exploring George Wilson's valley of ashes as a third pole."}],
+                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "moral topography", "note": "Brilliant phrasing."}],
+                "pedagogical_insight": "Masterclass in thematic spatial analysis.",
+                "confidence": 0.96,
+                "ensemble_agreement": "High (95%)"
             }
         },
         {
             "id": "sub-103",
-            "student_name": "Elena Rostova",
-            "title": "Ethics of Genetic Editing",
+            "student_name": "Marcus Sterling",
+            "title": "Romantic Idealism vs Economic Corruption",
             "timestamp": "2026-09-26 11:20",
-            "score": 7.4,
-            "rubric_name": "Default 4-Criteria",
-            "essay_text": "CRISPR technology provides unprecedented control over the genome. But who decides what traits are desirable? If wealthy families can enhance their offspring, inequality will become biological...",
+            "score": 7.2,
+            "rubric_name": "Literature & Analytical Synthesis",
+            "essay_text": "Fitzgerald shows that the american dream is fake because Gatsby dies at the end and no one comes to his funeral...",
             "feedback": {
-                "overall_score": 7.4,
-                "criterion_scores": {"grammar": 8, "coherence": 7, "argument_strength": 8, "originality": 7},
-                "strengths": [{"title": "Provocative Inquiries", "detail": "Uses rhetorical framing effectively to introduce bioethical dilemmas."}],
-                "improvements": [{"title": "Paragraph Organization", "detail": "Transitions between somatic and germline therapies blur together."}],
-                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "inequality will become biological", "note": "Strong, memorable thesis punchline."}],
-                "pedagogical_insight": "Compelling ethical reasoning. Suggest outlining paragraph pivots before drafting.",
-                "confidence": 0.91,
-                "ensemble_agreement": "High (93%)"
+                "overall_score": 7.2,
+                "criterion_scores": {"thesis": 7, "evidence": 6, "organization": 7, "style": 7},
+                "strengths": [{"title": "Thematic Awareness", "detail": "Directly links funeral attendance to superficiality."}],
+                "improvements": [
+                    {"title": "Quote Integration", "detail": "Quotes stand alone as full sentences without analytical frames."},
+                    {"title": "Comma Splices", "detail": "Missing semicolon before conjunctive adverb 'however'."}
+                ],
+                "excerpt_notes": [{"paragraph_index": 1, "excerpt": "represents hope however it is out of reach", "note": "Place semicolon before 'however'."}],
+                "pedagogical_insight": "Good thematic grasp. Needs practice on compound sentence punctuation.",
+                "confidence": 0.89,
+                "ensemble_agreement": "High (91%)"
             }
         }
+    ]
+
+if "batch_queue" not in st.session_state:
+    st.session_state.batch_queue = [
+        {"id": "sub-01", "student": "Julian Vance", "title": "The Gilded Mirage: Fabricated Identity in West Egg", "words": 1420, "score": 91, "status": "Graded", "approved": True},
+        {"id": "sub-02", "student": "Maya Lin", "title": "Spatial Stratification & Moral Decay in Gatsby", "words": 1380, "score": 94, "status": "Graded", "approved": True},
+        {"id": "sub-03", "student": "Marcus Sterling", "title": "Romantic Idealism vs Economic Corruption", "words": 1120, "score": 72, "status": "Needs Review", "approved": False},
+        {"id": "sub-04", "student": "Sofia Rodriguez", "title": "The Auditory Siren: Daisy’s Commodification", "words": 1510, "score": 96, "status": "Graded", "approved": True},
+        {"id": "sub-05", "student": "Devon Carter", "title": "Nick Carraway as Uncredited Director", "words": 1290, "score": 85, "status": "Graded", "approved": True},
+        {"id": "sub-06", "student": "Chloe Bennett", "title": "The Valley of Ashes: Industrial Purgatory", "words": 1340, "score": 88, "status": "Graded", "approved": True}
     ]
 
 if "active_submission" not in st.session_state:
@@ -242,7 +292,6 @@ def inject_custom_css(dark_mode=False):
         color: {text_ink};
     }}
 
-    /* Ruled Paper Texture for Essay & Report */
     .ruled-paper {{
         background-color: {card_bg};
         background-image: repeating-linear-gradient(
@@ -259,7 +308,6 @@ def inject_custom_css(dark_mode=False):
         color: {text_ink};
     }}
 
-    /* Margin Note Card */
     .margin-note {{
         background-color: {margin_bg};
         border-left: 4px solid {accent_red};
@@ -267,9 +315,7 @@ def inject_custom_css(dark_mode=False):
         margin-bottom: 12px;
         border-radius: 0 6px 6px 0;
         box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-        border-top: 1px solid {border_color};
-        border-right: 1px solid {border_color};
-        border-bottom: 1px solid {border_color};
+        border: 1px solid {border_color};
     }}
 
     .strength-card {{
@@ -278,9 +324,7 @@ def inject_custom_css(dark_mode=False):
         padding: 14px 18px;
         margin-bottom: 12px;
         border-radius: 0 6px 6px 0;
-        border-top: 1px solid {border_color};
-        border-right: 1px solid {border_color};
-        border-bottom: 1px solid {border_color};
+        border: 1px solid {border_color};
     }}
 
     .insight-card {{
@@ -288,9 +332,7 @@ def inject_custom_css(dark_mode=False):
         border-left: 4px solid {accent_blue};
         padding: 16px 20px;
         border-radius: 0 6px 6px 0;
-        border-top: 1px solid {border_color};
-        border-right: 1px solid {border_color};
-        border-bottom: 1px solid {border_color};
+        border: 1px solid {border_color};
         font-family: 'Source Serif 4', serif;
     }}
 
@@ -345,47 +387,83 @@ with st.sidebar:
 # SCREEN 1: TEACHER DASHBOARD
 if menu == "📊 Teacher Dashboard":
     st.markdown("<h1>Teacher Grading Desk</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477; font-size:1.05rem;'>Overview of student submissions, class scoring distributions, and pending assessments.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477; font-size:1.05rem;'>Overview of student submissions, batch cohort assessment, and gradebook synchronization.</p>", unsafe_allow_html=True)
 
-    col1, col2, col3, col4 = st.columns(4)
-    total_subs = len(st.session_state.submissions)
-    avg_score = round(sum(s["score"] for s in st.session_state.submissions) / max(1, total_subs), 1)
-    needs_review = sum(1 for s in st.session_state.submissions if s["score"] < 7.0)
+    dash_tab1, dash_tab2 = st.tabs(["📋 Overview & Individual Reports", "⚡ Batch Ingestion & Grading Queue"])
 
-    with col1:
-        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Total Submissions</div><div style='font-size:1.8rem; font-weight:700; color:#1B2A3D;'>{total_subs}</div></div>", unsafe_allow_html=True)
-    with col2:
-        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Class Average</div><div style='font-size:1.8rem; font-weight:700; color:#3E6E8E;'>{avg_score} / 10</div></div>", unsafe_allow_html=True)
-    with col3:
-        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Needs Revision (<7.0)</div><div style='font-size:1.8rem; font-weight:700; color:#B0503A;'>{needs_review}</div></div>", unsafe_allow_html=True)
-    with col4:
-        st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>AI Grading Agreement</div><div style='font-size:1.8rem; font-weight:700; color:#B4872E;'>94% (±1)</div></div>", unsafe_allow_html=True)
+    with dash_tab1:
+        col1, col2, col3, col4 = st.columns(4)
+        total_subs = len(st.session_state.submissions)
+        avg_score = round(sum(s["score"] for s in st.session_state.submissions) / max(1, total_subs), 1)
+        needs_review = sum(1 for s in st.session_state.submissions if s["score"] < 7.5)
 
-    st.markdown("<br/>", unsafe_allow_html=True)
-    st.subheader("Recent Submissions")
+        with col1:
+            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Total Submissions</div><div style='font-size:1.8rem; font-weight:700; color:#1B2A3D;'>{total_subs}</div></div>", unsafe_allow_html=True)
+        with col2:
+            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Class Average</div><div style='font-size:1.8rem; font-weight:700; color:#3E6E8E;'>{avg_score} / 10</div></div>", unsafe_allow_html=True)
+        with col3:
+            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Needs Revision (<7.5)</div><div style='font-size:1.8rem; font-weight:700; color:#B0503A;'>{needs_review}</div></div>", unsafe_allow_html=True)
+        with col4:
+            st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>AI Grading Agreement</div><div style='font-size:1.8rem; font-weight:700; color:#B4872E;'>95% (±1)</div></div>", unsafe_allow_html=True)
 
-    for sub in st.session_state.submissions:
-        with st.container():
-            c1, c2, c3, c4, c5 = st.columns([3, 3, 2, 2, 2])
-            c1.markdown(f"**{sub['student_name']}**<br/><span style='font-size:0.8rem; color:#708090;'>{sub['timestamp']}</span>", unsafe_allow_html=True)
-            c2.markdown(f"*{sub['title']}*")
-            c3.markdown(f"<span class='badge-pill'>{sub['rubric_name']}</span>", unsafe_allow_html=True)
-            c4.markdown(f"**Score: {sub['score']} / 10**")
-            if c5.button("Inspect Report ➔", key=f"btn_{sub['id']}"):
-                st.session_state.active_submission = sub
-                st.session_state.quiz_data = None
-                st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Assignment Feedback' tab to review.", icon="✅")
+        st.markdown("<br/>", unsafe_allow_html=True)
+        st.subheader("Recent Evaluated Submissions")
+
+        for sub in st.session_state.submissions:
+            with st.container():
+                c1, c2, c3, c4, c5 = st.columns([3, 3, 2, 2, 2])
+                c1.markdown(f"**{sub['student_name']}**<br/><span style='font-size:0.8rem; color:#708090;'>{sub['timestamp']}</span>", unsafe_allow_html=True)
+                c2.markdown(f"*{sub['title']}*")
+                c3.markdown(f"<span class='badge-pill'>{sub['rubric_name']}</span>", unsafe_allow_html=True)
+                c4.markdown(f"**Score: {sub['score']} / 10**")
+                if c5.button("Inspect Report ➔", key=f"btn_{sub['id']}"):
+                    st.session_state.active_submission = sub
+                    st.session_state.quiz_data = None
+                    st.toast(f"Switched to {sub['student_name']}'s submission. Open 'Assignment Feedback' tab to review.", icon="✅")
+
+    with dash_tab2:
+        st.subheader("Batch Ingestion & Cohort Queue")
+        st.markdown("Adjust scores inline, review AI suggestions, and bulk-sync approved grades to Classroom.")
+
+        b_c1, b_c2 = st.columns([3, 1])
+        b_c1.markdown(f"**Cohort Progress: 6 of 6 Graded** • 5 of 6 Approved for Sync")
+        if b_c2.button("🚀 Bulk Sync Approved (5)", type="primary"):
+            st.success("✅ Successfully synced 5 approved grades to Google Classroom gradebook!")
+            st.session_state.lms_sync_log.insert(0, {
+                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
+                "course": "AP Literature - Period 3 (Batch)",
+                "status": "Success",
+                "records_synced": 5
+            })
+
+        st.markdown("---")
+        for item in st.session_state.batch_queue:
+            q_col1, q_col2, q_col3, q_col4, q_col5 = st.columns([3, 3, 2, 2, 2])
+            q_col1.markdown(f"**{item['student']}**<br/><span style='font-size:0.8rem; color:#708090;'>{item['words']} words</span>", unsafe_allow_html=True)
+            q_col2.markdown(f"*{item['title']}*")
+            item['score'] = q_col3.number_input(f"Score ({item['id']})", value=int(item['score']), min_value=0, max_value=100, label_visibility="collapsed")
+            q_col4.markdown(f"<span class='badge-pill'>{'Approved ✓' if item['approved'] else 'Needs Review ⚠️'}</span>", unsafe_allow_html=True)
+            item['approved'] = q_col5.checkbox("Approve", value=item['approved'], key=f"app_{item['id']}")
 
 
 # SCREEN 2: GRADING CRITERIA
 elif menu == "📐 Grading Criteria":
     st.markdown("<h1>Grading Criteria Studio</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Define dynamic grading dimensions, assign fractional weights, and specify concrete score-band examples for AI evaluation.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Select multi-discipline presets or customize criteria dimensions, fractional weights, and concrete score-band examples.</p>", unsafe_allow_html=True)
 
-    default_rubric = load_rubric("data/default_rubric.json")
+    # Preset Loader Dropdown
+    selected_preset_key = st.selectbox(
+        "⚡ Load Preset Template (Multi-Discipline)",
+        options=list(SUBJECT_PRESETS.keys()),
+        format_func=lambda k: f"{SUBJECT_PRESETS[k]['name']} ({SUBJECT_PRESETS[k]['category']})"
+    )
+
+    if st.button("📥 Apply Selected Preset"):
+        st.session_state.builder_criteria = SUBJECT_PRESETS[selected_preset_key]["criteria"]
+        st.success(f"Loaded '{SUBJECT_PRESETS[selected_preset_key]['name']}' criteria!")
 
     if "builder_criteria" not in st.session_state:
-        st.session_state.builder_criteria = default_rubric.get("criteria", [])
+        st.session_state.builder_criteria = SUBJECT_PRESETS["ap_lit"]["criteria"]
 
     st.markdown("### Grading Dimensions")
 
@@ -412,9 +490,9 @@ elif menu == "📐 Grading Criteria":
             if "anchors" not in crit:
                 crit["anchors"] = {"low": "", "mid": "", "high": ""}
 
-            crit["anchors"]["low"] = a_col1.text_area("Low Score Band (2-3/10)", value=crit["anchors"].get("low", ""), key=f"anchor_low_{idx}", height=100)
-            crit["anchors"]["mid"] = a_col2.text_area("Mid Score Band (5-6/10)", value=crit["anchors"].get("mid", ""), key=f"anchor_mid_{idx}", height=100)
-            crit["anchors"]["high"] = a_col3.text_area("High Score Band (8-9/10)", value=crit["anchors"].get("high", ""), key=f"anchor_high_{idx}", height=100)
+            crit["anchors"]["low"] = a_col1.text_area("Low Score Band", value=crit["anchors"].get("low", ""), key=f"anchor_low_{idx}", height=80)
+            crit["anchors"]["mid"] = a_col2.text_area("Mid Score Band", value=crit["anchors"].get("mid", ""), key=f"anchor_mid_{idx}", height=80)
+            crit["anchors"]["high"] = a_col3.text_area("High Score Band", value=crit["anchors"].get("high", ""), key=f"anchor_high_{idx}", height=80)
 
             if st.button(f"🗑️ Remove Criterion", key=f"del_{idx}"):
                 criteria_to_delete.append(idx)
@@ -445,14 +523,25 @@ elif menu == "📐 Grading Criteria":
 # SCREEN 3: SUBMIT ASSIGNMENT
 elif menu == "📝 Submit Assignment":
     st.markdown("<h1>Student Assignment Submission</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#526477;'>Submit student writing or textual assignments via text or photograph/OCR, configure optional reference documents, and generate feedback.</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color:#526477;'>Submit student writing or textual assignments via text, photograph/OCR, or batch drop, configure reference documents, and generate feedback.</p>", unsafe_allow_html=True)
+
+    # Subject & Tone Selectors
+    st_c1, st_c2 = st.columns(2)
+    selected_discipline = st_c1.selectbox(
+        "Discipline Template",
+        ["Literature & Analytical Synthesis", "STEM & Scientific Lab Report", "History Document-Based Question (DBQ)", "Business Case Study", "Creative Writing"]
+    )
+    selected_tone = st_c2.selectbox(
+        "Feedback Tone",
+        ["Standard Academic", "Encouraging & Growth-Mindset", "Rigorous AP & Honors", "ELL & Language Learner Friendly"]
+    )
 
     with st.container():
         st.markdown("<div class='ruled-paper'>", unsafe_allow_html=True)
         student_name = st.text_input("Student Name", value="Alex Chen")
         essay_title = st.text_input("Assignment Title", value="The Paradox of Digital Connection")
 
-        tab_text, tab_photo = st.tabs(["✍️ Paste Plaintext", "📸 Upload Handwritten / PDF Photo"])
+        tab_text, tab_photo, tab_batch = st.tabs(["✍️ Paste Plaintext", "📸 Upload Handwritten / PDF Photo", "📁 Batch Files Ingestion"])
 
         essay_input = ""
         with tab_text:
@@ -473,14 +562,18 @@ elif menu == "📝 Submit Assignment":
                         essay_input = "Handwritten transcription: The paradox of digital connectivity is that while we are constantly reachable, genuine interpersonal intimacy declines..."
                         st.text_area("Extracted OCR Text Preview", value=essay_input, height=180)
 
+        with tab_batch:
+            batch_files = st.file_uploader("Upload multiple student submissions (.pdf, .docx, .txt, .zip)", accept_multiple_files=True)
+            if batch_files:
+                st.info(f"Loaded {len(batch_files)} student file(s) for batch processing.")
+
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<br/>", unsafe_allow_html=True)
-    with st.expander("⚙️ Advanced Evaluation Configuration (Reference Text & Criteria Selection)"):
-        selected_rubric = st.selectbox("Grading Criteria", ["Default 4-Criteria", "Custom Saved Criteria (data/custom_rubric.json)"])
+    with st.expander("⚙️ Advanced Evaluation Configuration (Reference Text & Source Grounding)"):
         model_answer = st.text_area(
-            "Reference / Source Document (Optional — for source verification and claim checks)",
-            placeholder="Provide key themes, source passages, or required concepts that an ideal response should contain..."
+            "Reference / Source Document (Optional — for citation health and factual grounding)",
+            placeholder="Provide primary passages, lab protocols, or textbook excerpts to verify claims against..."
         )
 
     if st.button("🚀 Run AI Evaluation & Feedback", type="primary"):
@@ -498,7 +591,7 @@ elif menu == "📝 Submit Assignment":
                     "title": essay_title,
                     "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M"),
                     "score": feedback.get("overall_score", 7.5),
-                    "rubric_name": selected_rubric,
+                    "rubric_name": selected_discipline,
                     "essay_text": norm,
                     "segments": segments,
                     "feedback": feedback
@@ -520,6 +613,22 @@ elif menu == "🔍 Assignment Feedback":
     st.markdown(f"<h1>Assignment Feedback: <i>{sub.get('title', 'Assignment')}</i></h1>", unsafe_allow_html=True)
     st.markdown(f"<p style='color:#526477; font-size:1.05rem;'>Student: <b>{sub.get('student_name', 'Student')}</b> | Assessed: {sub.get('timestamp', 'Recent')} | Criteria: <span class='badge-pill'>{sub.get('rubric_name', 'Standard')}</span></p>", unsafe_allow_html=True)
 
+    # View Mode Toggle: Single Report vs Draft 1 vs 2 Comparison
+    feedback_mode = st.radio("View Mode", ["Single Feedback Report", "Draft 1 vs Draft 2 Revision Comparison"], horizontal=True)
+
+    if feedback_mode == "Draft 1 vs Draft 2 Revision Comparison":
+        st.markdown("### 🔄 Revision Progress & Score Delta")
+        d_col1, d_col2 = st.columns(2)
+        with d_col1:
+            st.markdown("<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Draft 1.0 (Initial)</div><div style='font-size:2rem; font-weight:700; color:#708090;'>82 / 100</div><div style='font-size:0.85rem;'>3 Unresolved Weaknesses</div></div>", unsafe_allow_html=True)
+        with d_col2:
+            st.markdown("<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Draft 2.0 (Revised)</div><div style='font-size:2rem; font-weight:700; color:#137333;'>91 / 100 (+9 pts 🚀)</div><div style='font-size:0.85rem; color:#137333;'>3 of 3 Action Items Resolved ✓</div></div>", unsafe_allow_html=True)
+
+        st.markdown("#### Resolved Improvements Checklist")
+        st.success("✅ **Comma Splice**: Fixed using semicolon in paragraph 2")
+        st.success("✅ **Quotation Frame**: Introduced active signal verb for primary quote")
+        st.success("✅ **Transition Bridge**: Smooth paragraph connection added linking West Egg geography")
+
     # Score Banner
     overall_score = fb.get("overall_score", sub.get("score", 7.5))
     score_col1, score_col2, score_col3 = st.columns([2, 2, 2])
@@ -532,22 +641,26 @@ elif menu == "🔍 Assignment Feedback":
         agreement = fb.get("ensemble_agreement", "High (94%)")
         st.markdown(f"<div class='metric-card'><div style='font-size:0.85rem; color:#708090;'>Ensemble Agreement</div><div style='font-size:2.4rem; font-weight:700; color:#B4872E;'>{agreement}</div></div>", unsafe_allow_html=True)
 
-    # Preprocessing stats expander
-    with st.expander("📊 Ingestion & Text Statistics"):
-        stats = sub.get("segments", {}).get("stats", {"word_count": len(sub.get("essay_text", "").split()), "sentence_count": 5, "avg_sentence_length": 18.2, "paragraph_count": 3})
-        s1, s2, s3, s4 = st.columns(4)
-        s1.metric("Word Count", stats.get("word_count", 0))
-        s2.metric("Sentences", stats.get("sentence_count", 0))
-        s3.metric("Avg Sentence Length", f"{stats.get('avg_sentence_length', 0)} words")
-        s4.metric("Paragraphs", stats.get("paragraph_count", 0))
+    # Originality & Integrity Card
+    with st.expander("🛡️ Originality & Source Overlap Integrity (96% Unique)"):
+        o_c1, o_c2 = st.columns(2)
+        o_c1.metric("Original Critical Synthesis", "78%")
+        o_c1.metric("Cited Textual Passages (MLA 9)", "18%")
+        o_c2.metric("Standard Academic Idioms", "4%")
+        o_c2.metric("Uncited Match / AI Paraphrase", "0%")
+
+    # Audio Voice Feedback Player Simulation
+    with st.expander("🎙️ Teacher Voice Feedback Memo (30s Audio Note)"):
+        st.markdown("▶️ **Voice Memo:** *'Terrific close reading in paragraph 2! Just keep an eye on comma splices before conjunctive adverbs.'*")
+        st.audio("https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", format="audio/mp3")
 
     st.markdown("### Dimension Breakdown")
-    crit_scores = fb.get("criterion_scores", {"grammar": 8, "coherence": 7, "argument_strength": 8, "originality": 8})
+    crit_scores = fb.get("criterion_scores", {"thesis": 9, "evidence": 9, "organization": 8, "style": 9})
     for crit_id, score in crit_scores.items():
         c_title = crit_id.replace("_", " ").title()
         col_label, col_bar = st.columns([2, 5])
         col_label.markdown(f"**{c_title}** ({score}/10)")
-        col_bar.progress(score / 10.0)
+        col_bar.progress(min(1.0, score / 10.0))
 
     st.markdown("<br/>", unsafe_allow_html=True)
 
@@ -583,7 +696,7 @@ elif menu == "🔍 Assignment Feedback":
 
     with act_col1:
         if st.button("🎯 Practice Writing Skills (Build Practice Questions)", type="primary"):
-            with st.spinner("Crafting 4 contextual practice questions from submission patterns..."):
+            with st.spinner("Crafting contextual practice questions from submission patterns..."):
                 st.session_state.quiz_data = generate_quiz(sub.get("essay_text", ""), fb.get("improvements", []))
 
     with act_col2:
