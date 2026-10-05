@@ -5,7 +5,6 @@ export default function Header({
   selectedClassId, 
   onSelectClass, 
   role, 
-  onToggleRole, 
   onOpenNewAssignment,
   teacherProfile,
   studentProfile,
@@ -25,15 +24,12 @@ export default function Header({
     : teacherProfile?.institution;
 
   return (
-    <header className="fixed top-0 left-[260px] right-0 h-16 bg-gradient-to-r from-[#142132] via-[#1B2A3D] to-[#162538] shadow-[0_4px_24px_rgba(20,33,50,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] border-b border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent">
+    <header className="fixed top-0 left-[225px] right-0 h-16 bg-gradient-to-r from-[#142132] via-[#1B2A3D] to-[#162538] shadow-[0_4px_24px_rgba(20,33,50,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] border-b border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent">
       {/* Search Input Bar */}
       <div className="flex items-center gap-space-md w-full max-w-xl">
         <div className="relative w-full flex items-center">
-          <span className="material-symbols-outlined absolute left-space-sm text-white text-[20px]">
-            search
-          </span>
           <input 
-            className="w-full pl-9 pr-space-md py-space-xs rounded bg-white/10 hover:bg-white/[0.15] focus:bg-white/[0.20] text-white placeholder:text-white/60 font-label-md text-label-md focus:outline-none border border-white/20 focus:border-white/50 focus:ring-2 focus:ring-white/20 transition-all text-xs sm:text-sm backdrop-blur-md shadow-inner" 
+            className="w-full px-3.5 py-space-xs rounded bg-white/10 hover:bg-white/[0.15] focus:bg-white/[0.20] text-white placeholder:text-white/60 font-label-md text-label-md focus:outline-none border border-white/20 focus:border-white/50 focus:ring-2 focus:ring-white/20 transition-all text-xs sm:text-sm backdrop-blur-md shadow-inner" 
             placeholder={role === 'student' ? "Search assignments, rubrics, or topics..." : "Search students, roll numbers, or criteria..."} 
             type="text"
             value={searchQuery}
@@ -125,20 +121,6 @@ export default function Header({
             <span className="material-symbols-outlined text-[14px] text-white">arrow_drop_down</span>
           </button>
         )}
-
-        {/* Role Indicator (Locked & Non-Switchable) */}
-        <div 
-          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 text-white font-label-sm text-xs border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] select-none cursor-default backdrop-blur-md"
-          title={`Active Institutional Role: ${role === 'teacher' ? 'Faculty Instructor' : 'Student Scholar'} (Role locked)`}
-        >
-          <span className="material-symbols-outlined text-[15px] text-white">
-            {role === 'teacher' ? 'school' : 'person'}
-          </span>
-          <span className="font-semibold text-white">{role === 'teacher' ? 'Faculty' : 'Student'}</span>
-          <span className="material-symbols-outlined text-[13px] text-white/70" title="Role is permanently locked">
-            lock
-          </span>
-        </div>
       </div>
     </header>
   );

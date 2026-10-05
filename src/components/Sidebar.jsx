@@ -41,7 +41,7 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-[260px] bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-space-md border-r border-surface-container">
+    <aside className="fixed left-0 top-0 h-full w-[225px] bg-surface-container-low shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-50 flex flex-col justify-between p-3.5 border-r border-surface-container/60">
       {/* Brand & Navigation */}
       <div className="flex flex-col gap-space-lg">
         {/* Brand Header */}

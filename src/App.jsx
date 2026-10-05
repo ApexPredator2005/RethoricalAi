@@ -135,13 +135,6 @@ export default function App() {
   }, [theme]);
 
   const handleToggleTheme = () => setTheme((t) => (t === 'day' ? 'night' : 'day'));
-  const handleToggleRole = () => {
-    setRole((r) => {
-      const nextRole = r === 'teacher' ? 'student' : 'teacher';
-      setActiveTab(nextRole === 'student' ? 'submit' : 'dashboard');
-      return nextRole;
-    });
-  };
 
   const handleCreateAssignment = (newAsg) => {
     setAssignments((prev) => [newAsg, ...prev]);
@@ -340,15 +333,14 @@ export default function App() {
         studentSubmissionsCount={currentStudentSubsCount}
       />
 
-      {/* Main Container offset by Sidebar width */}
-      <div className="pl-[260px]">
+      {/* Main Container offset by Sidebar width (225px) */}
+      <div className="pl-[225px]">
         {/* Stitch Fixed Top Header */}
         <Header
           classes={classes}
           selectedClassId={selectedClassId}
           onSelectClass={setSelectedClassId}
           role={role}
-          onToggleRole={handleToggleRole}
           theme={theme}
           onToggleTheme={handleToggleTheme}
           onOpenNewAssignment={() => setShowNewAssignment(true)}
@@ -379,9 +371,6 @@ export default function App() {
         <StudentProfileModal
           studentProfile={studentProfile}
           onSave={setStudentProfile}
-          classes={classes}
-          selectedClassId={selectedClassId}
-          onSelectStudent={(scholar) => setStudentProfile(scholar)}
           onClose={() => setShowStudentProfileModal(false)}
         />
       )}

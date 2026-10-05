@@ -3,7 +3,6 @@ import { sounds } from '../utils/soundEffects';
 
 export default function RoleSelectionGateway({ onSelectRole, teacherProfile, institutionName = '' }) {
   const [selectedRole, setSelectedRole] = useState(null);
-  const [hoveredRole, setHoveredRole] = useState(null);
 
   const handleConfirmRole = (role) => {
     sounds.playStampThud();

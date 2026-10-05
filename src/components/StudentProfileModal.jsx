@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 export default function StudentProfileModal({ 
   studentProfile, 
   onSave, 
-  onClose,
-  classes = [],
-  selectedClassId,
-  onSelectStudent
+  onClose
 }) {
   const [name, setName] = useState(studentProfile?.name || 'Aria Montgomery');
   const [rollNo, setRollNo] = useState(studentProfile?.rollNo || '11A-01');
@@ -14,9 +11,6 @@ export default function StudentProfileModal({
   const [grade, setGrade] = useState(studentProfile?.grade || 'Grade 11 - Section A');
   const [institution, setInstitution] = useState(studentProfile?.institution || '');
   const [saved, setSaved] = useState(false);
-
-  const currentClass = classes.find(c => c.id === selectedClassId) || classes[0];
-  const roster = currentClass?.studentRoster || [];
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,20 +28,6 @@ export default function StudentProfileModal({
     setTimeout(() => {
       onClose();
     }, 500);
-  };
-
-  const handleQuickSwitch = (scholar) => {
-    if (onSelectStudent) {
-      onSelectStudent({
-        id: scholar.id,
-        name: scholar.name,
-        rollNo: scholar.rollNo,
-        email: scholar.email,
-        grade: currentClass.name,
-        institution: institution
-      });
-      onClose();
-    }
   };
 
   return (
@@ -74,33 +54,6 @@ export default function StudentProfileModal({
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
-
-        {/* Quick Switch Scholar Selector */}
-        {roster.length > 0 && (
-          <div className="bg-surface-container/60 px-space-lg py-space-sm border-b border-surface-container">
-            <span className="font-label-sm text-xs font-semibold text-on-surface-variant uppercase tracking-wider block mb-2">
-              Quick Switch Enrolled Scholar ({currentClass?.name}):
-            </span>
-            <div className="flex flex-wrap gap-1.5">
-              {roster.map((s) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => handleQuickSwitch(s)}
-                  className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all flex items-center gap-1.5 ${
-                    studentProfile?.name === s.name
-                      ? 'bg-secondary text-on-secondary font-bold shadow-xs'
-                      : 'bg-surface-container-low hover:bg-surface-container text-on-surface border border-surface-container'
-                  }`}
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70"></span>
-                  <span>{s.name}</span>
-                  <span className="text-[10px] opacity-75 font-code-inline">({s.rollNo})</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Profile Edit Form */}
         <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md overflow-y-auto max-h-[60vh]">

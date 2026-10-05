@@ -21,12 +21,9 @@ export default function FeedbackReportScreen({
   onOpenQuiz,
   onNavigateToDashboard 
 }) {
-  const [activeNote, setActiveNote] = useState(null);
   const [pushedToLms, setPushedToLms] = useState(false);
   const [viewMode, setViewMode] = useState('single'); // 'single' | 'split_compare'
   const [feedbackTone, setFeedbackTone] = useState(submission?.tone || 'standard');
-  const [audioPlaying, setAudioPlaying] = useState(false);
-  const [audioTime, setAudioTime] = useState(14); // seconds
   const [isRecording, setIsRecording] = useState(false);
 
   // Modals state
@@ -45,6 +42,24 @@ export default function FeedbackReportScreen({
 
   const currentIndex = submissions.findIndex(s => s.id === submission?.id);
   const hasQueue = submissions.length > 1 && currentIndex !== -1;
+
+  const handlePushGrade = () => {
+    sounds.playSuccessChime();
+    setPushedToLms(true);
+    setTimeout(() => setPushedToLms(false), 3500);
+  };
+
+  const handleAddStamp = (stamp) => {
+    sounds.playStampThud();
+    const newStamp = {
+      id: `us-${Date.now()}`,
+      text: stamp.text,
+      color: stamp.color,
+      x: 15 + Math.random() * 60,
+      y: 10 + Math.random() * 40
+    };
+    setUserStamps((prev) => [...prev, newStamp]);
+  };
 
   // Global Flight Control Keyboard Shortcuts Handler
   useEffect(() => {
@@ -92,28 +107,6 @@ export default function FeedbackReportScreen({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, hasQueue, submissions, onSelectSubmission]);
-
-  const handlePushGrade = () => {
-    sounds.playSuccessChime();
-    setPushedToLms(true);
-    setTimeout(() => setPushedToLms(false), 3500);
-  };
-
-  const toggleAudio = () => {
-    sounds.playPenScratch();
-    setAudioPlaying(!audioPlaying);
-  };
-
-  const handleAddStamp = (stamp) => {
-    sounds.playStampThud();
-    const newStamp = {
-      id: `us-${Date.now()}`,
-      label: stamp.label,
-      icon: stamp.icon,
-      text: `Teacher stamp: ${stamp.label} applied.`
-    };
-    setUserStamps(prev => [...prev, newStamp]);
-  };
 
   const handleInsertSnippet = (snippet) => {
     sounds.playPenScratch();

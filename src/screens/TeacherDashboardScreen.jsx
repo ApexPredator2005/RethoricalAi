@@ -37,6 +37,13 @@ export default function TeacherDashboardScreen({
   const [rosterFilter, setRosterFilter] = useState('all'); // 'all' | 'submitted' | 'missing'
   const [rosterSearch, setRosterSearch] = useState('');
 
+  const handleApproveToggle = (id) => {
+    sounds.playStampThud();
+    if (setQueue) {
+      setQueue(queue.map(item => item.id === id ? { ...item, approved: !item.approved } : item));
+    }
+  };
+
   // Keyboard navigation when in batch queue
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -67,13 +74,6 @@ export default function TeacherDashboardScreen({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [activeTabSection, queue, activeQueueIndex]);
-
-  const handleApproveToggle = (id) => {
-    sounds.playStampThud();
-    if (setQueue) {
-      setQueue(queue.map(item => item.id === id ? { ...item, approved: !item.approved } : item));
-    }
-  };
 
   const handleScoreChange = (id, newScore) => {
     if (setQueue) {
