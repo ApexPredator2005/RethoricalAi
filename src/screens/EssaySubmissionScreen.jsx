@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ASSIGNMENT_TEMPLATES, FEEDBACK_TONES } from '../data/mockData';
+import { sanitizeEssayText, sanitizeIdentifier, sanitizeString, validateUploadedFile } from '../utils/inputSanitizer';
 
 export default function EssaySubmissionScreen({ 
   onSubmitted, 
@@ -101,6 +102,28 @@ export default function EssaySubmissionScreen({
       return;
     }
 
+    // Input Sanitization & Boundary Validation
+    let cleanText = '';
+    let cleanTitle = '';
+    let cleanStudentName = '';
+    let cleanRefText = '';
+
+    try {
+      cleanText = sanitizeEssayText(essayText);
+      cleanTitle = sanitizeIdentifier(assignmentTitle.trim() || `${currentTemplate.name} Draft`, 'Assignment Title', 200);
+      cleanStudentName = sanitizeIdentifier(
+        role === 'student' ? (studentProfile?.name || 'Pratyush Raj') : (studentName.trim() || 'Student Submission'),
+        'Student Name',
+        100
+      );
+      if (refText.trim()) {
+        cleanRefText = sanitizeEssayText(refText);
+      }
+    } catch (validationErr) {
+      setErrorMessage(validationErr.message || 'Input validation failed. Please check payload size.');
+      return;
+    }
+
     setErrorMessage('');
     setIsEvaluating(true);
     setTimeout(() => {
@@ -116,7 +139,7 @@ export default function EssaySubmissionScreen({
         assignmentId: targetAssignment?.id || null,
         submissionMode: submissionMode,
         studentId: role === 'student' ? (studentProfile?.id || 'stu-33') : 'stu-faculty-eval',
-        studentName: role === 'student' ? (studentProfile?.name || 'Pratyush Raj') : (studentName.trim() || 'Student Submission'),
+        studentName: cleanStudentName,
         rollNo: role === 'student' ? (studentProfile?.rollNo || '33') : '33',
         usn: role === 'student' ? (studentProfile?.usn || '01JST25UCBO65') : '',
         classId: selectedClassId || currentClass.id,
@@ -128,12 +151,12 @@ export default function EssaySubmissionScreen({
         receiptCode: receiptCode,
         isLocked: true,
         submittedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ', ' + new Date().toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' }),
-        title: assignmentTitle.trim() || `${currentTemplate.name} Draft`,
-        text: essayText,
+        title: cleanTitle,
+        text: cleanText,
         template: currentTemplate,
         rubric: selectedRubric,
         tone: selectedTone,
-        refText: refText,
+        refText: cleanRefText,
         wordCount: words,
         latePolicyStatus: latePolicyStatus,
         lateStatusText: isGrace ? 'Grace Period (-5%)' : isExempt ? 'Exemption Approved' : 'Submitted On-Time',
@@ -151,14 +174,25 @@ export default function EssaySubmissionScreen({
   const handleFileUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setFileName(file.name);
-      setInputMode('type');
-      if (file.type.includes('text') || file.name.endsWith('.txt')) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          setEssayText(event.target.result || '');
-        };
-        reader.readAsText(file);
+      try {
+        const { safeName } = validateUploadedFile(file);
+        setFileName(safeName);
+        setInputMode('type');
+        if (file.type.includes('text') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const rawContent = event.target.result || '';
+            try {
+              const sanitized = sanitizeEssayText(rawContent);
+              setEssayText(sanitized);
+            } catch (err) {
+              setErrorMessage(err.message);
+            }
+          };
+          reader.readAsText(file);
+        }
+      } catch (uploadErr) {
+        setErrorMessage(uploadErr.message);
       }
     }
   };
@@ -166,25 +200,46 @@ export default function EssaySubmissionScreen({
   const handleBatchUpload = (e) => {
     const files = Array.from(e.target.files || []);
     if (files.length > 0) {
-      const formatted = files.map(f => ({
-        name: f.name,
-        size: `${Math.round(f.size / 1024)} KB`,
-        status: 'Ready to Process'
-      }));
-      setBatchFiles(prev => [...prev, ...formatted]);
+      const validFiles = [];
+      for (const f of files) {
+        try {
+          const { safeName } = validateUploadedFile(f);
+          validFiles.push({
+            name: safeName,
+            size: `${Math.round(f.size / 1024)} KB`,
+            status: 'Ready to Process'
+          });
+        } catch (err) {
+          setErrorMessage(`File "${f.name}": ${err.message}`);
+        }
+      }
+      if (validFiles.length > 0) {
+        setBatchFiles(prev => [...prev, ...validFiles]);
+      }
     }
   };
 
   const handleRefUpload = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      setRefFileName(file.name);
-      if (file.type.includes('text') || file.name.endsWith('.txt')) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          setRefText(event.target.result || '');
-        };
-        reader.readAsText(file);
+      try {
+        const { safeName } = validateUploadedFile(file);
+        setRefFileName(safeName);
+        if (file.type.includes('text') || file.name.endsWith('.txt') || file.name.endsWith('.md')) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            const rawContent = event.target.result || '';
+            try {
+              const sanitized = sanitizeEssayText(rawContent);
+              setRefText(sanitized);
+            } catch (err) {
+              setErrorMessage(err.message);
+            }
+          };
+          reader.readAsText(file);
+        }
+      } catch (err) {
+        setErrorMessage(err.message);
       }
     }
   };

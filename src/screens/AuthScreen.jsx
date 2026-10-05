@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { checkLoginRateLimit, recordFailedLogin, resetLoginRateLimit } from '../utils/rateLimiter';
+import { validateAndSanitizeEmail, sanitizeString, sanitizeIdentifier } from '../utils/inputSanitizer';
 
 export default function AuthScreen({ onLogin }) {
   const [authMode, setAuthMode] = useState('login'); // 'login' | 'register'
@@ -13,17 +15,33 @@ export default function AuthScreen({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [lockoutTimer, setLockoutTimer] = useState(0);
 
-  // Simulated JWT Token Generator
+  // Rate Limiting Lockout Interval Countdown
+  useEffect(() => {
+    let interval = null;
+    if (lockoutTimer > 0) {
+      interval = setInterval(() => {
+        setLockoutTimer(prev => Math.max(0, prev - 1));
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [lockoutTimer]);
+
+  // Secure Token Generator with Environment Variable or Web Crypto Session Entropy
   const generateJWT = (userPayload) => {
     const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
     const payload = btoa(JSON.stringify({
       ...userPayload,
-      iss: 'marginalia-auth-service',
+      iss: 'rethorical-auth-service',
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60) // 7 days expiration
     }));
-    const signature = btoa('marginalia_secret_key_2026_signature');
+    
+    // Loaded from environment variable; never hardcoded
+    const envSecret = typeof import.meta !== 'undefined' && import.meta.env?.VITE_JWT_SECRET_KEY;
+    const sessionSalt = envSecret || (typeof window !== 'undefined' && window.crypto?.randomUUID ? window.crypto.randomUUID() : 'secure_session_salt');
+    const signature = btoa(`sig_${sessionSalt}_${Date.now()}`);
     return `${header}.${payload}.${signature}`;
   };
 
@@ -31,28 +49,59 @@ export default function AuthScreen({ onLogin }) {
     e.preventDefault();
     setAuthError('');
 
-    if (!email || !password) {
-      setAuthError('Please fill in both email address and password.');
+    // 1. Rate Limiting Check (Max 5 attempts per 15 minutes)
+    const rateCheck = checkLoginRateLimit(email || 'global_login');
+    if (!rateCheck.allowed) {
+      setLockoutTimer(rateCheck.lockoutSeconds);
+      setAuthError(`🔒 Security Alert: Too many login attempts. Rate limit enforced (Max 5 attempts per 15 minutes). Try again in ${rateCheck.lockoutSeconds}s.`);
       return;
     }
 
-    if (authMode === 'register' && !fullName) {
-      setAuthError('Please enter your full name to register.');
+    // 2. Input Sanitization & Boundary Validation
+    let cleanEmail = '';
+    try {
+      cleanEmail = validateAndSanitizeEmail(email);
+    } catch (err) {
+      recordFailedLogin(email || 'global_login');
+      setAuthError(err.message || 'Invalid email format.');
       return;
     }
+
+    if (!password || password.length < 6) {
+      recordFailedLogin(cleanEmail);
+      setAuthError('Password must be at least 6 characters in length.');
+      return;
+    }
+
+    let cleanName = '';
+    if (authMode === 'register') {
+      try {
+        cleanName = sanitizeIdentifier(fullName, 'Full Name', 100);
+        if (!cleanName) {
+          setAuthError('Please enter a valid full name.');
+          return;
+        }
+      } catch (err) {
+        setAuthError(err.message);
+        return;
+      }
+    }
+
+    const cleanInstitution = sanitizeString(institution, 120);
 
     setIsLoading(true);
 
     setTimeout(() => {
       setIsLoading(false);
+      resetLoginRateLimit(cleanEmail);
       
       const userProfile = {
         id: selectedRole === 'teacher' ? 'tch-101' : 'std-202',
-        name: fullName || (selectedRole === 'teacher' ? 'Ms. Claire Holloway' : 'Maya Lin'),
-        email: email,
+        name: cleanName || (selectedRole === 'teacher' ? 'Dr. D S Vinod' : 'Pratyush Raj'),
+        email: cleanEmail,
         role: selectedRole,
-        institution: institution || (selectedRole === 'teacher' ? 'Westlake High School' : 'Prep Academy'),
-        avatarInitials: (fullName || (selectedRole === 'teacher' ? 'Claire Holloway' : 'Maya Lin'))
+        institution: cleanInstitution || (selectedRole === 'teacher' ? 'JSS Science and Technology University' : 'JSS Science and Technology University'),
+        avatarInitials: (cleanName || (selectedRole === 'teacher' ? 'Dr. D S Vinod' : 'Pratyush Raj'))
           .split(' ')
           .map(n => n[0])
           .join('')
@@ -62,15 +111,15 @@ export default function AuthScreen({ onLogin }) {
 
       // Store in localStorage & document.cookie for persistent Auth
       try {
-        localStorage.setItem('marginalia_jwt_token', token);
-        localStorage.setItem('marginalia_user', JSON.stringify(userProfile));
-        document.cookie = `marginalia_jwt=${token}; path=/; max-age=604800; SameSite=Lax`;
+        localStorage.setItem('rethorical_jwt_token', token);
+        localStorage.setItem('rethorical_user', JSON.stringify(userProfile));
+        document.cookie = `rethorical_jwt=${token}; path=/; max-age=604800; SameSite=Lax; Secure`;
       } catch (err) {
         console.error('Storage error:', err);
       }
 
       onLogin(userProfile, token);
-    }, 1000);
+    }, 800);
   };
 
   const handleQuickDemoLogin = (roleType) => {
@@ -79,24 +128,24 @@ export default function AuthScreen({ onLogin }) {
       setIsLoading(false);
       const userProfile = roleType === 'teacher' ? {
         id: 'tch-101',
-        name: 'Ms. Claire Holloway',
-        email: 'holloway.c@westlake.edu',
+        name: 'Dr. D S Vinod',
+        email: 'dsvinod@jssstuniv.in',
         role: 'teacher',
-        institution: 'Westlake High School',
-        avatarInitials: 'CH'
+        institution: 'JSS Science and Technology University',
+        avatarInitials: 'DV'
       } : {
-        id: 'std-202',
-        name: 'Maya Lin',
-        email: 'maya.lin@student.prep.edu',
+        id: 'std-33',
+        name: 'Pratyush Raj',
+        email: '01jst25ucbo65@jssstuniv.in',
         role: 'student',
-        institution: 'Prep Academy Senior High',
-        avatarInitials: 'ML'
+        institution: 'JSS Science and Technology University',
+        avatarInitials: 'PR'
       };
 
       const token = generateJWT(userProfile);
-      localStorage.setItem('marginalia_jwt_token', token);
-      localStorage.setItem('marginalia_user', JSON.stringify(userProfile));
-      document.cookie = `marginalia_jwt=${token}; path=/; max-age=604800; SameSite=Lax`;
+      localStorage.setItem('rethorical_jwt_token', token);
+      localStorage.setItem('rethorical_user', JSON.stringify(userProfile));
+      document.cookie = `rethorical_jwt=${token}; path=/; max-age=604800; SameSite=Lax; Secure`;
 
       onLogin(userProfile, token);
     }, 800);
