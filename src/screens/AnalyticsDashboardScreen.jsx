@@ -39,9 +39,10 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
           <button
             type="button"
             onClick={onNavigateToSubmit}
-            className="px-space-lg py-space-sm rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary transition-all shadow-sm"
+            className="px-space-lg py-space-sm rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-semibold hover:bg-primary transition-all shadow-sm flex items-center gap-2"
           >
-            + Submit an Assignment to Begin
+            <span className="material-symbols-outlined text-[18px]">dashboard</span>
+            <span>View Class Submission Tracker</span>
           </button>
         </div>
       </div>
@@ -79,10 +80,10 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
             <span className="font-label-sm text-label-sm text-on-surface-variant">{totalSubs} Evaluated Submissions</span>
           </div>
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
-            Cohort Prose &amp; Concept Gap Insights
+            Assignments &amp; Insight
           </h1>
           <p className="font-body-md text-body-md text-on-surface-variant">
-            Aggregated diagnostic insights computed across all student rubric dimensions to direct whole-class mini-lessons and targeted revision exercises.
+            Aggregated diagnostic insights, assignment metrics, and performance analytics across enrolled students.
           </p>
         </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './index.css';
+import { fireCelebrationConfetti } from './utils/confetti';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -16,53 +17,111 @@ import EssaySubmissionScreen from './screens/EssaySubmissionScreen';
 import FeedbackReportScreen from './screens/FeedbackReportScreen';
 import AnalyticsDashboardScreen from './screens/AnalyticsDashboardScreen';
 import LmsSyncScreen from './screens/LmsSyncScreen';
-import StudentSubmissionsScreen from './screens/StudentSubmissionsScreen';
+import StudentSubmissionsScreen, { DEFAULT_CSBS_PENDING_ASSIGNMENTS } from './screens/StudentSubmissionsScreen';
 
+// Official III Sem CSBS 'A' Department of Information Science & Engineering Curriculum Data
 const DEFAULT_CLASSES = [
   {
-    id: 'cls-101',
-    name: 'Grade 11 - Section A',
-    subject: 'AP English Literature & Rhetoric',
-    period: 'Period 2 (09:15 - 10:05 AM)',
-    room: 'Hall 304',
+    id: 'cls-cb330',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB330: Object Oriented Programming',
+    courseCode: '24CB330',
+    instructor: 'Dr. D S Vinod (DSV)',
+    credits: 4,
+    period: 'Mon/Wed/Fri (09:15 - 10:05 AM)',
+    room: 'IS103 / IS101',
     studentRoster: [
-      { id: 'stu-101', name: 'Aria Montgomery', rollNo: '11A-01', email: 'aria.m@student.edu' },
-      { id: 'stu-102', name: 'Liam Gallagher', rollNo: '11A-02', email: 'liam.g@student.edu' },
-      { id: 'stu-103', name: 'Sophia Patel', rollNo: '11A-03', email: 'sophia.p@student.edu' },
-      { id: 'stu-104', name: 'Ethan Zhang', rollNo: '11A-04', email: 'ethan.z@student.edu' },
-      { id: 'stu-105', name: 'Maya Lin', rollNo: '11A-05', email: 'maya.l@student.edu' },
-      { id: 'stu-106', name: 'Noah Al-Mansoor', rollNo: '11A-06', email: 'noah.a@student.edu' },
-      { id: 'stu-107', name: 'Zoe Deschanel', rollNo: '11A-07', email: 'zoe.d@student.edu' },
-      { id: 'stu-108', name: 'Lucas Vance', rollNo: '11A-08', email: 'lucas.v@student.edu' }
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' },
+      { id: 'stu-01', name: 'Aarav Sharma', rollNo: '01', usn: '01JST25UCB001', email: 'aarav.s@jssstuniv.in' },
+      { id: 'stu-12', name: 'Ananya Deshmukh', rollNo: '12', usn: '01JST25UCB012', email: 'ananya.d@jssstuniv.in' },
+      { id: 'stu-24', name: 'Karthik Raja', rollNo: '24', usn: '01JST25UCB024', email: 'karthik.r@jssstuniv.in' },
+      { id: 'stu-45', name: 'Rohan Varma', rollNo: '45', usn: '01JST25UCB045', email: 'rohan.v@jssstuniv.in' },
+      { id: 'stu-58', name: 'Sneha Kulkarni', rollNo: '58', usn: '01JST25UCB058', email: 'sneha.k@jssstuniv.in' }
     ]
   },
   {
-    id: 'cls-102',
-    name: 'Grade 12 - Advanced Honours',
-    subject: 'Comparative World Literature & Criticism',
-    period: 'Period 4 (11:20 - 12:10 PM)',
-    room: 'Seminar Room B',
+    id: 'cls-cb310',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB310: Formal Language & Automata Theory',
+    courseCode: '24CB310',
+    instructor: 'Ms. Sindhu G (SG)',
+    credits: 4,
+    period: 'Tue/Thu (10:15 - 11:05 AM)',
+    room: 'IS103 / IS102',
     studentRoster: [
-      { id: 'stu-201', name: 'Hannah Abbott', rollNo: '12H-01', email: 'hannah.a@student.edu' },
-      { id: 'stu-202', name: 'Cedric Diggory', rollNo: '12H-02', email: 'cedric.d@student.edu' },
-      { id: 'stu-203', name: 'Cho Chang', rollNo: '12H-03', email: 'cho.c@student.edu' },
-      { id: 'stu-204', name: 'Dean Thomas', rollNo: '12H-04', email: 'dean.t@student.edu' },
-      { id: 'stu-205', name: 'Padma Patil', rollNo: '12H-05', email: 'padma.p@student.edu' },
-      { id: 'stu-206', name: 'Seamus Finnigan', rollNo: '12H-06', email: 'seamus.f@student.edu' }
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' },
+      { id: 'stu-01', name: 'Aarav Sharma', rollNo: '01', usn: '01JST25UCB001', email: 'aarav.s@jssstuniv.in' },
+      { id: 'stu-12', name: 'Ananya Deshmukh', rollNo: '12', usn: '01JST25UCB012', email: 'ananya.d@jssstuniv.in' },
+      { id: 'stu-24', name: 'Karthik Raja', rollNo: '24', usn: '01JST25UCB024', email: 'karthik.r@jssstuniv.in' }
     ]
   },
   {
-    id: 'cls-103',
-    name: 'Grade 10 - Section C',
-    subject: 'Academic Writing & Critical Reasoning',
-    period: 'Period 6 (02:00 - 02:50 PM)',
-    room: 'Hall 208',
+    id: 'cls-cb320',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB320: Computer Organization & Architecture',
+    courseCode: '24CB320',
+    instructor: 'Ms. Malapriya S (MPS)',
+    credits: 4,
+    period: 'Mon/Wed (11:20 - 12:10 PM)',
+    room: 'IS103 / IS102',
     studentRoster: [
-      { id: 'stu-301', name: 'Benjamin Sisko', rollNo: '10C-01', email: 'ben.s@student.edu' },
-      { id: 'stu-302', name: 'Kira Nerys', rollNo: '10C-02', email: 'kira.n@student.edu' },
-      { id: 'stu-303', name: 'Julian Bashir', rollNo: '10C-03', email: 'julian.b@student.edu' },
-      { id: 'stu-304', name: 'Jadzia Dax', rollNo: '10C-04', email: 'jadzia.d@student.edu' },
-      { id: 'stu-305', name: 'Miles O\'Brien', rollNo: '10C-05', email: 'miles.o@student.edu' }
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' },
+      { id: 'stu-12', name: 'Ananya Deshmukh', rollNo: '12', usn: '01JST25UCB012', email: 'ananya.d@jssstuniv.in' },
+      { id: 'stu-45', name: 'Rohan Varma', rollNo: '45', usn: '01JST25UCB045', email: 'rohan.v@jssstuniv.in' }
+    ]
+  },
+  {
+    id: 'cls-cb340',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB340: Computational Statistics',
+    courseCode: '24CB340',
+    instructor: 'Ms. Lavanya M S (LMS)',
+    credits: 4,
+    period: 'Tue/Fri (02:00 - 02:50 PM)',
+    room: 'IS103 / IS101',
+    studentRoster: [
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' },
+      { id: 'stu-24', name: 'Karthik Raja', rollNo: '24', usn: '01JST25UCB024', email: 'karthik.r@jssstuniv.in' }
+    ]
+  },
+  {
+    id: 'cls-cb350',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB350: Software Engineering',
+    courseCode: '24CB350',
+    instructor: 'Ms. Shruthi N (SN)',
+    credits: 4,
+    period: 'Thu/Fri (03:00 - 03:50 PM)',
+    room: 'IS103 / IS101',
+    studentRoster: [
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' },
+      { id: 'stu-01', name: 'Aarav Sharma', rollNo: '01', usn: '01JST25UCB001', email: 'aarav.s@jssstuniv.in' }
+    ]
+  },
+  {
+    id: 'cls-cb360',
+    name: "III Sem CSBS 'A'",
+    subject: '24CB360: Financial & Cost Accounting',
+    courseCode: '24CB360',
+    instructor: 'Prof. Kaveri D (KD)',
+    credits: 4,
+    period: 'Mon/Wed (03:00 - 03:50 PM)',
+    room: 'IS102 / IS103',
+    studentRoster: [
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' }
+    ]
+  },
+  {
+    id: 'cls-hu311',
+    name: "III Sem CSBS 'A'",
+    subject: '24HU311: Universal Human Values (UHV) - II',
+    courseCode: '24HU311',
+    instructor: 'Ms. Vyshali Rao K P (VRK)',
+    credits: 2,
+    period: 'Sat (10:00 - 11:40 AM)',
+    room: 'IS103',
+    studentRoster: [
+      { id: 'stu-33', name: 'Pratyush Raj', rollNo: '33', usn: '01JST25UCBO65', email: '01jst25ucbo65@jssstuniv.in' }
     ]
   }
 ];
@@ -74,13 +133,14 @@ export default function App() {
   });
   const [activeTab, setActiveTab] = useState(() => {
     const savedRole = typeof sessionStorage !== 'undefined' ? sessionStorage.getItem('rethorical_academic_role') : null;
-    return savedRole === 'student' ? 'submit' : 'dashboard';
+    return savedRole === 'student' ? 'student_submissions' : 'dashboard';
   });
   const [classes, setClasses] = useState(DEFAULT_CLASSES);
   const [selectedClassId, setSelectedClassId] = useState(DEFAULT_CLASSES[0].id);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedTargetAssignment, setSelectedTargetAssignment] = useState(null);
 
-  // Handle permanent one-time role selection
+  // Handle role selection (Student lands directly on Pending Assignments)
   const handleSelectRole = (selectedRole) => {
     setRole(selectedRole);
     try {
@@ -88,33 +148,37 @@ export default function App() {
     } catch (e) {
       console.warn('Session storage note:', e);
     }
-    setActiveTab(selectedRole === 'student' ? 'submit' : 'dashboard');
+    setActiveTab(selectedRole === 'student' ? 'student_submissions' : 'dashboard');
   };
+
+  // Faculty Coordinator Profile (Dr. D S Vinod default)
   const [teacherProfile, setTeacherProfile] = useState({
-    name: 'Dr. Eleanor Vance',
-    title: 'Senior Faculty & Rhetoric Chair',
-    institution: '',
-    department: 'Department of Humanities & Rhetoric',
-    academicYear: '2026–2027 Academic Session',
-    email: 'e.vance@faculty.edu'
+    name: 'Dr. D S Vinod',
+    title: 'Professor & Course Coordinator',
+    institution: 'JSS Science and Technology University',
+    department: 'Department of Information Science & Engineering',
+    academicYear: '2026–2027 Academic Session (Sem III)',
+    email: 'dsvinod@jssstuniv.in'
   });
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [prefillStudentName, setPrefillStudentName] = useState('');
 
-  // Student Scholar Profile (Aria Montgomery default)
+  // Student Scholar Profile (Pratyush Raj default)
   const [studentProfile, setStudentProfile] = useState({
-    id: 'stu-101',
-    name: 'Aria Montgomery',
-    rollNo: '11A-01',
-    email: 'aria.m@student.edu',
-    grade: 'Grade 11 - Section A',
-    institution: ''
+    id: 'stu-33',
+    name: 'Pratyush Raj',
+    rollNo: '33',
+    usn: '01JST25UCBO65',
+    email: '01jst25ucbo65@jssstuniv.in',
+    grade: "III Sem CSBS 'A'",
+    department: 'Department of Information Science & Engineering',
+    institution: 'JSS Science and Technology University'
   });
   const [showStudentProfileModal, setShowStudentProfileModal] = useState(false);
   const [receiptModalSub, setReceiptModalSub] = useState(null);
 
-  // Live dynamic data state (starts completely clean — no synthetic mock submissions)
-  const [assignments, setAssignments] = useState([]);
+  // Dynamic assignments & submissions
+  const [assignments, setAssignments] = useState(DEFAULT_CSBS_PENDING_ASSIGNMENTS);
   const [submissions, setSubmissions] = useState([]);
   const [batchQueue, setBatchQueue] = useState([]);
   const [currentSubmission, setCurrentSubmission] = useState(null);
@@ -141,11 +205,15 @@ export default function App() {
   };
 
   const handleAssignmentSubmitted = (subData) => {
+    fireCelebrationConfetti();
     const newSub = {
       id: `sub-${Date.now()}`,
-      studentId: subData.studentId || (role === 'student' ? studentProfile.id : 'sub-usr'),
-      studentName: (subData.studentName || '').trim() || (role === 'student' ? studentProfile.name : 'Student Submission'),
-      rollNo: subData.rollNo || (role === 'student' ? studentProfile.rollNo : '11A-01'),
+      assignmentId: subData.assignmentId || null,
+      submissionMode: subData.submissionMode || 'coursework',
+      studentId: subData.studentId || (role === 'student' ? studentProfile.id : 'stu-33'),
+      studentName: (subData.studentName || '').trim() || (role === 'student' ? studentProfile.name : 'Pratyush Raj'),
+      rollNo: subData.rollNo || (role === 'student' ? studentProfile.rollNo : '33'),
+      usn: subData.usn || (role === 'student' ? studentProfile.usn : '01JST25UCBO65'),
       classId: subData.classId || selectedClassId,
       className: subData.className || currentClass.name,
       subject: subData.subject || currentClass.subject,
@@ -157,9 +225,13 @@ export default function App() {
       title: (subData.title || '').trim() || `${subData.rubric || 'Assignment'} Draft`,
       text: subData.text || '',
       referenceText: subData.referenceText || '',
-      rubric: subData.rubric || 'Standard Criteria',
+      rubric: subData.rubric || 'STEM & Scientific Lab Report Standard',
       wordCount: subData.wordCount || 0,
-      overallScore: subData.overallScore || 89,
+      latePolicyStatus: subData.latePolicyStatus || 'on_time',
+      lateStatusText: subData.lateStatusText || 'Submitted On-Time',
+      lateDeduction: subData.lateDeduction || 0,
+      rawScore: subData.rawScore || 91,
+      overallScore: subData.overallScore || 91,
       status: 'Needs Review',
       approved: false,
       timestamp: 'Just now',
@@ -190,18 +262,52 @@ export default function App() {
       return (
         <StudentSubmissionsScreen
           submissions={submissions}
+          assignments={assignments}
           studentProfile={studentProfile}
           onNavigateToReport={(studentSub) => {
             if (studentSub) setCurrentSubmission(studentSub);
             setActiveTab('report');
           }}
-          onNavigateToSubmit={() => setActiveTab('submit')}
+          onNavigateToSubmit={(asg) => {
+            if (asg) {
+              setSelectedTargetAssignment(asg);
+              const matchedClass = classes.find(c => c.courseCode === asg.courseCode || c.id === asg.classId);
+              if (matchedClass) setSelectedClassId(matchedClass.id);
+            } else {
+              setSelectedTargetAssignment(null);
+            }
+            setActiveTab('submit');
+          }}
           onOpenReceiptModal={(sub) => setReceiptModalSub(sub)}
           onOpenQuiz={(sub) => {
             if (sub) setCurrentSubmission(sub);
             setShowQuizModal(true);
           }}
           onOpenProfileModal={() => setShowStudentProfileModal(true)}
+        />
+      );
+    }
+
+    // Role-based protection: Teachers should not submit assignments; route to dashboard
+    if (role === 'teacher' && (activeTab === 'submit' || activeTab === 'student_submissions')) {
+      return (
+        <TeacherDashboardScreen
+          classes={classes}
+          selectedClassId={selectedClassId}
+          onSelectClass={setSelectedClassId}
+          assignments={assignments}
+          submissions={submissions}
+          queue={batchQueue}
+          setQueue={setBatchQueue}
+          teacherProfile={teacherProfile}
+          onOpenProfileModal={() => setShowProfileModal(true)}
+          onOpenNewAssignment={() => setShowNewAssignment(true)}
+          onNavigateToReport={(studentSub) => {
+            if (studentSub) setCurrentSubmission(studentSub);
+            setActiveTab('report');
+          }}
+          onNavigateToLms={() => setActiveTab('lms')}
+          onNavigateToSubmit={() => setActiveTab('dashboard')}
         />
       );
     }
@@ -237,12 +343,22 @@ export default function App() {
         return (
           <StudentSubmissionsScreen
             submissions={submissions}
+            assignments={assignments}
             studentProfile={studentProfile}
             onNavigateToReport={(studentSub) => {
               if (studentSub) setCurrentSubmission(studentSub);
               setActiveTab('report');
             }}
-            onNavigateToSubmit={() => setActiveTab('submit')}
+            onNavigateToSubmit={(asg) => {
+              if (asg) {
+                setSelectedTargetAssignment(asg);
+                const matchedClass = classes.find(c => c.courseCode === asg.courseCode || c.id === asg.classId);
+                if (matchedClass) setSelectedClassId(matchedClass.id);
+              } else {
+                setSelectedTargetAssignment(null);
+              }
+              setActiveTab('submit');
+            }}
             onOpenReceiptModal={(sub) => setReceiptModalSub(sub)}
             onOpenQuiz={(sub) => {
               if (sub) setCurrentSubmission(sub);
@@ -257,6 +373,7 @@ export default function App() {
         return (
           <EssaySubmissionScreen
             initialStudentName={prefillStudentName}
+            targetAssignment={selectedTargetAssignment}
             classes={classes}
             selectedClassId={selectedClassId}
             onSelectClass={setSelectedClassId}
@@ -315,7 +432,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-surface text-on-surface antialiased">
-      {/* Stitch Fixed Navigation Sidebar (260px) */}
+      {/* Stitch Fixed Navigation Sidebar (225px) */}
       <Sidebar
         activeTab={activeTab}
         onTabChange={setActiveTab}

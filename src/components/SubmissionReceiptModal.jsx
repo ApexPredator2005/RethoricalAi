@@ -9,9 +9,9 @@ export default function SubmissionReceiptModal({ submission, onClose, onNavigate
 
   return (
     <div className="fixed inset-0 bg-black/65 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fade-in">
-      <div className="bg-surface-container-lowest border border-surface-container rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col">
+      <div className="bg-surface-container-lowest border border-surface-container rounded-2xl shadow-2xl max-w-lg w-full overflow-hidden flex flex-col animate-scale-in">
         {/* Receipt Header Banner */}
-        <div className="bg-primary px-space-lg py-space-md text-on-primary flex items-center justify-between">
+        <div className="bg-primary px-space-lg py-space-md text-on-primary flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-space-sm">
             <span className="material-symbols-outlined text-[32px] text-on-primary">verified</span>
             <div>
@@ -54,21 +54,21 @@ export default function SubmissionReceiptModal({ submission, onClose, onNavigate
               <span className="text-on-surface-variant block font-medium">Enrolled Scholar</span>
               <span className="font-bold text-on-surface text-sm">{submission.studentName}</span>
               <span className="text-[11px] font-code-inline text-on-surface-variant block">
-                ID: {submission.rollNo || '11A-01'}
+                Roll No: {submission.rollNo || '33'} {submission.usn ? `• USN: ${submission.usn}` : ''}
               </span>
             </div>
             <div>
               <span className="text-on-surface-variant block font-medium">Recipient Instructor</span>
-              <span className="font-bold text-on-surface text-sm">{submission.teacherName || 'Dr. Eleanor Vance'}</span>
+              <span className="font-bold text-on-surface text-sm">{submission.teacherName || 'Dr. D S Vinod'}</span>
               <span className="text-[11px] text-on-surface-variant block">
-                Senior Faculty Chair
+                Course Coordinator
               </span>
             </div>
             <div className="col-span-2 pt-1 border-t border-surface-container">
               <span className="text-on-surface-variant block font-medium">Course &amp; Subject</span>
-              <span className="font-bold text-on-surface text-sm">{submission.subject || 'AP English Literature & Rhetoric'}</span>
+              <span className="font-bold text-on-surface text-sm">{submission.subject || '24CB330: Object Oriented Programming'}</span>
               <span className="text-[11px] text-on-surface-variant block">
-                Class Section: {submission.className || 'Grade 11 - Section A'}
+                Class Section: {submission.className || "III Sem CSBS 'A'"}
               </span>
             </div>
           </div>
@@ -97,6 +97,19 @@ export default function SubmissionReceiptModal({ submission, onClose, onNavigate
               <span className="text-on-surface-variant">Grading Rubric:</span>
               <span className="text-on-surface font-medium">
                 {submission.rubric || 'Standard Analytical Rubric'}
+              </span>
+            </div>
+            <div className="flex justify-between py-1 border-b border-surface-container">
+              <span className="text-on-surface-variant">Turn-In Compliance:</span>
+              <span className={`inline-flex items-center gap-1 font-bold font-code-inline text-xs ${
+                submission.latePolicyStatus === 'grace_window'
+                  ? 'text-primary'
+                  : 'text-secondary'
+              }`}>
+                <span className="material-symbols-outlined text-[14px]">
+                  {submission.latePolicyStatus === 'grace_window' ? 'timelapse' : 'check_circle'}
+                </span>
+                {submission.lateStatusText || (submission.latePolicyStatus === 'grace_window' ? 'Grace Period (-5%)' : 'Submitted On-Time (Verified)')}
               </span>
             </div>
             <div className="flex justify-between py-1 border-b border-surface-container">

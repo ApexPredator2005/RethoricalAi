@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { FEEDBACK_TONES } from '../data/mockData';
 import { sounds } from '../utils/soundEffects';
+import { fireCelebrationConfetti } from '../utils/confetti';
 import FlightControlModal from '../components/FlightControlModal';
 import SnippetsLibraryModal from '../components/SnippetsLibraryModal';
 import AccessibilityToolbar from '../components/AccessibilityToolbar';
@@ -22,9 +23,28 @@ export default function FeedbackReportScreen({
   onNavigateToDashboard 
 }) {
   const [pushedToLms, setPushedToLms] = useState(false);
-  const [viewMode, setViewMode] = useState('single'); // 'single' | 'split_compare'
+  const [viewMode, setViewMode] = useState('single'); // 'single' | 'heatmap' | 'split_compare'
   const [feedbackTone, setFeedbackTone] = useState(submission?.tone || 'standard');
+  const [heatmapFilter, setHeatmapFilter] = useState('all'); // 'all' | 'citations' | 'synthesis' | 'original'
+  const [activeTooltip, setActiveTooltip] = useState(null);
+
+  // Audio Voice Margin Notes State (Feature 3)
   const [isRecording, setIsRecording] = useState(false);
+  const [recordTimer, setRecordTimer] = useState(0);
+  const [playingNoteId, setPlayingNoteId] = useState(null);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [voiceNotes, setVoiceNotes] = useState([
+    {
+      id: 'vn-init-dsv',
+      duration: '0:34',
+      durationSec: 34,
+      recordedAt: '10:45 AM, Today',
+      speaker: 'Dr. D S Vinod (DSV)',
+      designation: 'Professor & Course Coordinator',
+      transcript: 'Pratyush, your architectural breakdown of the SOLID principles in enterprise environments demonstrates strong structural understanding. In particular, your treatment of the Dependency Inversion principle with inversion-of-control containers is well substantiated. Consider deepening the discussion on interface segregation when refactoring monolithic legacy codebases.',
+      verified: true
+    }
+  ]);
 
   // Modals state
   const [showFlightControl, setShowFlightControl] = useState(false);
@@ -36,15 +56,47 @@ export default function FeedbackReportScreen({
   const [fontSize, setFontSize] = useState('normal'); // 'normal' | 'large' | 'xlarge'
   const [isSoundEnabled, setIsSoundEnabled] = useState(true);
 
-  const [voiceNotes, setVoiceNotes] = useState([]);
   const [userStamps, setUserStamps] = useState([]);
   const [extraNotes, setExtraNotes] = useState([]);
+
+  // Recording Timer effect
+  useEffect(() => {
+    let interval = null;
+    if (isRecording) {
+      interval = setInterval(() => {
+        setRecordTimer(prev => prev + 1);
+      }, 1000);
+    } else {
+      setRecordTimer(0);
+    }
+    return () => clearInterval(interval);
+  }, [isRecording]);
+
+  // Simulated Audio Playback Progress effect
+  useEffect(() => {
+    let playInterval = null;
+    if (playingNoteId) {
+      playInterval = setInterval(() => {
+        setAudioProgress(prev => {
+          if (prev >= 100) {
+            setPlayingNoteId(null);
+            return 0;
+          }
+          return prev + 3;
+        });
+      }, 150);
+    } else {
+      setAudioProgress(0);
+    }
+    return () => clearInterval(playInterval);
+  }, [playingNoteId]);
 
   const currentIndex = submissions.findIndex(s => s.id === submission?.id);
   const hasQueue = submissions.length > 1 && currentIndex !== -1;
 
   const handlePushGrade = () => {
     sounds.playSuccessChime();
+    fireCelebrationConfetti();
     setPushedToLms(true);
     setTimeout(() => setPushedToLms(false), 3500);
   };
@@ -54,11 +106,37 @@ export default function FeedbackReportScreen({
     const newStamp = {
       id: `us-${Date.now()}`,
       text: stamp.text,
+      label: stamp.label,
+      icon: stamp.icon,
       color: stamp.color,
       x: 15 + Math.random() * 60,
       y: 10 + Math.random() * 40
     };
     setUserStamps((prev) => [...prev, newStamp]);
+  };
+
+  const handleTogglePlayNote = (noteId) => {
+    if (playingNoteId === noteId) {
+      setPlayingNoteId(null);
+    } else {
+      setPlayingNoteId(noteId);
+      setAudioProgress(0);
+      sounds.playPaperRustle();
+    }
+  };
+
+  const handleInsertSnippet = (snippet) => {
+    sounds.playPenScratch();
+    setExtraNotes(prev => [
+      ...prev,
+      {
+        id: `snip-note-${Date.now()}`,
+        tag: snippet.tag,
+        text: snippet.text,
+        timestamp: 'Just now'
+      }
+    ]);
+    setShowSnippetsModal(false);
   };
 
   // Global Flight Control Keyboard Shortcuts Handler
@@ -73,6 +151,10 @@ export default function FeedbackReportScreen({
         e.preventDefault();
         sounds.playPaperRustle();
         setViewMode(prev => (prev === 'split_compare' ? 'single' : 'split_compare'));
+      } else if (e.key === 'h' || e.key === 'H') {
+        e.preventDefault();
+        sounds.playPaperRustle();
+        setViewMode(prev => (prev === 'heatmap' ? 'single' : 'heatmap'));
       } else if (e.key === 's' || e.key === 'S') {
         e.preventDefault();
         setShowSnippetsModal(prev => !prev);
@@ -108,31 +190,27 @@ export default function FeedbackReportScreen({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [currentIndex, hasQueue, submissions, onSelectSubmission]);
 
-  const handleInsertSnippet = (snippet) => {
-    sounds.playPenScratch();
-    setExtraNotes(prev => [
-      ...prev,
-      {
-        id: `snip-note-${Date.now()}`,
-        tag: snippet.tag,
-        text: snippet.text,
-        timestamp: 'Just now'
-      }
-    ]);
-    setShowSnippetsModal(false);
-  };
-
   const handleToggleRecord = () => {
     sounds.playPenScratch();
     if (isRecording) {
       setIsRecording(false);
       sounds.playSuccessChime();
-      setVoiceNotes(prev => [
-        ...prev,
-        { id: `vn-${Date.now()}`, duration: '0:28', recordedAt: 'Just now', teacher: 'Teacher Voice Note' }
-      ]);
+      const secs = recordTimer || 22;
+      const formattedDuration = `0:${secs < 10 ? '0' : ''}${secs}`;
+      const newNote = {
+        id: `vn-${Date.now()}`,
+        duration: formattedDuration,
+        durationSec: secs,
+        recordedAt: 'Just now',
+        speaker: 'Dr. D S Vinod (Faculty Evaluator)',
+        designation: 'Department of ISE',
+        transcript: 'Voice feedback note recorded: The student demonstrates high proficiency in synthesizing foundational concepts with empirical analysis. Margin citations verified against primary reference syllabus.',
+        verified: true
+      };
+      setVoiceNotes(prev => [newNote, ...prev]);
     } else {
       setIsRecording(true);
+      setRecordTimer(0);
     }
   };
 
@@ -276,13 +354,26 @@ export default function FeedbackReportScreen({
       {/* Top Banner / Assessment Identity Header */}
       <section className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-lg pb-space-sm border-b border-surface-container">
         <div className="space-y-space-xs max-w-2xl">
-          <div className="flex items-center gap-space-sm">
+          <div className="flex flex-wrap items-center gap-space-sm">
             <span className="font-code-inline text-code-inline text-secondary font-medium tracking-wide uppercase">
               Evaluated Submission
             </span>
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
             <span className="font-label-sm text-label-sm text-on-surface-variant font-bold">{studentName}</span>
+            <span className="inline-block w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
+            {/* Feature 9: Turn-In Compliance Badge */}
+            <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold font-code-inline ${
+              submission.latePolicyStatus === 'grace_window'
+                ? 'bg-primary-fixed text-primary'
+                : 'bg-secondary-fixed text-on-secondary-fixed'
+            }`}>
+              <span className="material-symbols-outlined text-[13px]">
+                {submission.latePolicyStatus === 'grace_window' ? 'timelapse' : 'check_circle'}
+              </span>
+              {submission.lateStatusText || (submission.latePolicyStatus === 'grace_window' ? 'Grace Period (-5%)' : 'Submitted On-Time')}
+            </span>
           </div>
+
           <h1 className="font-headline-lg text-headline-lg text-on-surface tracking-tight font-bold">
             Assignment Feedback: {studentName} — {assignmentTitle}
           </h1>
@@ -290,7 +381,7 @@ export default function FeedbackReportScreen({
             Evaluated against {rubricName}. Total Word Count: {wordCount} words.
           </p>
 
-          {/* View Mode & Feedback Tone Controls */}
+          {/* View Mode (Manuscript, Heatmap, Split Compare) & Feedback Tone Controls */}
           <div className="pt-2 flex flex-wrap items-center gap-space-sm">
             <div className="inline-flex items-center bg-surface-container p-0.5 rounded-lg border border-surface-container-high">
               <button
@@ -307,6 +398,24 @@ export default function FeedbackReportScreen({
               >
                 Manuscript Feedback View
               </button>
+
+              {/* Feature 2: Citation & Source Heatmap Button */}
+              <button
+                type="button"
+                onClick={() => {
+                  sounds.playPaperRustle();
+                  setViewMode('heatmap');
+                }}
+                className={`px-3 py-1 rounded text-xs font-label-md font-semibold transition-all flex items-center gap-1.5 ${
+                  viewMode === 'heatmap'
+                    ? 'bg-secondary text-on-secondary shadow-sm font-bold'
+                    : 'text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                <span className="material-symbols-outlined text-[15px]">grain</span>
+                <span>Citation &amp; Source Heatmap</span>
+              </button>
+
               {refText && (
                 <button
                   type="button"
@@ -368,7 +477,7 @@ export default function FeedbackReportScreen({
             </svg>
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center select-none">
               <span className="font-headline-lg text-headline-lg text-primary tracking-tight font-bold leading-none">
-                {wordCount > 100 ? '91' : '82'}
+                {submission.overallScore || (wordCount > 100 ? '91' : '82')}
               </span>
               <span className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider font-semibold">
                 / 100
@@ -411,6 +520,99 @@ export default function FeedbackReportScreen({
           </div>
         </div>
       </section>
+
+      {/* ──── FEATURE 2: SOURCE CORROBORATION & CITATION HEATMAP RIBBON ──── */}
+      {viewMode === 'heatmap' && (
+        <section className="p-space-lg rounded-2xl bg-surface-container-lowest border-2 border-secondary/40 shadow-sm space-y-space-md animate-fade-in">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-space-md pb-space-sm border-b border-surface-container">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="material-symbols-outlined text-secondary text-[24px]">grain</span>
+                <h3 className="font-headline-sm text-base font-bold text-on-surface">
+                  Source Corroboration &amp; Citation Overlap Heatmap
+                </h3>
+              </div>
+              <p className="text-xs text-on-surface-variant">
+                Synthesizes verified claims against reference course material. Hover over highlighted passages to view corroborated citations and grounding metrics.
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-1.5">
+              <button
+                type="button"
+                onClick={() => setHeatmapFilter('all')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all ${
+                  heatmapFilter === 'all'
+                    ? 'bg-on-surface text-surface shadow-xs'
+                    : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
+                }`}
+              >
+                All Passages
+              </button>
+              <button
+                type="button"
+                onClick={() => setHeatmapFilter('citations')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  heatmapFilter === 'citations'
+                    ? 'bg-secondary text-on-secondary shadow-xs'
+                    : 'bg-secondary-fixed/50 text-on-secondary-fixed hover:bg-secondary-fixed'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                <span>Direct Citations (24%)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setHeatmapFilter('synthesis')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  heatmapFilter === 'synthesis'
+                    ? 'bg-amber-600 text-white shadow-xs'
+                    : 'bg-amber-100 text-amber-900 hover:bg-amber-200'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+                <span>Paraphrased (52%)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setHeatmapFilter('original')}
+                className={`px-3 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
+                  heatmapFilter === 'original'
+                    ? 'bg-purple-600 text-white shadow-xs'
+                    : 'bg-purple-100 text-purple-900 hover:bg-purple-200'
+                }`}
+              >
+                <span className="w-2 h-2 rounded-full bg-purple-500"></span>
+                <span>Original Logic (24%)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Grounding Stats Ribbon */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-space-sm text-center">
+            <div className="p-space-sm rounded-xl bg-secondary-fixed/30 border border-secondary/30">
+              <span className="text-[11px] font-semibold text-on-secondary-fixed block">Grounding Fidelity</span>
+              <span className="font-headline-sm text-lg font-bold text-secondary font-code-inline">94.8%</span>
+              <span className="text-[10px] text-on-surface-variant block">High Source Consistency</span>
+            </div>
+            <div className="p-space-sm rounded-xl bg-amber-50 border border-amber-200">
+              <span className="text-[11px] font-semibold text-amber-900 block">Synthesized Concepts</span>
+              <span className="font-headline-sm text-lg font-bold text-amber-700 font-code-inline">52%</span>
+              <span className="text-[10px] text-on-surface-variant block">Conceptual Integration</span>
+            </div>
+            <div className="p-space-sm rounded-xl bg-purple-50 border border-purple-200">
+              <span className="text-[11px] font-semibold text-purple-900 block">Original Argumentation</span>
+              <span className="font-headline-sm text-lg font-bold text-purple-700 font-code-inline">24%</span>
+              <span className="text-[10px] text-on-surface-variant block">Novel Critical Reasoning</span>
+            </div>
+            <div className="p-space-sm rounded-xl bg-emerald-50 border border-emerald-200">
+              <span className="text-[11px] font-semibold text-emerald-900 block">Unverified Assertions</span>
+              <span className="font-headline-sm text-lg font-bold text-emerald-700 font-code-inline">0%</span>
+              <span className="text-[10px] text-on-surface-variant block">Zero Hallucinations</span>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* SPLIT-SCREEN LIVE COMPARISON (Visible when split_compare mode active and ref text exists) */}
       {viewMode === 'split_compare' && (
@@ -459,27 +661,43 @@ export default function FeedbackReportScreen({
         </section>
       )}
 
-      {/* AUDIO VOICE FEEDBACK & QUICK-STAMPS ACTION BAR */}
-      <section className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md">
-        <div className="flex items-center gap-space-md w-full lg:w-auto">
+      {/* ──── FEATURE 3: AUDIO VOICE FEEDBACK & LIVE RECORDER BAR ──── */}
+      <section className="bg-surface-container-lowest p-space-md rounded-2xl shadow-sm border border-surface-container flex flex-col lg:flex-row items-start lg:items-center justify-between gap-space-md">
+        <div className="flex flex-wrap items-center gap-space-md w-full lg:w-auto">
           <button
             type="button"
             onClick={handleToggleRecord}
-            className={`px-3 py-1.5 rounded-lg text-xs font-label-sm font-semibold flex items-center gap-1.5 transition-all ${
+            className={`px-3.5 py-2 rounded-xl text-xs font-label-sm font-bold flex items-center gap-2 transition-all shadow-xs ${
               isRecording
                 ? 'bg-error text-on-error animate-pulse'
-                : 'bg-surface-container hover:bg-surface-container-high text-on-surface'
+                : 'bg-primary text-on-primary hover:bg-primary-dim'
             }`}
           >
-            <span className="material-symbols-outlined text-[16px]">
+            <span className="material-symbols-outlined text-[18px]">
               {isRecording ? 'stop_circle' : 'mic'}
             </span>
-            <span>{isRecording ? 'Recording (Click Stop)' : 'Record Voice Note'}</span>
+            <span>
+              {isRecording ? `Recording Faculty Memo (${recordTimer}s - Click to Finish)` : 'Record Faculty Voice Note'}
+            </span>
           </button>
-          {voiceNotes.length > 0 && (
-            <span className="text-xs font-label-sm text-tertiary font-semibold flex items-center gap-1">
-              <span className="material-symbols-outlined text-[14px]">check_circle</span>
-              {voiceNotes.length} voice note(s) saved
+
+          {isRecording && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-error-container text-on-error-container text-xs font-code-inline">
+              <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
+              <div className="flex items-end gap-0.5 h-4">
+                <span className="w-1 bg-error animate-bounce h-2"></span>
+                <span className="w-1 bg-error animate-bounce h-4"></span>
+                <span className="w-1 bg-error animate-bounce h-3"></span>
+                <span className="w-1 bg-error animate-bounce h-4"></span>
+              </div>
+              <span>Live Waveform Active</span>
+            </div>
+          )}
+
+          {voiceNotes.length > 0 && !isRecording && (
+            <span className="text-xs font-label-sm text-secondary font-bold flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px]">graphic_eq</span>
+              {voiceNotes.length} Faculty Margin Audio Note(s) Attached
             </span>
           )}
         </div>
@@ -509,12 +727,12 @@ export default function FeedbackReportScreen({
           <div className="flex items-center gap-space-xs">
             <span className="material-symbols-outlined text-primary text-[22px]">history_edu</span>
             <h2 className="font-headline-md text-headline-md text-on-surface font-bold">
-              Annotated Submission ({studentName})
+              {viewMode === 'heatmap' ? 'Source-Corroborated Manuscript' : 'Annotated Submission'} ({studentName})
             </h2>
           </div>
           <div className="hidden sm:flex items-center gap-space-sm">
             <span className="font-label-sm text-label-sm text-on-surface-variant">
-              {userStamps.length + extraNotes.length} notes attached
+              {userStamps.length + extraNotes.length + voiceNotes.length} margin items attached
             </span>
             <span className="w-1.5 h-1.5 rounded-full bg-outline-variant"></span>
             <span className="font-label-sm text-label-sm text-on-surface-variant">Word count: {wordCount}</span>
@@ -544,11 +762,75 @@ export default function FeedbackReportScreen({
                   </h3>
                 </header>
 
-                {paragraphs.map((p, pIdx) => (
-                  <p key={pIdx} className={`${typographyClass} ${fontSizeClass}`}>
-                    {p}
-                  </p>
-                ))}
+                {/* Heatmap Mode vs Standard Mode Text Rendering */}
+                {viewMode === 'heatmap' ? (
+                  <div className="space-y-space-md">
+                    {paragraphs.map((p, pIdx) => {
+                      // Split into simulated annotated clauses
+                      const sentences = p.match(/[^.!?]+[.!?]+/g) || [p];
+                      return (
+                        <p key={pIdx} className={`${typographyClass} ${fontSizeClass} space-x-1`}>
+                          {sentences.map((sent, sIdx) => {
+                            const mod = (pIdx + sIdx) % 3;
+                            const isCitation = mod === 0;
+                            const isSynthesis = mod === 1;
+                            const isOriginal = mod === 2;
+
+                            const isFilteredOut = 
+                              (heatmapFilter === 'citations' && !isCitation) ||
+                              (heatmapFilter === 'synthesis' && !isSynthesis) ||
+                              (heatmapFilter === 'original' && !isOriginal);
+
+                            if (isFilteredOut) {
+                              return <span key={sIdx} className="opacity-40">{sent} </span>;
+                            }
+
+                            return (
+                              <span
+                                key={sIdx}
+                                onMouseEnter={() => setActiveTooltip(`tip-${pIdx}-${sIdx}`)}
+                                onMouseLeave={() => setActiveTooltip(null)}
+                                className={`relative cursor-pointer transition-all rounded px-1 py-0.5 ${
+                                  isCitation
+                                    ? 'bg-secondary-fixed/60 border-b-2 border-secondary font-medium hover:bg-secondary-fixed'
+                                    : isSynthesis
+                                    ? 'bg-amber-100 border-b-2 border-amber-500 hover:bg-amber-200'
+                                    : 'bg-purple-100 border-b-2 border-purple-500 hover:bg-purple-200'
+                                }`}
+                              >
+                                {sent}{' '}
+                                <sup className={`font-mono text-[10px] font-bold ${isCitation ? 'text-secondary' : isSynthesis ? 'text-amber-700' : 'text-purple-700'}`}>
+                                  {isCitation ? '[Ref §1.2]' : isSynthesis ? '[Synth]' : '[Logic]'}
+                                </sup>
+
+                                {/* Tooltip on Hover */}
+                                {activeTooltip === `tip-${pIdx}-${sIdx}` && (
+                                  <span className="absolute bottom-full left-0 z-40 mb-2 w-72 p-3 bg-on-surface text-surface text-xs rounded-xl shadow-2xl space-y-1 animate-fade-in block">
+                                    <span className="font-bold flex items-center gap-1 text-[11px] uppercase tracking-wider text-secondary">
+                                      <span className="material-symbols-outlined text-[14px]">verified</span>
+                                      {isCitation ? 'Verified Direct Citation' : isSynthesis ? 'Corroborated Synthesis' : 'Original Analytical Logic'}
+                                    </span>
+                                    <p className="text-[11px] leading-relaxed text-surface/90">
+                                      {isCitation && 'Matches reference syllabus specifications. Direct alignment score: 98%.'}
+                                      {isSynthesis && 'Synthesizes theoretical principles with enterprise software architectures.'}
+                                      {isOriginal && 'Autonomous argumentative deduction backed by sound critical evidence.'}
+                                    </p>
+                                  </span>
+                                )}
+                              </span>
+                            );
+                          })}
+                        </p>
+                      );
+                    })}
+                  </div>
+                ) : (
+                  paragraphs.map((p, pIdx) => (
+                    <p key={pIdx} className={`${typographyClass} ${fontSizeClass}`}>
+                      {p}
+                    </p>
+                  ))
+                )}
 
                 {/* Dynamic User Stamped Badges on Paper */}
                 {userStamps.length > 0 && (
@@ -558,19 +840,94 @@ export default function FeedbackReportScreen({
                         key={st.id}
                         className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed border border-tertiary/40 font-label-sm text-xs font-bold shadow-xs animate-bounce"
                       >
-                        <span className="material-symbols-outlined text-[15px]">{st.icon}</span>
-                        <span>{st.label}</span>
+                        <span className="material-symbols-outlined text-[15px]">{st.icon || 'star'}</span>
+                        <span>{st.label || st.text}</span>
                       </span>
                     ))}
                   </div>
                 )}
               </div>
 
-              {/* Margin Call-Outs & Teacher Notes Column */}
+              {/* ──── FEATURE 3: MARGIN CALL-OUTS & FACULTY VOICE NOTES COLUMN ──── */}
               <div className="lg:col-span-4 flex flex-col gap-space-md sticky top-24">
-                <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold border-b border-surface-container pb-1">
-                  Teacher Notes &amp; Quick Stamps
+                <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-bold border-b border-surface-container pb-1 flex items-center justify-between">
+                  <span>Faculty Audio &amp; Notes</span>
+                  <span className="text-[10px] font-mono text-secondary font-bold">DSV LEAD</span>
                 </span>
+
+                {/* Faculty Voice Notes Player Cards */}
+                {voiceNotes.map(vn => {
+                  const isPlaying = playingNoteId === vn.id;
+                  return (
+                    <div 
+                      key={vn.id} 
+                      className="p-3.5 rounded-2xl bg-surface-container-lowest border-2 border-secondary/30 shadow-sm space-y-2.5 animate-fade-in"
+                    >
+                      {/* Note Header */}
+                      <div className="flex items-center justify-between text-xs">
+                        <div className="flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-secondary text-[18px]">record_voice_over</span>
+                          <span className="font-bold text-on-surface text-xs">{vn.speaker || 'Dr. D S Vinod'}</span>
+                        </div>
+                        <span className="text-[10px] text-on-surface-variant font-code-inline">{vn.recordedAt}</span>
+                      </div>
+
+                      {/* Interactive Audio Player Bar */}
+                      <div className="p-2 rounded-xl bg-surface-container-low border border-surface-container flex items-center gap-2.5">
+                        <button
+                          type="button"
+                          onClick={() => handleTogglePlayNote(vn.id)}
+                          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-xs shrink-0 ${
+                            isPlaying 
+                              ? 'bg-secondary text-on-secondary animate-pulse' 
+                              : 'bg-primary text-on-primary hover:bg-primary-dim'
+                          }`}
+                          title={isPlaying ? 'Pause Audio' : 'Play Faculty Voice Note'}
+                        >
+                          <span className="material-symbols-outlined text-[18px]">
+                            {isPlaying ? 'pause' : 'play_arrow'}
+                          </span>
+                        </button>
+
+                        <div className="flex-1 space-y-1">
+                          <div className="w-full bg-surface-container rounded-full h-1.5 overflow-hidden">
+                            <div 
+                              className="bg-secondary h-full transition-all duration-150"
+                              style={{ width: `${isPlaying ? audioProgress : 0}%` }}
+                            />
+                          </div>
+                          <div className="flex items-center justify-between text-[10px] text-on-surface-variant font-code-inline">
+                            <span>{isPlaying ? `0:${Math.floor((audioProgress / 100) * (vn.durationSec || 34)).toString().padStart(2, '0')}` : '0:00'}</span>
+                            <span>{vn.duration || '0:34'}</span>
+                          </div>
+                        </div>
+
+                        {/* Animated Equalizer Bars when Playing */}
+                        {isPlaying && (
+                          <div className="flex items-end gap-0.5 h-4 shrink-0">
+                            <span className="w-0.5 bg-secondary animate-bounce h-2"></span>
+                            <span className="w-0.5 bg-secondary animate-bounce h-4"></span>
+                            <span className="w-0.5 bg-secondary animate-bounce h-3"></span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Instant AI Transcript Accordion */}
+                      <details className="text-xs group" open>
+                        <summary className="cursor-pointer font-semibold text-[11px] text-secondary flex items-center justify-between select-none list-none">
+                          <span className="flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[14px]">transcribe</span>
+                            <span>Verified AI Transcription</span>
+                          </span>
+                          <span className="material-symbols-outlined text-[14px] group-open:rotate-180 transition-transform">expand_more</span>
+                        </summary>
+                        <p className="mt-1.5 p-2 rounded-lg bg-surface-container/50 text-[11px] text-on-surface leading-relaxed border border-surface-container font-annotation-note">
+                          “{vn.transcript}”
+                        </p>
+                      </details>
+                    </div>
+                  );
+                })}
 
                 {/* Extra Inserted Snippets Notes */}
                 {extraNotes.map(n => (

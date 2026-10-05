@@ -3,13 +3,15 @@ import React, { useState } from 'react';
 export default function StudentProfileModal({ 
   studentProfile, 
   onSave, 
-  onClose
+  onClose 
 }) {
-  const [name, setName] = useState(studentProfile?.name || 'Aria Montgomery');
-  const [rollNo, setRollNo] = useState(studentProfile?.rollNo || '11A-01');
-  const [email, setEmail] = useState(studentProfile?.email || 'aria.m@student.edu');
-  const [grade, setGrade] = useState(studentProfile?.grade || 'Grade 11 - Section A');
-  const [institution, setInstitution] = useState(studentProfile?.institution || '');
+  const [name, setName] = useState(studentProfile?.name || 'Pratyush Raj');
+  const [rollNo, setRollNo] = useState(studentProfile?.rollNo || '33');
+  const [usn, setUsn] = useState(studentProfile?.usn || '01JST25UCBO65');
+  const [email, setEmail] = useState(studentProfile?.email || '01jst25ucbo65@jssstuniv.in');
+  const [grade, setGrade] = useState(studentProfile?.grade || "III Sem CSBS 'A'");
+  const [department, setDepartment] = useState(studentProfile?.department || 'Department of Information Science & Engineering');
+  const [institution, setInstitution] = useState(studentProfile?.institution || 'JSS Science and Technology University');
   const [saved, setSaved] = useState(false);
 
   const handleSubmit = (e) => {
@@ -17,11 +19,13 @@ export default function StudentProfileModal({
     if (onSave) {
       onSave({
         ...studentProfile,
-        name: name.trim() || 'Scholar',
-        rollNo: rollNo.trim() || '11A-00',
-        email: email.trim() || 'scholar@student.edu',
-        grade: grade.trim() || 'Grade 11',
-        institution: institution.trim()
+        name: name.trim() || 'Pratyush Raj',
+        rollNo: rollNo.trim() || '33',
+        usn: usn.trim() || '01JST25UCBO65',
+        email: email.trim() || '01jst25ucbo65@jssstuniv.in',
+        grade: grade.trim() || "III Sem CSBS 'A'",
+        department: department.trim() || 'Department of Information Science & Engineering',
+        institution: institution.trim() || 'JSS Science and Technology University'
       });
     }
     setSaved(true);
@@ -42,7 +46,7 @@ export default function StudentProfileModal({
                 Student Scholar Profile
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Enrolled academic credentials &amp; active scholar identity
+                Enrolled academic credentials &amp; student identity
               </span>
             </div>
           </div>
@@ -56,7 +60,7 @@ export default function StudentProfileModal({
         </div>
 
         {/* Profile Edit Form */}
-        <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md overflow-y-auto max-h-[60vh]">
+        <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md overflow-y-auto max-h-[70vh]">
           <div className="space-y-1">
             <label className="font-label-md text-label-md text-on-surface font-semibold block">
               Scholar Full Name
@@ -67,14 +71,14 @@ export default function StudentProfileModal({
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface"
-              placeholder="e.g. Aria Montgomery"
+              placeholder="e.g. Pratyush Raj"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
             <div className="space-y-1">
               <label className="font-label-md text-label-md text-on-surface font-semibold block">
-                Roll / Scholar ID
+                Roll Number
               </label>
               <input
                 type="text"
@@ -82,12 +86,28 @@ export default function StudentProfileModal({
                 value={rollNo}
                 onChange={(e) => setRollNo(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface font-code-inline"
-                placeholder="e.g. 11A-01"
+                placeholder="e.g. 33"
               />
             </div>
             <div className="space-y-1">
               <label className="font-label-md text-label-md text-on-surface font-semibold block">
-                Enrolled Grade &amp; Section
+                University Seat No. (USN)
+              </label>
+              <input
+                type="text"
+                required
+                value={usn}
+                onChange={(e) => setUsn(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface font-code-inline"
+                placeholder="e.g. 01JST25UCBO65"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
+            <div className="space-y-1">
+              <label className="font-label-md text-label-md text-on-surface font-semibold block">
+                Class / Semester / Section
               </label>
               <input
                 type="text"
@@ -95,35 +115,47 @@ export default function StudentProfileModal({
                 value={grade}
                 onChange={(e) => setGrade(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface"
-                placeholder="e.g. Grade 11 - Section A"
+                placeholder="e.g. III Sem CSBS 'A'"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="font-label-md text-label-md text-on-surface font-semibold block">
+                Institutional Email
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface font-code-inline"
+                placeholder="e.g. 01jst25ucbo65@jssstuniv.in"
               />
             </div>
           </div>
 
           <div className="space-y-1">
             <label className="font-label-md text-label-md text-on-surface font-semibold block">
-              Institutional Email
+              Department
             </label>
             <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface font-code-inline"
-              placeholder="e.g. aria.m@student.edu"
+              type="text"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface"
+              placeholder="Department of Information Science & Engineering"
             />
           </div>
 
           <div className="space-y-1">
             <label className="font-label-md text-label-md text-on-surface font-semibold block">
-              Institution / Academy Name
+              Institution / University
             </label>
             <input
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-surface-container border border-surface-container focus:outline-none focus:ring-2 focus:ring-secondary text-sm text-on-surface"
-              placeholder="e.g. Collegiate Academy / High School"
+              placeholder="JSS Science and Technology University"
             />
           </div>
 

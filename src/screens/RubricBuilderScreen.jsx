@@ -4,59 +4,59 @@ import { ASSIGNMENT_TEMPLATES } from '../data/mockData';
 const INITIAL_CRITERIA = [
   {
     id: 'CRIT-01',
-    name: 'Thesis & Main Argument',
-    description: 'Formulates a clear, defensible main argument that answers the prompt without relying on simple plot summary.',
+    name: 'Problem Formulation & Architecture',
+    description: 'Clearly identifies problem constraints, system boundaries, and foundational algorithmic/mathematical assumptions.',
     weight: 25,
-    highAnchor: "Thesis offers insightful perspective on prompt tensions, presenting a clear line of reasoning.",
+    highAnchor: 'Comprehensive specification with formal constraints, system models, and edge condition handling.',
     highRange: '23–25 pts',
-    midAnchor: 'Clear thesis statement articulating character motive, but relies on conventional ideas without deeper analysis.',
+    midAnchor: 'Standard problem formulation with clear baseline requirements and minor gaps in edge case coverage.',
     midRange: '17–22 pts',
-    lowAnchor: 'Restates prompt without distinct arguable claim or uses simple plot summary as assertion.',
+    lowAnchor: 'Incomplete problem definition without clear technical assumptions or constraint bounds.',
     lowRange: '0–16 pts'
   },
   {
     id: 'CRIT-02',
-    name: 'Textual Evidence & Quotes',
-    description: 'Integrates specific, relevant quotes and evidence smoothly within commentary to support key points.',
-    weight: 35,
-    highAnchor: 'Quotes seamlessly integrated with active verbs; close-reading unpacks deeper meaning without block quotations.',
-    highRange: '32–35 pts',
-    midAnchor: 'Adequate textual evidence citing key scenes, though occasional quotes stand alone or are paraphrased with surface-level explanation.',
-    midRange: '25–31 pts',
-    lowAnchor: 'Sparse textual quotation or evidence used purely as plot recap without analytical examination.',
-    lowRange: '0–24 pts'
+    name: 'Technical Methodology & Design',
+    description: 'Systematic technical design, modular architecture, algorithmic efficiency, and verified correctness.',
+    weight: 30,
+    highAnchor: 'Optimal algorithmic design with formal proofs, clean component separation, and thorough modularity.',
+    highRange: '27–30 pts',
+    midAnchor: 'Functionally sound design with standard complexity trade-offs and minor coupling.',
+    midRange: '21–26 pts',
+    lowAnchor: 'Suboptimal architecture with unhandled failure modes or inefficient complexity.',
+    lowRange: '0–20 pts'
   },
   {
     id: 'CRIT-03',
-    name: 'Organization & Structure',
-    description: 'Constructs a logical paragraph progression where each section advances the main argument with smooth transitions.',
-    weight: 20,
-    highAnchor: 'Clear topic sentences and natural transitions that connect ideas smoothly across paragraphs.',
-    highRange: '18–20 pts',
-    midAnchor: 'Functional paragraph structure with clear topic sentences; transitions rely on standard connective adverbs.',
-    midRange: '14–17 pts',
-    lowAnchor: 'Disjointed sequence of observations; abrupt shifts with redundant or missing conclusions.',
-    lowRange: '0–13 pts'
+    name: 'Empirical Analysis & Quantitative Evidence',
+    description: 'Precise benchmark metrics, test cases, statistical data analysis, and validation tables.',
+    weight: 25,
+    highAnchor: 'Exemplary quantitative benchmarking with statistical confidence intervals and rigorous validation test suites.',
+    highRange: '23–25 pts',
+    midAnchor: 'Adequate test coverage with standard benchmark metrics and expected performance ranges.',
+    midRange: '17–22 pts',
+    lowAnchor: 'Sparse empirical evidence with missing benchmark figures or incomplete testing.',
+    lowRange: '0–16 pts'
   },
   {
     id: 'CRIT-04',
-    name: 'Style, Voice & Grammar',
-    description: 'Demonstrates clear vocabulary, sentence variety, active voice, and accurate grammar mechanics.',
+    name: 'Technical Clarity & Documentation',
+    description: 'Clear technical documentation, accurate notations, UML schemas, and reproducible conclusions.',
     weight: 20,
-    highAnchor: 'Clear academic tone with rhythmic sentence variety, vivid verbs, and precise literary terminology.',
+    highAnchor: 'Publication-quality technical documentation with precise mathematical notation and clear architectural schemas.',
     highRange: '18–20 pts',
-    midAnchor: 'Clear and grammatically sound prose with minor colloquialisms or repetitive sentence beginnings.',
+    midAnchor: 'Clear and technically sound presentation with minor diagrammatic ambiguities.',
     midRange: '14–17 pts',
-    lowAnchor: 'Frequent mechanical errors, run-ons, comma splices, or informal register that distracts from argument.',
+    lowAnchor: 'Unclear explanations, missing schemas, or ambiguous technical notation.',
     lowRange: '0–13 pts'
   }
 ];
 
 export default function RubricBuilderScreen() {
   const [criteria, setCriteria] = useState(INITIAL_CRITERIA);
-  const [rubricTitle, setRubricTitle] = useState('Grading Criteria: AP Literature Analytical Synthesis');
-  const [rubricDesc, setRubricDesc] = useState('Crafted for multi-source comparative prose analysis. Balances argumentative rigor, close-reading textual defense, and rhetorical cadence.');
-  const [selectedTemplateId, setSelectedTemplateId] = useState('ap_lit');
+  const [rubricTitle, setRubricTitle] = useState('Grading Criteria: STEM & Technical Coursework');
+  const [rubricDesc, setRubricDesc] = useState('Calibrated for technical coursework, algorithm analysis, software engineering specs, and data-driven lab reports.');
+  const [selectedTemplateId, setSelectedTemplateId] = useState('stem_lab');
   const [savedNotification, setSavedNotification] = useState(false);
 
   const totalWeight = criteria.reduce((sum, c) => sum + Number(c.weight || 0), 0);
@@ -79,9 +79,9 @@ export default function RubricBuilderScreen() {
         name: c.name,
         description: c.description,
         weight: w,
-        highAnchor: `Demonstrates exemplary mastery of ${c.name.toLowerCase()} with compelling precision and nuance.`,
+        highAnchor: `Demonstrates exemplary mastery of ${c.name.toLowerCase()} with compelling precision and technical depth.`,
         highRange: `${highMin}–${w} pts`,
-        midAnchor: `Satisfactory execution of ${c.name.toLowerCase()} with standard analytical clarity and minor gaps.`,
+        midAnchor: `Satisfactory execution of ${c.name.toLowerCase()} with standard clarity and minor gaps.`,
         midRange: `${midMin}–${highMin - 1} pts`,
         lowAnchor: `Emerging development; lacks consistent evidence or execution for ${c.name.toLowerCase()}.`,
         lowRange: `0–${midMin - 1} pts`
@@ -108,22 +108,29 @@ export default function RubricBuilderScreen() {
       ...criteria,
       {
         id: newId,
-        name: 'New Custom Grading Criterion',
-        description: 'Specify clear evaluative criteria, student observable behaviors, and expected mastery level.',
+        name: 'New Custom Dimension',
+        description: 'Define specific evaluation criteria and required standards.',
         weight: 10,
-        highAnchor: 'High standard demonstrates exceptional clarity and mastery.',
+        highAnchor: 'Exemplary demonstration exceeding standard expectations.',
         highRange: '9–10 pts',
-        midAnchor: 'Proficient standard meets expectations with minor areas for refinement.',
+        midAnchor: 'Competent execution meeting core baseline standards.',
         midRange: '7–8 pts',
-        lowAnchor: 'Emerging attempt lacks supporting evidence or consistent execution.',
+        lowAnchor: 'Insufficient evidence or significant conceptual errors.',
         lowRange: '0–6 pts'
       }
     ]);
   };
 
+  const handleDeleteCriterion = (index) => {
+    if (criteria.length <= 1) return;
+    setCriteria(criteria.filter((_, i) => i !== index));
+  };
+
   const handleSave = () => {
     setSavedNotification(true);
-    setTimeout(() => setSavedNotification(false), 3000);
+    setTimeout(() => {
+      setSavedNotification(false);
+    }, 4000);
   };
 
   return (
@@ -177,7 +184,7 @@ export default function RubricBuilderScreen() {
           <span className="material-symbols-outlined text-primary text-[22px]">auto_stories</span>
           <div>
             <span className="font-label-md text-label-md font-bold text-on-surface">Load Preset Template</span>
-            <p className="font-body-sm text-body-sm text-on-surface-variant">Switch subject criteria across STEM, Humanities, DBQ, Business &amp; Creative writing in 1 click.</p>
+            <p className="font-body-sm text-body-sm text-on-surface-variant">Switch subject criteria across STEM, Computing, Business &amp; Humanities in 1 click.</p>
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
@@ -198,200 +205,219 @@ export default function RubricBuilderScreen() {
       {/* Save Notification Toast */}
       {savedNotification && (
         <div className="p-space-sm rounded bg-tertiary-fixed text-on-tertiary-container font-label-md text-label-md flex items-center justify-between shadow-sm animate-fade-in">
-          <span className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px]">check_circle</span>
-            Grading criteria successfully saved and synchronized for evaluation!
-          </span>
-          <span className="font-code-inline text-xs">Active</span>
+          <div className="flex items-center gap-2">
+            <span className="material-symbols-outlined text-[20px]">check_circle</span>
+            <span>Rubric criteria calibrated &amp; updated successfully for active evaluation!</span>
+          </div>
+          <span className="font-mono text-xs opacity-75">Weights: 100% verified</span>
         </div>
       )}
 
-      {/* Ledger Metadata Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-space-md bg-surface-container-low px-space-md py-space-sm rounded-lg border border-surface-container">
-        <div className="flex flex-wrap items-center gap-space-md text-on-surface-variant font-label-sm text-label-sm">
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-secondary">tune</span>
-            <span className="text-on-surface">Grade Scale:</span>
-            <span className="font-code-inline text-code-inline text-on-surface bg-surface-container-lowest px-1.5 py-0.5 rounded">
-              100-Point Analytic
-            </span>
-          </div>
-          <span className="opacity-30">•</span>
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-tertiary">library_books</span>
-            <span className="text-on-surface">Discipline:</span>
-            <span className="font-semibold text-on-surface">
-              {ASSIGNMENT_TEMPLATES.find(t => t.id === selectedTemplateId)?.category || 'Humanities & English'}
-            </span>
-          </div>
-          <span className="opacity-30">•</span>
-          <div className="flex items-center gap-1.5">
-            <span className="material-symbols-outlined text-[16px] text-outline">calendar_today</span>
-            <span>Active Term: Fall 2026</span>
-          </div>
+      {/* Control Summary Banner */}
+      <div className="flex flex-wrap items-center justify-between gap-space-md p-space-md bg-surface-container-low rounded-xl border border-surface-container">
+        <div className="flex flex-wrap items-center gap-space-md font-label-sm text-label-sm text-on-surface-variant">
+          <span className="flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px]">tune</span>
+            Grade Scale: <strong className="font-mono text-on-surface ml-1">100-Point Analytic</strong>
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px]">category</span>
+            Discipline: <strong className="text-on-surface ml-1">Computing &amp; Engineering</strong>
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1.5">
+            <span className="material-symbols-outlined text-[18px]">event</span>
+            Active Term: <strong className="text-on-surface ml-1">2026–2027 Academic Session</strong>
+          </span>
         </div>
 
-        {/* Dynamic Weight Pill */}
-        <div className={`inline-flex items-center gap-1.5 px-space-sm py-1 rounded font-label-md text-label-md shadow-sm ${
-          isWeightValid 
-            ? 'bg-tertiary-fixed text-on-tertiary-fixed' 
-            : 'bg-error-container text-on-error-container'
-        }`}>
-          <span className="material-symbols-outlined text-[16px]">
-            {isWeightValid ? 'check_circle' : 'warning'}
+        {/* Live Weight Validation Indicator */}
+        <div className="flex items-center gap-2">
+          <span className={`inline-flex items-center gap-1 px-space-sm py-1 rounded text-xs font-bold font-mono tracking-tight ${
+            isWeightValid
+              ? 'bg-tertiary-fixed text-on-tertiary-container'
+              : 'bg-error-container text-on-error-container animate-pulse'
+          }`}>
+            <span className="material-symbols-outlined text-[15px]">
+              {isWeightValid ? 'check_circle' : 'warning'}
+            </span>
+            <span>Weights: {totalWeight}%</span>
           </span>
-          <span className="tracking-wide">
-            Weights: {totalWeight}% {isWeightValid ? '✓' : '(Must Equal 100%)'}
-          </span>
+          {!isWeightValid && (
+            <span className="font-label-sm text-xs text-error font-medium">
+              (Must equal exactly 100%)
+            </span>
+          )}
         </div>
       </div>
 
-      {/* Criteria Workspace */}
-      <div className="flex flex-col gap-space-md">
-        <div className="flex items-center justify-between px-space-xs">
-          <div className="flex items-center gap-space-sm">
-            <span className="font-label-lg text-label-lg text-on-surface font-semibold">Grading Criteria</span>
-            <span className="font-code-inline text-code-inline text-on-surface-variant bg-surface-container px-space-xs rounded">
+      {/* Criteria Card Stack */}
+      <div className="space-y-space-md">
+        <div className="flex items-center justify-between text-on-surface">
+          <h2 className="font-headline-sm text-headline-sm font-bold flex items-center gap-2">
+            <span>Grading Criteria</span>
+            <span className="font-mono text-xs font-normal px-2 py-0.5 rounded bg-surface-container text-on-surface-variant">
               {criteria.length} Criteria
             </span>
-          </div>
-          <div className="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px]">drag_indicator</span>
-            <span>Grab handles to reorder sections</span>
-          </div>
+          </h2>
+          <span className="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+            <span className="material-symbols-outlined text-[16px]">drag_indicator</span>
+            Grab handles to reorder sections
+          </span>
         </div>
 
-        {/* List of Criteria Cards */}
-        {criteria.map((crit, idx) => (
-          <article
-            key={crit.id}
-            className="bg-surface-container-lowest shadow-sm rounded-xl p-space-md transition-shadow hover:shadow-md flex flex-col gap-space-md relative border border-surface-container"
-          >
-            <div className="flex items-start justify-between gap-space-sm">
-              <div className="flex items-start gap-space-sm flex-1">
-                <button
-                  className="mt-1 text-outline hover:text-on-surface cursor-grab active:cursor-grabbing p-0.5 rounded hover:bg-surface-container"
-                  title="Drag to reorder"
-                  type="button"
-                >
-                  <span className="material-symbols-outlined text-[20px]">drag_indicator</span>
-                </button>
-                <div className="flex flex-col gap-space-xs flex-1">
-                  <div className="flex flex-wrap items-center gap-space-sm">
-                    <span className="font-code-inline text-code-inline text-primary bg-primary-fixed px-1.5 py-0.5 rounded font-bold">
-                      {crit.id}
-                    </span>
-                    <input
-                      className="font-headline-sm text-headline-sm text-on-surface bg-transparent focus:bg-surface-container px-1 py-0.5 rounded focus:outline-none flex-1 min-w-[240px] font-semibold"
-                      type="text"
-                      value={crit.name}
-                      onChange={(e) => handleFieldChange(idx, 'name', e.target.value)}
-                    />
-                  </div>
-                  <textarea
-                    className="font-body-sm text-body-sm text-on-surface-variant bg-transparent hover:bg-surface-container-low focus:bg-surface-container px-1.5 py-1 rounded focus:outline-none resize-none w-full"
-                    rows={2}
-                    value={crit.description}
-                    onChange={(e) => handleFieldChange(idx, 'description', e.target.value)}
+        <div className="space-y-space-md">
+          {criteria.map((crit, idx) => (
+            <div 
+              key={crit.id} 
+              className="bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm border border-surface-container space-y-space-md transition-all hover:border-primary/40 group"
+            >
+              {/* Card Header: Drag, ID, Name, Weights */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md pb-space-sm border-b border-surface-container">
+                <div className="flex items-center gap-space-sm flex-1">
+                  <span className="material-symbols-outlined text-outline-variant group-hover:text-primary cursor-grab text-[20px]">
+                    drag_indicator
+                  </span>
+                  <span className="font-mono text-xs font-bold px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed-variant">
+                    {crit.id}
+                  </span>
+                  <input
+                    type="text"
+                    value={crit.name}
+                    onChange={(e) => handleFieldChange(idx, 'name', e.target.value)}
+                    className="font-headline-sm text-headline-sm font-bold text-on-surface bg-transparent hover:bg-surface-container px-2 py-1 rounded focus:outline-none focus:ring-1 focus:ring-primary flex-1 max-w-md"
                   />
                 </div>
-              </div>
 
-              {/* Weight & Scale Control */}
-              <div className="flex items-center gap-space-md shrink-0 bg-surface-container-low p-space-xs rounded-lg border border-surface-container">
-                <div className="flex flex-col items-end">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant">Weight Allocation</span>
-                  <div className="flex items-center gap-1">
+                <div className="flex items-center gap-space-md">
+                  {/* Weight Slider / Input */}
+                  <div className="flex items-center gap-2 bg-surface-container p-1.5 rounded-lg">
+                    <span className="font-label-sm text-xs font-semibold text-on-surface-variant">Weight:</span>
                     <input
-                      className="w-14 text-right font-code-inline text-code-inline font-bold text-on-surface bg-surface-container-lowest px-1 py-0.5 rounded focus:outline-none focus:bg-surface-container border border-surface-container"
-                      max="100"
-                      min="0"
                       type="number"
+                      min="0"
+                      max="100"
                       value={crit.weight}
                       onChange={(e) => handleWeightChange(idx, e.target.value)}
+                      className="w-14 bg-surface-container-lowest text-center font-mono font-bold text-xs p-1 rounded border border-surface-container text-on-surface focus:outline-none focus:border-primary"
                     />
-                    <span className="font-label-md text-label-md text-on-surface">%</span>
+                    <span className="font-mono text-xs font-bold text-on-surface-variant">%</span>
                   </div>
-                </div>
-                <div className="h-7 w-px bg-surface-container-highest"></div>
-                <div className="flex flex-col items-start pr-1">
-                  <span className="font-label-sm text-label-sm text-on-surface-variant">Max Scale</span>
-                  <span className="font-code-inline text-code-inline text-secondary font-semibold">
-                    0 – {crit.weight} pts
-                  </span>
+
+                  {/* Max Scale */}
+                  <div className="flex items-center gap-1.5 bg-surface-container px-2.5 py-1.5 rounded-lg text-xs font-mono">
+                    <span className="text-on-surface-variant">Max Scale:</span>
+                    <strong className="text-on-surface">0 – {crit.weight} pts</strong>
+                  </div>
+
+                  {/* Delete Button */}
+                  <button
+                    type="button"
+                    onClick={() => handleDeleteCriterion(idx)}
+                    disabled={criteria.length <= 1}
+                    className="p-1.5 rounded text-on-surface-variant hover:text-error hover:bg-error-container/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                    title="Remove this criterion"
+                  >
+                    <span className="material-symbols-outlined text-[18px]">delete</span>
+                  </button>
                 </div>
               </div>
+
+              {/* Criterion Description */}
+              <div className="space-y-1">
+                <label className="font-label-sm text-xs font-semibold text-on-surface-variant uppercase tracking-wider">
+                  Criterion Dimension Objective
+                </label>
+                <textarea
+                  rows={2}
+                  value={crit.description}
+                  onChange={(e) => handleFieldChange(idx, 'description', e.target.value)}
+                  className="w-full p-2.5 rounded-lg bg-surface-container-low border border-surface-container font-body-md text-sm text-on-surface focus:outline-none focus:bg-surface-container-lowest focus:border-primary"
+                />
+              </div>
+
+              {/* Score Anchor Level Descriptors */}
+              <details className="group/anchor" open>
+                <summary className="cursor-pointer list-none flex items-center justify-between text-xs font-bold text-on-surface-variant uppercase tracking-wider select-none py-1">
+                  <span className="flex items-center gap-1 hover:text-on-surface">
+                    <span className="material-symbols-outlined text-[16px] transition-transform group-open/anchor:rotate-90">arrow_right</span>
+                    Score Level Anchors &amp; Performance Descriptors
+                  </span>
+                  <span className="text-[11px] font-normal lowercase font-sans text-outline hover:underline">toggle descriptors</span>
+                </summary>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-space-sm">
+                  {/* High Anchor (Green) */}
+                  <div className="p-space-sm rounded-xl bg-[#E6F4EA] dark:bg-[#132A1C] border border-[#CEEAD6] dark:border-[#1E462E] space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-xs font-bold text-[#137333] dark:text-[#81C995] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#137333] dark:bg-[#81C995]"></span>
+                        Exemplary / High Anchor
+                      </span>
+                      <span className="font-mono text-xs font-bold text-[#137333] dark:text-[#81C995]">
+                        {crit.highRange || `${Math.round(crit.weight * 0.9)}–${crit.weight} pts`}
+                      </span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={crit.highAnchor}
+                      onChange={(e) => handleFieldChange(idx, 'highAnchor', e.target.value)}
+                      className="w-full bg-transparent text-xs text-on-surface font-body-sm leading-relaxed resize-none focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Mid Anchor (Yellow / Amber) */}
+                  <div className="p-space-sm rounded-xl bg-[#FEF7E0] dark:bg-[#2C2412] border border-[#FEEFC3] dark:border-[#42361B] space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-xs font-bold text-[#B06000] dark:text-[#FDD663] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#F29900]"></span>
+                        Proficient / Mid Anchor
+                      </span>
+                      <span className="font-mono text-xs font-bold text-[#B06000] dark:text-[#FDD663]">
+                        {crit.midRange || `${Math.round(crit.weight * 0.7)}–${Math.round(crit.weight * 0.9) - 1} pts`}
+                      </span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={crit.midAnchor}
+                      onChange={(e) => handleFieldChange(idx, 'midAnchor', e.target.value)}
+                      className="w-full bg-transparent text-xs text-on-surface font-body-sm leading-relaxed resize-none focus:outline-none"
+                    />
+                  </div>
+
+                  {/* Low Anchor (Red / Emerging) */}
+                  <div className="p-space-sm rounded-xl bg-[#FCE8E6] dark:bg-[#2E1616] border border-[#FAD2CF] dark:border-[#4B2323] space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-label-sm text-xs font-bold text-[#C5221F] dark:text-[#F28B82] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#D93025]"></span>
+                        Developing / Low Anchor
+                      </span>
+                      <span className="font-mono text-xs font-bold text-[#C5221F] dark:text-[#F28B82]">
+                        {crit.lowRange || `0–${Math.round(crit.weight * 0.7) - 1} pts`}
+                      </span>
+                    </div>
+                    <textarea
+                      rows={3}
+                      value={crit.lowAnchor}
+                      onChange={(e) => handleFieldChange(idx, 'lowAnchor', e.target.value)}
+                      className="w-full bg-transparent text-xs text-on-surface font-body-sm leading-relaxed resize-none focus:outline-none"
+                    />
+                  </div>
+                </div>
+              </details>
             </div>
+          ))}
+        </div>
 
-            {/* Collapsible Tier Anchors */}
-            <details className="group bg-surface-container-low rounded-lg p-space-sm border border-surface-container" open>
-              <summary className="flex items-center justify-between cursor-pointer list-none select-none text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm font-semibold">
-                <span className="inline-flex items-center gap-1 font-semibold text-on-surface">
-                  <span className="material-symbols-outlined text-[16px] text-primary transition-transform group-open:rotate-90">
-                    arrow_right
-                  </span>
-                  Score Level Examples (High, Medium, and Low Examples)
-                </span>
-                <span className="text-outline font-normal">Toggle descriptors</span>
-              </summary>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-space-sm">
-                {/* High Anchor */}
-                <div className="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-1 relative overflow-hidden border border-surface-container">
-                  <div className="w-full h-1 bg-tertiary-container absolute top-0 left-0"></div>
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="font-label-sm text-label-sm font-bold text-on-tertiary-container">High Anchor</span>
-                    <span className="font-code-inline text-code-inline text-tertiary font-bold">{crit.highRange}</span>
-                  </div>
-                  <textarea
-                    rows={3}
-                    value={crit.highAnchor}
-                    onChange={(e) => handleFieldChange(idx, 'highAnchor', e.target.value)}
-                    className="font-annotation-note text-annotation-note text-on-surface-variant bg-transparent resize-none focus:outline-none"
-                  />
-                </div>
-
-                {/* Mid Anchor */}
-                <div className="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-1 relative overflow-hidden border border-surface-container">
-                  <div className="w-full h-1 bg-secondary-container absolute top-0 left-0"></div>
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="font-label-sm text-label-sm font-bold text-on-secondary-container">Mid Anchor</span>
-                    <span className="font-code-inline text-code-inline text-secondary font-bold">{crit.midRange}</span>
-                  </div>
-                  <textarea
-                    rows={3}
-                    value={crit.midAnchor}
-                    onChange={(e) => handleFieldChange(idx, 'midAnchor', e.target.value)}
-                    className="font-annotation-note text-annotation-note text-on-surface-variant bg-transparent resize-none focus:outline-none"
-                  />
-                </div>
-
-                {/* Low Anchor */}
-                <div className="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-1 relative overflow-hidden border border-surface-container">
-                  <div className="w-full h-1 bg-error-container absolute top-0 left-0"></div>
-                  <div className="flex items-center justify-between pt-1">
-                    <span className="font-label-sm text-label-sm font-bold text-on-error-container">Low Anchor</span>
-                    <span className="font-code-inline text-code-inline text-error font-bold">{crit.lowRange}</span>
-                  </div>
-                  <textarea
-                    rows={3}
-                    value={crit.lowAnchor}
-                    onChange={(e) => handleFieldChange(idx, 'lowAnchor', e.target.value)}
-                    className="font-annotation-note text-annotation-note text-on-surface-variant bg-transparent resize-none focus:outline-none"
-                  />
-                </div>
-              </div>
-            </details>
-          </article>
-        ))}
-
-        {/* Add New Criterion Button */}
+        {/* Add Dimension Row */}
         <button
-          onClick={handleAddCriterion}
-          className="w-full py-space-md border-2 border-dashed border-surface-container-highest hover:border-primary rounded-xl flex items-center justify-center gap-space-sm text-on-surface-variant hover:text-primary transition-all font-label-md text-label-md bg-surface-container-low/50"
           type="button"
+          onClick={handleAddCriterion}
+          className="w-full py-space-md rounded-2xl border-2 border-dashed border-surface-container hover:border-primary text-on-surface-variant hover:text-primary font-label-md text-sm font-bold flex items-center justify-center gap-2 transition-all bg-surface-container-low/50 hover:bg-surface-container-low"
         >
-          <span className="material-symbols-outlined text-[20px]">draw</span>
-          <span>+ Add New Evaluation Criterion</span>
+          <span className="material-symbols-outlined text-[20px]">add_circle</span>
+          <span>Add Custom Grading Dimension</span>
         </button>
       </div>
     </div>

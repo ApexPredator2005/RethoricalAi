@@ -5,7 +5,6 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
   const [selectedRole, setSelectedRole] = useState(null);
 
   const handleConfirmRole = (role) => {
-    sounds.playStampThud();
     setSelectedRole(role);
     setTimeout(() => {
       onSelectRole(role);
@@ -51,8 +50,8 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
       <main className="max-w-4xl mx-auto w-full my-auto py-10 space-y-8 relative z-10">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-primary text-xs font-bold uppercase tracking-wider">
-            <span className="material-symbols-outlined text-[14px]">lock_clock</span>
-            <span>One-Time Session Identification</span>
+            <span className="material-symbols-outlined text-[14px]">school</span>
+            <span>Academic Portal Identification</span>
           </div>
 
           <h1 className="font-display-lg text-2xl sm:text-4xl font-bold text-on-surface tracking-tight">
@@ -60,7 +59,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
           </h1>
 
           <p className="font-body-md text-sm sm:text-base text-on-surface-variant leading-relaxed">
-            Please choose whether you are accessing RethoricalAI as a <strong>Faculty Instructor</strong> or as a <strong>Student Scholar</strong>. Once selected, your role is permanently locked for this session to ensure examination integrity.
+            Please choose whether you are accessing RethoricalAI as a <strong>Faculty Instructor</strong> or as a <strong>Student Scholar</strong>.
           </p>
         </div>
 
@@ -195,18 +194,18 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
           </div>
         </div>
 
-        {/* Lock Assurance Notice */}
+        {/* Portal Notice */}
         <div className="p-3.5 rounded-xl bg-surface-container-low border border-surface-container text-center text-xs text-on-surface-variant flex items-center justify-center gap-2 max-w-xl mx-auto">
-          <span className="material-symbols-outlined text-[16px] text-error">lock</span>
+          <span className="material-symbols-outlined text-[16px] text-primary">school</span>
           <span>
-            <strong>Institutional Lock Policy:</strong> Changing between Student and Teacher after entry is disabled to maintain examination compliance.
+            <strong>Department of Information Science &amp; Engineering:</strong> Accessing III Sem CSBS &apos;A&apos; curriculum, assignments, and evaluation tools.
           </span>
         </div>
       </main>
 
       {/* Footer */}
       <footer className="max-w-5xl mx-auto w-full py-3 text-center text-xs text-on-surface-variant border-t border-surface-container relative z-10">
-        <span>{institutionName ? `${institutionName} • ` : ''}Department of Humanities &amp; Rhetoric • 2026–2027 Academic Session</span>
+        <span>{institutionName ? `${institutionName} • ` : 'JSS Science and Technology University • '}Department of Information Science &amp; Engineering • 2026–2027 Academic Session</span>
       </footer>
     </div>
   );

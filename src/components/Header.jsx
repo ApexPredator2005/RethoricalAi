@@ -13,12 +13,6 @@ export default function Header({
   searchQuery = '',
   onSearchChange
 }) {
-  const getInitials = (name) => {
-    if (!name) return 'EV';
-    const parts = name.split(' ').filter(n => !n.includes('.'));
-    return parts.length > 0 ? parts.map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'EV';
-  };
-
   const activeInstitution = role === 'student' 
     ? (studentProfile?.institution || teacherProfile?.institution) 
     : teacherProfile?.institution;
@@ -55,13 +49,13 @@ export default function Header({
         </div>
       </div>
 
-      {/* Right Control Indicators & Profile Actions */}
+      {/* Right Control Indicators */}
       <div className="flex items-center gap-space-sm">
         {/* Institution Badge */}
         {activeInstitution && (
           <div 
             onClick={role === 'student' ? onOpenStudentProfileModal : onOpenProfileModal}
-            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-label-sm text-xs font-semibold border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] truncate max-w-[210px] cursor-pointer transition-colors backdrop-blur-md" 
+            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-label-sm text-xs font-semibold border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] truncate max-w-[240px] cursor-pointer transition-colors backdrop-blur-md" 
             title={`${activeInstitution} • ${role === 'student' ? 'Student Portal' : 'Faculty'} (Click to view)`}
           >
             <span className="material-symbols-outlined text-[15px] text-white">
@@ -86,39 +80,6 @@ export default function Header({
           >
             <span className="material-symbols-outlined text-[16px] text-[#142132]">add</span>
             <span>Assignment</span>
-          </button>
-        )}
-
-        {/* Profile Quick Avatar Pill (Student or Teacher) */}
-        {role === 'student' ? (
-          <button
-            onClick={onOpenStudentProfileModal}
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] text-white backdrop-blur-md"
-            title="View & Switch Student Scholar"
-            type="button"
-          >
-            <div className="w-6 h-6 rounded-full bg-white text-[#142132] text-[10px] font-bold flex items-center justify-center shadow-sm">
-              {getInitials(studentProfile?.name || 'Aria Montgomery')}
-            </div>
-            <span className="hidden xl:inline text-xs font-semibold text-white">
-              {studentProfile?.name ? studentProfile.name.split(' ')[0] : 'Scholar'} ({studentProfile?.rollNo || '11A-01'})
-            </span>
-            <span className="material-symbols-outlined text-[14px] text-white">arrow_drop_down</span>
-          </button>
-        ) : (
-          <button
-            onClick={onOpenProfileModal}
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20 transition-colors border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] text-white backdrop-blur-md"
-            title="Edit Teacher & Institution Profile"
-            type="button"
-          >
-            <div className="w-6 h-6 rounded-full bg-white text-[#142132] text-[10px] font-bold flex items-center justify-center shadow-sm">
-              {getInitials(teacherProfile?.name)}
-            </div>
-            <span className="hidden xl:inline text-xs font-semibold text-white">
-              {teacherProfile?.name ? teacherProfile.name.split(' ').slice(0, 2).join(' ') : 'Educator'}
-            </span>
-            <span className="material-symbols-outlined text-[14px] text-white">arrow_drop_down</span>
           </button>
         )}
       </div>

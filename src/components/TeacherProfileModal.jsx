@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 
 export default function TeacherProfileModal({ teacherProfile, onSave, onClose }) {
-  const [name, setName] = useState(teacherProfile?.name || 'Dr. Eleanor Vance');
-  const [title, setTitle] = useState(teacherProfile?.title || 'Faculty Lead & Rhetoric Chair');
-  const [institution, setInstitution] = useState(teacherProfile?.institution || '');
-  const [department, setDepartment] = useState(teacherProfile?.department || 'Department of Humanities & Rhetoric');
-  const [academicYear, setAcademicYear] = useState(teacherProfile?.academicYear || '2026–2027 Academic Session');
-  const [email, setEmail] = useState(teacherProfile?.email || 'e.vance@faculty.edu');
+  const [name, setName] = useState(teacherProfile?.name || 'Dr. D S Vinod');
+  const [title, setTitle] = useState(teacherProfile?.title || 'Professor & Course Coordinator');
+  const [institution, setInstitution] = useState(teacherProfile?.institution || 'JSS Science and Technology University');
+  const [department, setDepartment] = useState(teacherProfile?.department || 'Department of Information Science & Engineering');
+  const [academicYear, setAcademicYear] = useState(teacherProfile?.academicYear || '2026–2027 Academic Session (Sem III)');
+  const [email, setEmail] = useState(teacherProfile?.email || 'dsvinod@jssstuniv.in');
   const [saved, setSaved] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (onSave) {
       onSave({
-        name: name.trim() || 'Educator',
-        title: title.trim() || 'Instructor',
-        institution: institution.trim(),
-        department: department.trim() || 'Academic Department',
-        academicYear: academicYear.trim() || 'Current Term',
-        email: email.trim() || 'educator@faculty.edu'
+        name: name.trim() || 'Dr. D S Vinod',
+        title: title.trim() || 'Professor & Course Coordinator',
+        institution: institution.trim() || 'JSS Science and Technology University',
+        department: department.trim() || 'Department of Information Science & Engineering',
+        academicYear: academicYear.trim() || '2026–2027 Academic Session (Sem III)',
+        email: email.trim() || 'dsvinod@jssstuniv.in'
       });
     }
     setSaved(true);
     setTimeout(() => {
       onClose();
-    }, 600);
+    }, 500);
   };
 
   return (
@@ -36,10 +36,10 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
             <span className="material-symbols-outlined text-primary text-[24px]">badge</span>
             <div>
               <h3 className="font-headline-sm text-headline-sm text-on-surface font-bold">
-                Teacher &amp; Institution Profile
+                Faculty &amp; Course Coordinator Profile
               </h3>
               <span className="font-label-sm text-label-sm text-on-surface-variant">
-                Configure faculty identity, institution name, and academic calendar
+                Configure faculty identity, institution name, and academic schedule
               </span>
             </div>
           </div>
@@ -56,13 +56,13 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
         <form onSubmit={handleSubmit} className="p-space-lg space-y-space-md">
           <div className="space-y-1">
             <label className="font-label-md text-label-md text-on-surface font-semibold block">
-              Teacher / Instructor Full Name
+              Faculty / Coordinator Full Name
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Dr. Eleanor Vance"
+              placeholder="e.g. Dr. D S Vinod"
               required
               className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
@@ -71,25 +71,25 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
             <div className="space-y-1">
               <label className="font-label-md text-label-md text-on-surface font-semibold block">
-                Academic Title / Role
+                Academic Title / Designation
               </label>
               <input
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="e.g. Senior Faculty & Rhetoric Chair"
+                placeholder="e.g. Professor & Course Coordinator"
                 className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
               />
             </div>
             <div className="space-y-1">
               <label className="font-label-md text-label-md text-on-surface font-semibold block">
-                Official Email
+                Faculty Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="e.g. e.vance@faculty.edu"
+                placeholder="e.g. dsvinod@jssstuniv.in"
                 className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
               />
             </div>
@@ -97,13 +97,13 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
 
           <div className="space-y-1">
             <label className="font-label-md text-label-md text-on-surface font-semibold block">
-              Name of Institution / University / School
+              University / Institution Name
             </label>
             <input
               type="text"
               value={institution}
               onChange={(e) => setInstitution(e.target.value)}
-              placeholder="e.g. Collegiate Academy / University"
+              placeholder="e.g. JSS Science and Technology University"
               className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30"
             />
           </div>
@@ -111,13 +111,13 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-space-md">
             <div className="space-y-1">
               <label className="font-label-md text-label-md text-on-surface font-semibold block">
-                Department / Faculty Division
+                Department
               </label>
               <input
                 type="text"
                 value={department}
                 onChange={(e) => setDepartment(e.target.value)}
-                placeholder="e.g. Department of Humanities & Rhetoric"
+                placeholder="e.g. Department of Information Science & Engineering"
                 className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
               />
             </div>
@@ -129,7 +129,7 @@ export default function TeacherProfileModal({ teacherProfile, onSave, onClose })
                 type="text"
                 value={academicYear}
                 onChange={(e) => setAcademicYear(e.target.value)}
-                placeholder="e.g. 2026–2027 Academic Session"
+                placeholder="e.g. 2026–2027 Academic Session (Sem III)"
                 className="w-full px-space-md py-space-xs rounded-lg bg-surface-container-low border border-surface-container text-on-surface focus:outline-none focus:ring-2 focus:ring-primary/30 text-sm"
               />
             </div>

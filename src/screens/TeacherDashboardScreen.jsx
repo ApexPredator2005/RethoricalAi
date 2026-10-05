@@ -182,7 +182,7 @@ export default function TeacherDashboardScreen({
 
           <div className="flex flex-wrap items-baseline gap-space-sm pt-1">
             <h1 className="font-display-lg text-display-lg text-on-surface tracking-tight font-semibold">
-              Welcome back, {teacherProfile?.name || 'Dr. Eleanor Vance'}
+              Welcome back, {teacherProfile?.name || 'Dr. D S Vinod'}
             </h1>
             <button
               onClick={onOpenProfileModal}
@@ -349,7 +349,7 @@ export default function TeacherDashboardScreen({
       {/* ──── QUICK METRICS: SUBMISSION RATE & COHORT PROGRESS ──── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
         {/* Card 1: Class Performance */}
-        <div className="relative bg-surface-container-lowest p-space-lg rounded-xl shadow-[0_3px_10px_rgba(31,27,21,0.04),0_1px_2px_rgba(31,27,21,0.06)] flex flex-col justify-between overflow-hidden border border-surface-container">
+        <div className="relative bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden border border-surface-container hover-lift transition-all">
           <div className="absolute top-0 left-0 right-0 h-1 bg-tertiary-fixed-dim"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
@@ -358,7 +358,7 @@ export default function TeacherDashboardScreen({
               </span>
               <div className="font-headline-sm text-headline-sm text-on-surface font-bold">Class Average</div>
             </div>
-            <span className="p-space-xs rounded bg-tertiary-fixed text-on-tertiary-container">
+            <span className="p-space-xs rounded bg-tertiary-fixed text-on-tertiary-container shadow-xs">
               <span className="material-symbols-outlined text-[20px]">analytics</span>
             </span>
           </div>
@@ -373,7 +373,7 @@ export default function TeacherDashboardScreen({
               )}
             </div>
             {avgScore !== null && (
-              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold">
+              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold shadow-xs">
                 <span className="material-symbols-outlined text-[14px]">trending_up</span> Live Average
               </span>
             )}
@@ -386,7 +386,7 @@ export default function TeacherDashboardScreen({
         </div>
 
         {/* Card 2: Submission Completion Rate (Who has submitted and who hasn't) */}
-        <div className="relative bg-surface-container-lowest p-space-lg rounded-xl shadow-[0_3px_10px_rgba(31,27,21,0.04),0_1px_2px_rgba(31,27,21,0.06)] flex flex-col justify-between overflow-hidden border border-surface-container">
+        <div className="relative bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden border border-surface-container hover-lift transition-all">
           <div className="absolute top-0 left-0 right-0 h-1 bg-primary-container"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">

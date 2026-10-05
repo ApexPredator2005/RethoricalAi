@@ -5,10 +5,8 @@ export default function Sidebar({
   onTabChange, 
   pendingCount = 0, 
   syncStatus = 'Synced',
-  theme = 'day',
-  onToggleTheme,
-  currentClassName = 'Grade 11 - Section A',
-  currentSubject = 'AP English Literature',
+  currentClassName = "III Sem CSBS 'A'",
+  currentSubject = 'Object Oriented Programming',
   teacherProfile,
   studentProfile,
   role = 'teacher',
@@ -17,27 +15,26 @@ export default function Sidebar({
   studentSubmissionsCount = 0
 }) {
   const teacherNavItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: 'menu_book', badge: pendingCount > 0 ? `${pendingCount}` : null },
+    { id: 'dashboard', label: 'Class Overview', icon: 'dashboard', badge: pendingCount > 0 ? `${pendingCount}` : null },
+    { id: 'analytics', label: 'Assignments & Insight', icon: 'insights' },
+    { id: 'report', label: 'Grading & Review', icon: 'rate_review', badge: 'Live' },
     { id: 'rubric', label: 'Grading Criteria', icon: 'tune' },
-    { id: 'submit', label: 'Submit Assignment', icon: 'edit_note' },
-    { id: 'report', label: 'Grading & Feedback', icon: 'rate_review', badge: 'Live' },
-    { id: 'analytics', label: 'Class Insights', icon: 'insights' },
     { id: 'lms', label: 'Gradebook Sync', icon: 'sync_alt', badge: syncStatus === 'Synced' ? '✓' : null }
   ];
 
   const studentNavItems = [
-    { id: 'submit', label: 'Submit Assignment', icon: 'edit_note' },
-    { id: 'student_submissions', label: 'My Submissions', icon: 'inventory_2', badge: studentSubmissionsCount > 0 ? `${studentSubmissionsCount}` : null },
-    { id: 'report', label: 'Grading & Feedback', icon: 'rate_review', badge: 'Live' },
+    { id: 'student_submissions', label: 'Pending Assignments', icon: 'inventory_2', badge: pendingCount > 0 ? `${pendingCount}` : null },
+    { id: 'submit', label: 'Turn In & Practice', icon: 'edit_note' },
+    { id: 'report', label: 'Grading & Feedback', icon: 'rate_review', badge: studentSubmissionsCount > 0 ? `${studentSubmissionsCount}` : null },
     { id: 'rubric', label: 'Grading Criteria', icon: 'tune' }
   ];
 
   const navItems = role === 'student' ? studentNavItems : teacherNavItems;
 
   const getInitials = (name) => {
-    if (!name) return 'EV';
+    if (!name) return 'PR';
     const parts = name.split(' ').filter(n => !n.includes('.'));
-    return parts.length > 0 ? parts.map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'EV';
+    return parts.length > 0 ? parts.map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'PR';
   };
 
   return (
@@ -46,7 +43,7 @@ export default function Sidebar({
       <div className="flex flex-col gap-space-lg">
         {/* Brand Header */}
         <div className="flex flex-col gap-space-xs">
-          <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => onTabChange(role === 'student' ? 'submit' : 'dashboard')}>
+          <div className="flex items-center gap-2.5 cursor-pointer group" onClick={() => onTabChange(role === 'student' ? 'student_submissions' : 'dashboard')}>
             <div className="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-xs group-hover:scale-105 transition-transform">
               <span className="material-symbols-outlined text-[18px]">ink_pen</span>
             </div>
@@ -102,53 +99,23 @@ export default function Sidebar({
         </nav>
       </div>
 
-      {/* Footer Controls: Grading Ambience & Teacher Profile */}
-      <div className="flex flex-col gap-space-md pt-space-md bg-surface-container-low border-t border-surface-container">
-        {/* Day / Night Ambience Toggle */}
-        <div className="flex items-center justify-between p-space-xs rounded bg-surface-container">
-          <span className="font-label-sm text-label-sm text-on-surface-variant px-space-xs">Grading Ambience</span>
-          <div className="flex items-center bg-surface-container-highest p-0.5 rounded">
-            <button
-              onClick={() => theme !== 'day' && onToggleTheme && onToggleTheme()}
-              className={`px-space-xs py-0.5 rounded font-label-sm text-label-sm transition-all ${
-                theme === 'day' 
-                  ? 'bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold' 
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-              type="button"
-            >
-              Day
-            </button>
-            <button
-              onClick={() => theme !== 'night' && onToggleTheme && onToggleTheme()}
-              className={`px-space-xs py-0.5 rounded font-label-sm text-label-sm transition-all ${
-                theme === 'night' 
-                  ? 'bg-surface-container-lowest text-on-surface shadow-[0_1px_2px_rgba(0,0,0,0.05)] font-semibold' 
-                  : 'text-on-surface-variant hover:text-on-surface'
-              }`}
-              type="button"
-            >
-              Night
-            </button>
-          </div>
-        </div>
-
-        {/* Profile Card (Student Scholar or Teacher Instructor) */}
+      {/* Footer Profile Card */}
+      <div className="pt-space-md bg-surface-container-low border-t border-surface-container">
         {role === 'student' ? (
           <div 
             onClick={onOpenStudentProfileModal}
             className="flex items-center gap-space-sm p-space-xs rounded bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer group"
-            title="Click to view & switch student scholar profile"
+            title="Click to view student scholar profile"
           >
             <div className="w-8 h-8 rounded-full bg-secondary text-on-secondary font-label-md font-bold flex items-center justify-center shrink-0">
-              {getInitials(studentProfile?.name || 'Aria Montgomery')}
+              {getInitials(studentProfile?.name || 'Pratyush Raj')}
             </div>
             <div className="flex flex-col min-w-0 flex-1">
               <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-secondary transition-colors">
-                {studentProfile?.name || 'Aria Montgomery'}
+                {studentProfile?.name || 'Pratyush Raj'}
               </span>
               <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
-                {studentProfile?.rollNo || '11A-01'} • Student Scholar
+                {studentProfile?.rollNo || '33'} • Student Scholar
               </span>
             </div>
             <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-secondary transition-colors">
@@ -162,14 +129,14 @@ export default function Sidebar({
             title="Click to view & edit teacher profile & institution"
           >
             <div className="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container font-label-md font-bold flex items-center justify-center shrink-0">
-              {getInitials(teacherProfile?.name)}
+              {getInitials(teacherProfile?.name || 'Dr. D S Vinod')}
             </div>
             <div className="flex flex-col min-w-0 flex-1">
               <span className="font-label-md text-label-md text-on-surface font-semibold truncate group-hover:text-primary transition-colors">
-                {teacherProfile?.name || 'Dr. Eleanor Vance'}
+                {teacherProfile?.name || 'Dr. D S Vinod'}
               </span>
               <span className="font-label-sm text-[11px] text-on-surface-variant truncate">
-                {teacherProfile?.institution || teacherProfile?.department || 'Faculty Instructor'}
+                {teacherProfile?.institution || teacherProfile?.department || 'Department of ISE'}
               </span>
             </div>
             <span className="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary transition-colors">
