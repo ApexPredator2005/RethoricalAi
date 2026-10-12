@@ -1,37 +1,37 @@
 /* RethoricalAI - Design System & Stylesheet */
 
 :root {
-  /* Color Palette - Day Grading (Default Paper Mode) */
-  --bg-app: #F5F3EC;
-  --bg-paper: #FCFBF7;
+  /* Color Palette - Day Grading (Refreshed Forest, Slate & Sun Palette) */
+  --bg-app: #F2F7F2;
+  --bg-paper: #FAFDF9;
   --bg-paper-elevated: #FFFFFF;
-  --bg-sidebar: #EFECE3;
-  --bg-card: #FAF8F2;
-  --bg-card-hover: #F3EFE4;
+  --bg-sidebar: #E5EFE5;
+  --bg-card: #F4FAF3;
+  --bg-card-hover: #EBF4EB;
   
-  --text-primary: #1B2A3D;       /* Deep Ink Navy */
-  --text-secondary: #4A5B6E;     /* Muted Ink */
-  --text-muted: #7B8B9C;         /* Faded Stamp Ink */
+  --text-primary: #1C2D22;       /* Deep Hunter Ink */
+  --text-secondary: #3B5445;     /* Forest Sage */
+  --text-muted: #5B7264;         /* Slate Sage */
   
-  --border-subtle: #E2DDD0;
-  --border-strong: #C8BFAC;
-  --border-paper: #E6E1D3;
+  --border-subtle: #D5E5D7;
+  --border-strong: #A8C4AC;
+  --border-paper: #D9E8DC;
   
-  /* Signature Accents */
-  --accent-red: #B0503A;         /* Muted Red Pen */
-  --accent-red-bg: rgba(176, 80, 58, 0.08);
-  --accent-red-border: rgba(176, 80, 58, 0.25);
+  /* Signature Accents from Palette */
+  --accent-red: #3A5743;         /* Primary Accent: Hunter Green */
+  --accent-red-bg: rgba(58, 87, 67, 0.08);
+  --accent-red-border: rgba(58, 87, 67, 0.25);
   
-  --accent-gold: #B4872E;        /* Soft Gold Praise */
-  --accent-gold-bg: rgba(180, 135, 46, 0.1);
-  --accent-gold-border: rgba(180, 135, 46, 0.3);
+  --accent-gold: #D4C322;        /* Soft Praise Accent: Banana Cream Tint */
+  --accent-gold-bg: rgba(252, 236, 82, 0.18);
+  --accent-gold-border: rgba(212, 195, 34, 0.4);
   
-  --accent-blue: #3E6E8E;        /* Quiet Blue Insights */
-  --accent-blue-bg: rgba(62, 110, 142, 0.09);
-  --accent-blue-border: rgba(62, 110, 142, 0.28);
+  --accent-blue: #3B7080;        /* Insights Accent: Blue Slate */
+  --accent-blue-bg: rgba(59, 112, 128, 0.09);
+  --accent-blue-border: rgba(59, 112, 128, 0.28);
   
-  --margin-red-line: rgba(176, 80, 58, 0.35);
-  --ruled-line-color: rgba(27, 42, 61, 0.06);
+  --margin-red-line: rgba(58, 87, 67, 0.35);
+  --ruled-line-color: rgba(28, 45, 34, 0.06);
 
   /* Fonts */
   --font-serif: 'Source Serif 4', Georgia, serif;
@@ -39,46 +39,46 @@
   --font-hand: 'Caveat', cursive, sans-serif;
 
   /* Shadows - Subtle paper stack depth */
-  --shadow-paper: 0 4px 20px -2px rgba(27, 42, 61, 0.06), 0 2px 6px -1px rgba(27, 42, 61, 0.04);
-  --shadow-floating: 0 12px 32px -4px rgba(27, 42, 61, 0.12), 0 4px 12px -2px rgba(27, 42, 61, 0.08);
-  --shadow-stamp: 2px 2px 0px rgba(27, 42, 61, 0.15);
+  --shadow-paper: 0 4px 20px -2px rgba(28, 45, 34, 0.06), 0 2px 6px -1px rgba(28, 45, 34, 0.04);
+  --shadow-floating: 0 12px 32px -4px rgba(28, 45, 34, 0.12), 0 4px 12px -2px rgba(28, 45, 34, 0.08);
+  --shadow-stamp: 2px 2px 0px rgba(28, 45, 34, 0.15);
 
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
 }
 
-/* Night Grading (Dark Mode Inverted Ink Palette) */
+/* Night Grading (Dark Mode Palette) */
 [data-theme="night"] {
-  --bg-app: #0F151F;
-  --bg-paper: #16202D;
-  --bg-paper-elevated: #1D2A3B;
-  --bg-sidebar: #131B27;
-  --bg-card: #1A2636;
-  --bg-card-hover: #223145;
+  --bg-app: #0F1A14;
+  --bg-paper: #16241C;
+  --bg-paper-elevated: #1E3026;
+  --bg-sidebar: #132018;
+  --bg-card: #18281F;
+  --bg-card-hover: #22352A;
   
-  --text-primary: #E8ECF1;       /* Cream Ink */
-  --text-secondary: #9DAEBF;     /* Soft Paper Grey */
-  --text-muted: #6B7C90;         /* Slate Note */
+  --text-primary: #E9F4EC;       /* Mint Cream Ink */
+  --text-secondary: #ADC5B5;     /* Soft Tea Sage */
+  --text-muted: #7A9B84;         /* Muted Slate */
   
-  --border-subtle: #253448;
-  --border-strong: #374B63;
-  --border-paper: #28374B;
+  --border-subtle: #243B2E;
+  --border-strong: #365543;
+  --border-paper: #284133;
   
-  --accent-red: #E6735C;         /* Bright Pen Red */
-  --accent-red-bg: rgba(230, 115, 92, 0.14);
-  --accent-red-border: rgba(230, 115, 92, 0.35);
+  --accent-red: #ADE25D;         /* Bright Yellow Green */
+  --accent-red-bg: rgba(173, 226, 93, 0.14);
+  --accent-red-border: rgba(173, 226, 93, 0.35);
   
-  --accent-gold: #E5BB5A;        /* Warm Gold */
-  --accent-gold-bg: rgba(229, 187, 90, 0.14);
-  --accent-gold-border: rgba(229, 187, 90, 0.35);
+  --accent-gold: #FCEC52;        /* Vibrant Banana Cream */
+  --accent-gold-bg: rgba(252, 236, 82, 0.14);
+  --accent-gold-border: rgba(252, 236, 82, 0.35);
   
-  --accent-blue: #649EC4;        /* Soft Blue */
-  --accent-blue-bg: rgba(100, 158, 196, 0.14);
-  --accent-blue-border: rgba(100, 158, 196, 0.35);
+  --accent-blue: #639AA9;        /* Soft Blue Slate */
+  --accent-blue-bg: rgba(99, 154, 169, 0.14);
+  --accent-blue-border: rgba(99, 154, 169, 0.35);
   
-  --margin-red-line: rgba(230, 115, 92, 0.35);
-  --ruled-line-color: rgba(232, 236, 241, 0.05);
+  --margin-red-line: rgba(173, 226, 93, 0.35);
+  --ruled-line-color: rgba(233, 244, 236, 0.05);
 
   --shadow-paper: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
   --shadow-floating: 0 14px 36px -4px rgba(0, 0, 0, 0.6);
