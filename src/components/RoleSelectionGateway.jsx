@@ -81,7 +81,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
 
             <div className="space-y-5">
               <div className="flex items-center justify-between">
-                <div className="w-14 h-14 rounded-2xl bg-primary-container text-on-primary flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-[32px]">school</span>
                 </div>
                 <span className="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">
