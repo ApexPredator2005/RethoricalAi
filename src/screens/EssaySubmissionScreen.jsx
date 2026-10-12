@@ -433,11 +433,11 @@ export default function EssaySubmissionScreen({
                 onClick={() => setLatePolicyStatus('grace_window')}
                 className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all flex items-center gap-1 ${
                   latePolicyStatus === 'grace_window'
-                    ? 'bg-primary-fixed text-primary shadow-xs'
+                    ? 'bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] shadow-xs'
                     : 'bg-surface-container text-on-surface-variant hover:text-on-surface'
                 }`}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-[#C85A32] animate-pulse"></span>
                 <span>24h Grace (-5%)</span>
               </button>
 
@@ -461,7 +461,9 @@ export default function EssaySubmissionScreen({
               <span className="material-symbols-outlined text-[16px] text-primary">info</span>
               <span>
                 {latePolicyStatus === 'on_time' && 'Current Status: Submission is arriving within standard deadline. 0% penalty applied.'}
-                {latePolicyStatus === 'grace_window' && 'Current Status: Grace period active (+24h buffer). Transparent -5% policy adjustment recorded on official receipt.'}
+                {latePolicyStatus === 'grace_window' && (
+                  <span className="text-[#A63F1B] font-medium">Current Status: Grace period active (+24h buffer). Transparent -5% policy adjustment recorded on official receipt.</span>
+                )}
                 {latePolicyStatus === 'late_exemption' && 'Current Status: Approved Medical/Institutional Exemption on file with HOD Dr. D S Vinod. No deductions.'}
               </span>
             </div>
@@ -659,9 +661,9 @@ export default function EssaySubmissionScreen({
         {/* Editor Top Toolbar */}
         <div className="bg-surface-container-low px-space-lg py-2.5 flex flex-wrap items-center justify-between text-xs text-on-surface-variant border-b border-surface-container gap-2">
           <div className="flex items-center gap-2 font-semibold">
-            <span className="w-2.5 h-2.5 rounded-full bg-red-400"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
-            <span className="w-2.5 h-2.5 rounded-full bg-green-400"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#C85A32]"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FCEC52]"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#ADE25D]"></span>
             <span className="font-code-inline text-on-surface uppercase tracking-wider text-[11px] ml-1">
               DRAFT SHEET • {currentTemplate.name}
             </span>
@@ -681,7 +683,7 @@ export default function EssaySubmissionScreen({
             backgroundColor: '#FFFDF5'
           }}
         >
-          <div className="hidden sm:block absolute left-14 top-0 bottom-0 w-[1.5px] bg-[#FE5D26]/30 pointer-events-none"></div>
+          <div className="hidden sm:block absolute left-14 top-0 bottom-0 w-[1.5px] bg-[#C85A32]/35 pointer-events-none"></div>
 
           <textarea
             className="w-full bg-transparent resize-y outline-none font-body-md text-body-md text-on-surface leading-[28px] focus:outline-none min-h-[400px] pt-1"
@@ -699,7 +701,7 @@ export default function EssaySubmissionScreen({
         <div className="bg-surface-container-low px-space-lg py-2.5 flex flex-wrap items-center justify-between text-on-surface-variant font-label-sm text-xs border-t border-[#E8DFC8] gap-2">
           <div className="flex flex-wrap items-center gap-space-md">
             <span className="font-bold text-on-surface flex items-center gap-1.5">
-              <span className={`w-2 h-2 rounded-full ${words > currentTemplate.defaultWordLimit ? 'bg-error animate-pulse' : words > 0 ? 'bg-secondary' : 'bg-outline'}`}></span>
+              <span className={`w-2 h-2 rounded-full ${words > currentTemplate.defaultWordLimit ? 'bg-[#C85A32] animate-pulse' : words > 0 ? 'bg-secondary' : 'bg-outline'}`}></span>
               {words} / {currentTemplate.defaultWordLimit} words
             </span>
             <span>•</span>
@@ -795,8 +797,8 @@ export default function EssaySubmissionScreen({
 
       {/* Error Banner */}
       {errorMessage && (
-        <div className="p-space-md rounded-xl bg-error-container text-on-error-container text-xs font-semibold flex items-center gap-2 animate-fade-in border border-error/30">
-          <span className="material-symbols-outlined text-[18px]">error</span>
+        <div className="p-space-md rounded-xl bg-[#FAEDE8] text-[#A63F1B] text-xs font-semibold flex items-center gap-2 animate-fade-in border border-[#F0C5B5]">
+          <span className="material-symbols-outlined text-[18px] text-[#C85A32]">error</span>
           <span>{errorMessage}</span>
         </div>
       )}
@@ -819,8 +821,8 @@ export default function EssaySubmissionScreen({
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
           {!honorPledge && (
-            <span className="text-xs font-semibold text-error flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px]">lock</span>
+            <span className="text-xs font-semibold text-[#A63F1B] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#C85A32]">lock</span>
               Checkbox Required
             </span>
           )}

@@ -7,11 +7,11 @@ import SnippetsLibraryModal from '../components/SnippetsLibraryModal';
 import AccessibilityToolbar from '../components/AccessibilityToolbar';
 
 const PRESET_QUICK_STAMPS = [
-  { id: 'stamp-1', label: 'Strong Evidence', icon: 'star', color: 'bg-tertiary-fixed text-on-tertiary-fixed border-tertiary/30' },
-  { id: 'stamp-2', label: 'Needs Citation', icon: 'warning', color: 'bg-primary-fixed text-primary border-primary/30' },
+  { id: 'stamp-1', label: 'Strong Evidence', icon: 'star', color: 'bg-tertiary-fixed text-on-tertiary-container border-tertiary/30' },
+  { id: 'stamp-2', label: 'Needs Citation', icon: 'warning', color: 'bg-[#FAEDE8] text-[#A63F1B] border-[#F0C5B5]' },
   { id: 'stamp-3', label: 'Explain Deeper', icon: 'search', color: 'bg-secondary-fixed text-on-secondary-fixed border-secondary/30' },
   { id: 'stamp-4', label: 'Great Transition', icon: 'swap_calls', color: 'bg-surface-container-high text-on-surface border-surface-container-highest' },
-  { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-tertiary-fixed-dim text-on-tertiary-container border-tertiary/40' }
+  { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-primary-fixed text-[#1D3B26] border-primary/30' }
 ];
 
 export default function FeedbackReportScreen({ 
@@ -364,10 +364,12 @@ export default function FeedbackReportScreen({
             {/* Feature 9: Turn-In Compliance Badge */}
             <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold font-code-inline ${
               submission.latePolicyStatus === 'grace_window'
-                ? 'bg-primary-fixed text-primary'
+                ? 'bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5]'
                 : 'bg-secondary-fixed text-on-secondary-fixed'
             }`}>
-              <span className="material-symbols-outlined text-[13px]">
+              <span className={`material-symbols-outlined text-[13px] ${
+                submission.latePolicyStatus === 'grace_window' ? 'text-[#C85A32]' : ''
+              }`}>
                 {submission.latePolicyStatus === 'grace_window' ? 'timelapse' : 'check_circle'}
               </span>
               {submission.lateStatusText || (submission.latePolicyStatus === 'grace_window' ? 'Grace Period (-5%)' : 'Submitted On-Time')}
@@ -669,7 +671,7 @@ export default function FeedbackReportScreen({
             onClick={handleToggleRecord}
             className={`px-3.5 py-2 rounded-xl text-xs font-label-sm font-bold flex items-center gap-2 transition-all shadow-xs ${
               isRecording
-                ? 'bg-error text-on-error animate-pulse'
+                ? 'bg-[#C85A32] text-white animate-pulse'
                 : 'bg-primary text-on-primary hover:bg-primary-dim'
             }`}
           >
@@ -682,13 +684,13 @@ export default function FeedbackReportScreen({
           </button>
 
           {isRecording && (
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-error-container text-on-error-container text-xs font-code-inline">
-              <span className="w-2 h-2 rounded-full bg-error animate-ping"></span>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] text-xs font-code-inline">
+              <span className="w-2 h-2 rounded-full bg-[#C85A32] animate-ping"></span>
               <div className="flex items-end gap-0.5 h-4">
-                <span className="w-1 bg-error animate-bounce h-2"></span>
-                <span className="w-1 bg-error animate-bounce h-4"></span>
-                <span className="w-1 bg-error animate-bounce h-3"></span>
-                <span className="w-1 bg-error animate-bounce h-4"></span>
+                <span className="w-1 bg-[#C85A32] animate-bounce h-2"></span>
+                <span className="w-1 bg-[#C85A32] animate-bounce h-4"></span>
+                <span className="w-1 bg-[#C85A32] animate-bounce h-3"></span>
+                <span className="w-1 bg-[#C85A32] animate-bounce h-4"></span>
               </div>
               <span>Live Waveform Active</span>
             </div>
@@ -750,7 +752,7 @@ export default function FeedbackReportScreen({
 
           {/* Document Sheet */}
           <div className={`relative max-w-5xl mx-auto rounded-sm p-6 md:p-12 lg:p-16 ${contrastContainerClass}`}>
-            <div className="hidden md:block absolute left-20 top-0 bottom-0 w-[1.5px] bg-red-400 opacity-60 pointer-events-none"></div>
+            <div className="hidden md:block absolute left-20 top-0 bottom-0 w-[1.5px] bg-[#C85A32] opacity-40 pointer-events-none"></div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start relative">
               {/* Essay Body Column */}

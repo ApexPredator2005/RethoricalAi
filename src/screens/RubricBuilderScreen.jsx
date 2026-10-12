@@ -237,15 +237,15 @@ export default function RubricBuilderScreen() {
           <span className={`inline-flex items-center gap-1 px-space-sm py-1 rounded text-xs font-bold font-mono tracking-tight ${
             isWeightValid
               ? 'bg-tertiary-fixed text-on-tertiary-container'
-              : 'bg-error-container text-on-error-container animate-pulse'
+              : 'bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] animate-pulse'
           }`}>
-            <span className="material-symbols-outlined text-[15px]">
+            <span className={`material-symbols-outlined text-[15px] ${isWeightValid ? '' : 'text-[#C85A32]'}`}>
               {isWeightValid ? 'check_circle' : 'warning'}
             </span>
             <span>Weights: {totalWeight}%</span>
           </span>
           {!isWeightValid && (
-            <span className="font-label-sm text-xs text-error font-medium">
+            <span className="font-label-sm text-xs text-[#A63F1B] font-semibold">
               (Must equal exactly 100%)
             </span>
           )}
@@ -316,7 +316,7 @@ export default function RubricBuilderScreen() {
                     type="button"
                     onClick={() => handleDeleteCriterion(idx)}
                     disabled={criteria.length <= 1}
-                    className="p-1.5 rounded text-on-surface-variant hover:text-error hover:bg-error-container/20 transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
+                    className="p-1.5 rounded text-on-surface-variant hover:text-[#C85A32] hover:bg-[#FAEDE8] transition-colors disabled:opacity-30 disabled:hover:bg-transparent"
                     title="Remove this criterion"
                   >
                     <span className="material-symbols-outlined text-[18px]">delete</span>
@@ -348,14 +348,14 @@ export default function RubricBuilderScreen() {
                 </summary>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-space-sm">
-                  {/* High Anchor (Green) */}
-                  <div className="p-space-sm rounded-xl bg-[#E6F4EA] dark:bg-[#132A1C] border border-[#CEEAD6] dark:border-[#1E462E] space-y-1">
+                  {/* High Anchor (Hunter Green) */}
+                  <div className="p-space-sm rounded-xl bg-[#E8F2E9] dark:bg-[#132A1C] border border-[#C6DACB] dark:border-[#1E462E] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-xs font-bold text-[#137333] dark:text-[#81C995] flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-[#137333] dark:bg-[#81C995]"></span>
+                      <span className="font-label-sm text-xs font-bold text-[#3A5743] dark:text-[#ADE25D] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#3A5743] dark:bg-[#ADE25D]"></span>
                         Exemplary / High Anchor
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#137333] dark:text-[#81C995]">
+                      <span className="font-mono text-xs font-bold text-[#3A5743] dark:text-[#ADE25D]">
                         {crit.highRange || `${Math.round(crit.weight * 0.9)}–${crit.weight} pts`}
                       </span>
                     </div>
@@ -367,14 +367,14 @@ export default function RubricBuilderScreen() {
                     />
                   </div>
 
-                  {/* Mid Anchor (Yellow / Amber) */}
-                  <div className="p-space-sm rounded-xl bg-[#FEF7E0] dark:bg-[#2C2412] border border-[#FEEFC3] dark:border-[#42361B] space-y-1">
+                  {/* Mid Anchor (Banana Cream) */}
+                  <div className="p-space-sm rounded-xl bg-[#FFFEEB] dark:bg-[#2C2412] border border-[#F5EC9C] dark:border-[#42361B] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-xs font-bold text-[#B06000] dark:text-[#FDD663] flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-[#F29900]"></span>
+                      <span className="font-label-sm text-xs font-bold text-[#7A6A00] dark:text-[#FCEC52] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#D4C322]"></span>
                         Proficient / Mid Anchor
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#B06000] dark:text-[#FDD663]">
+                      <span className="font-mono text-xs font-bold text-[#7A6A00] dark:text-[#FCEC52]">
                         {crit.midRange || `${Math.round(crit.weight * 0.7)}–${Math.round(crit.weight * 0.9) - 1} pts`}
                       </span>
                     </div>
@@ -386,14 +386,14 @@ export default function RubricBuilderScreen() {
                     />
                   </div>
 
-                  {/* Low Anchor (Red / Emerging) */}
-                  <div className="p-space-sm rounded-xl bg-[#FCE8E6] dark:bg-[#2E1616] border border-[#FAD2CF] dark:border-[#4B2323] space-y-1">
+                  {/* Low Anchor (Warm Terracotta) */}
+                  <div className="p-space-sm rounded-xl bg-[#FAEDE8] dark:bg-[#2E1616] border border-[#F0C5B5] dark:border-[#4B2323] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-xs font-bold text-[#C5221F] dark:text-[#F28B82] flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-[#D93025]"></span>
+                      <span className="font-label-sm text-xs font-bold text-[#A63F1B] dark:text-[#E88E70] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#C85A32]"></span>
                         Developing / Low Anchor
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#C5221F] dark:text-[#F28B82]">
+                      <span className="font-mono text-xs font-bold text-[#A63F1B] dark:text-[#E88E70]">
                         {crit.lowRange || `0–${Math.round(crit.weight * 0.7) - 1} pts`}
                       </span>
                     </div>

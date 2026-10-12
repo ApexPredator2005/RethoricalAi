@@ -573,11 +573,11 @@ export default function TeacherDashboardScreen({
                   onClick={() => setRosterFilter('missing')}
                   className={`px-3 py-1 rounded-md transition-all flex items-center gap-1 ${
                     rosterFilter === 'missing'
-                      ? 'bg-surface-container-lowest text-error shadow-xs font-bold'
+                      ? 'bg-surface-container-lowest text-[#A63F1B] shadow-xs font-bold'
                       : 'text-on-surface-variant hover:text-on-surface'
                   }`}
                 >
-                  <span className="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C85A32]"></span>
                   Missing ({missingStudents.length})
                 </button>
               </div>
@@ -639,8 +639,8 @@ export default function TeacherDashboardScreen({
                         {student.score !== null ? `${student.score}/100` : 'Submitted'}
                       </span>
                     ) : (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container shrink-0">
-                        <span className="material-symbols-outlined text-[13px]">pending</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] shrink-0">
+                        <span className="material-symbols-outlined text-[13px] text-[#C85A32]">pending</span>
                         Missing
                       </span>
                     )}
@@ -746,8 +746,8 @@ export default function TeacherDashboardScreen({
                             </span>
                           </div>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
-                            <span className="material-symbols-outlined text-[13px]">pending</span>
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5]">
+                            <span className="material-symbols-outlined text-[13px] text-[#C85A32]">pending</span>
                             Missing / Not Submitted
                           </span>
                         )}

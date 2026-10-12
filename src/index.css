@@ -18,9 +18,9 @@
   --border-paper: #D9E8DC;
   
   /* Signature Accents from Palette */
-  --accent-red: #3A5743;         /* Primary Accent: Hunter Green */
-  --accent-red-bg: rgba(58, 87, 67, 0.08);
-  --accent-red-border: rgba(58, 87, 67, 0.25);
+  --accent-red: #C85A32;         /* Critique Accent: Professor's Terracotta Red Pen */
+  --accent-red-bg: rgba(200, 90, 50, 0.08);
+  --accent-red-border: rgba(200, 90, 50, 0.28);
   
   --accent-gold: #D4C322;        /* Soft Praise Accent: Banana Cream Tint */
   --accent-gold-bg: rgba(252, 236, 82, 0.18);
@@ -30,7 +30,7 @@
   --accent-blue-bg: rgba(59, 112, 128, 0.09);
   --accent-blue-border: rgba(59, 112, 128, 0.28);
   
-  --margin-red-line: rgba(58, 87, 67, 0.35);
+  --margin-red-line: rgba(200, 90, 50, 0.35);
   --ruled-line-color: rgba(28, 45, 34, 0.06);
 
   /* Fonts */
