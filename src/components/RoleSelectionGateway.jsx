@@ -49,7 +49,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
       {/* Main Selection Area */}
       <main className="max-w-4xl mx-auto w-full my-auto py-10 space-y-8 relative z-10">
         <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-primary text-xs font-bold uppercase tracking-wider">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FCEC52] text-[#332A00] border border-[#DEC925] text-xs font-bold uppercase tracking-wider shadow-xs">
             <span className="material-symbols-outlined text-[14px]">school</span>
             <span>Academic Portal Identification</span>
           </div>
@@ -84,7 +84,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
                 <div className="w-14 h-14 rounded-2xl bg-primary text-on-primary flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-[32px]">school</span>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">
+                <span className="px-2.5 py-1 rounded-full bg-[#FCEC52]/90 text-[#332A00] border border-[#DEC925] text-xs font-bold shadow-2xs">
                   Faculty Access
                 </span>
               </div>
@@ -148,7 +148,7 @@ export default function RoleSelectionGateway({ onSelectRole, teacherProfile, ins
                 <div className="w-14 h-14 rounded-2xl bg-secondary text-on-secondary flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-[32px]">person</span>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-bold">
+                <span className="px-2.5 py-1 rounded-full bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] text-xs font-bold shadow-2xs">
                   Scholar Portal
                 </span>
               </div>

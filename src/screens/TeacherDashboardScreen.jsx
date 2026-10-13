@@ -195,7 +195,7 @@ export default function TeacherDashboardScreen({
           </div>
 
           <div className="flex flex-wrap items-center gap-2 pt-0.5">
-            <span className="px-2 py-0.5 rounded bg-primary-fixed text-primary font-label-sm text-xs font-bold">
+            <span className="px-2.5 py-0.5 rounded-full bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] font-label-sm text-xs font-bold shadow-2xs">
               Active Section: {currentClass.name}
             </span>
             <span className="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-sm text-xs font-semibold">
@@ -315,7 +315,7 @@ export default function TeacherDashboardScreen({
                         {cls.name}
                       </span>
                       {isSelected && (
-                        <span className="px-1.5 py-0.5 rounded bg-primary-fixed text-primary text-[10px] font-bold uppercase tracking-wider">
+                        <span className="px-1.5 py-0.5 rounded bg-[#FCEC52] text-[#332A00] border border-[#DEC925] text-[10px] font-bold uppercase tracking-wider shadow-2xs">
                           Active
                         </span>
                       )}
@@ -335,7 +335,7 @@ export default function TeacherDashboardScreen({
                     {clsRoster.length} Scholars Enrolled
                   </span>
                   <span className={`font-semibold px-2 py-0.5 rounded ${
-                    rate >= 75 ? 'bg-tertiary-fixed text-on-tertiary-container' : 'bg-surface-container text-on-surface-variant'
+                    rate >= 75 ? 'bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]' : 'bg-surface-container text-on-surface-variant'
                   }`}>
                     {clsSubmissions.length}/{clsRoster.length} Submitted ({rate}%)
                   </span>
@@ -350,7 +350,7 @@ export default function TeacherDashboardScreen({
       <div className="grid grid-cols-1 md:grid-cols-3 gap-space-lg">
         {/* Card 1: Class Performance */}
         <div className="relative bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden border border-surface-container hover-lift transition-all">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-tertiary-fixed-dim"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#FCEC52]"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant font-semibold">
@@ -358,7 +358,7 @@ export default function TeacherDashboardScreen({
               </span>
               <div className="font-headline-sm text-headline-sm text-on-surface font-bold">Class Average</div>
             </div>
-            <span className="p-space-xs rounded bg-tertiary-fixed text-on-tertiary-container shadow-xs">
+            <span className="p-space-xs rounded bg-[#FCEC52] text-[#332A00] border border-[#DEC925] shadow-xs">
               <span className="material-symbols-outlined text-[20px]">analytics</span>
             </span>
           </div>
@@ -373,7 +373,7 @@ export default function TeacherDashboardScreen({
               )}
             </div>
             {avgScore !== null && (
-              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-tertiary-fixed text-on-tertiary-container font-label-sm text-label-sm font-semibold shadow-xs">
+              <span className="inline-flex items-center gap-1 px-space-xs py-0.5 rounded bg-[#FCEC52] text-[#332A00] border border-[#DEC925] font-label-sm text-label-sm font-bold shadow-xs">
                 <span className="material-symbols-outlined text-[14px]">trending_up</span> Live Average
               </span>
             )}
@@ -387,7 +387,7 @@ export default function TeacherDashboardScreen({
 
         {/* Card 2: Submission Completion Rate (Who has submitted and who hasn't) */}
         <div className="relative bg-surface-container-lowest p-space-lg rounded-2xl shadow-sm flex flex-col justify-between overflow-hidden border border-surface-container hover-lift transition-all">
-          <div className="absolute top-0 left-0 right-0 h-1 bg-primary-container"></div>
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#CFFFB3]"></div>
           <div className="flex items-start justify-between">
             <div className="space-y-space-xs">
               <span className="font-label-sm text-label-sm uppercase tracking-wider text-primary font-semibold">
@@ -395,7 +395,7 @@ export default function TeacherDashboardScreen({
               </span>
               <div className="font-headline-sm text-headline-sm text-on-surface font-bold">Submission Tracker</div>
             </div>
-            <span className="p-space-xs rounded bg-primary-fixed text-on-primary-fixed-variant">
+            <span className="p-space-xs rounded bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] shadow-xs">
               <span className="material-symbols-outlined text-[20px]">checklist</span>
             </span>
           </div>
@@ -403,8 +403,8 @@ export default function TeacherDashboardScreen({
             <div className="font-display-lg text-display-lg text-primary font-semibold tracking-tight">
               {submittedStudents.length} <span className="font-body-md text-body-md text-on-surface-variant font-normal">/ {roster.length} turned in</span>
             </div>
-            <span className={`inline-flex items-center px-space-xs py-0.5 rounded font-label-sm text-label-sm font-semibold tracking-wide ${
-              missingStudents.length > 0 ? 'bg-primary-container text-on-primary' : 'bg-tertiary-fixed text-on-tertiary-container'
+            <span className={`inline-flex items-center px-space-xs py-0.5 rounded font-label-sm text-label-sm font-bold tracking-wide shadow-2xs ${
+              missingStudents.length > 0 ? 'bg-[#FCEC52] text-[#332A00] border border-[#DEC925]' : 'bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]'
             }`}>
               {completionPercentage}% Complete
             </span>
@@ -601,7 +601,7 @@ export default function TeacherDashboardScreen({
                 <button
                   type="button"
                   onClick={() => handleRemindAllMissing(missingStudents.length)}
-                  className="px-3 py-1 rounded-lg bg-primary-container text-on-primary hover:bg-primary font-label-md text-xs font-semibold flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
+                  className="px-3 py-1 rounded-lg bg-[#FCEC52] hover:bg-[#ebd738] text-[#332A00] font-label-md text-xs font-bold flex items-center gap-1.5 shadow-xs transition-all active:scale-95 border border-[#DEC925]"
                   title="Send submission notification email/portal reminder to all missing students"
                 >
                   <span className="material-symbols-outlined text-[15px]">send</span>
@@ -624,7 +624,7 @@ export default function TeacherDashboardScreen({
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2.5">
                       <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs shrink-0 ${
-                        student.hasSubmitted ? 'bg-secondary-fixed text-on-secondary-fixed' : 'bg-surface-container text-on-surface-variant'
+                        student.hasSubmitted ? 'bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]' : 'bg-surface-container text-on-surface-variant'
                       }`}>
                         {student.name.split(' ').map(n => n[0]).join('')}
                       </div>
@@ -634,7 +634,7 @@ export default function TeacherDashboardScreen({
                       </div>
                     </div>
                     {student.hasSubmitted ? (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-container shrink-0">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] shrink-0">
                         <span className="material-symbols-outlined text-[13px]">check_circle</span>
                         {student.score !== null ? `${student.score}/100` : 'Submitted'}
                       </span>
@@ -670,7 +670,7 @@ export default function TeacherDashboardScreen({
                         <button
                           type="button"
                           onClick={() => handleSendReminder(student)}
-                          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-primary-fixed hover:bg-primary-fixed-dim text-primary font-label-md text-xs font-semibold transition-all"
+                          className="flex-1 inline-flex items-center justify-center gap-1 px-3 py-1.5 rounded-lg bg-[#CFFFB3] hover:bg-[#bdf39f] text-[#16381C] font-label-md text-xs font-bold transition-all border border-[#ADE25D] shadow-xs"
                         >
                           <span className="material-symbols-outlined text-[14px]">mail</span>
                           <span>Remind</span>
@@ -737,7 +737,7 @@ export default function TeacherDashboardScreen({
                       <td className="py-3 px-4">
                         {student.hasSubmitted ? (
                           <div className="flex flex-col items-start gap-0.5">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-tertiary-fixed text-on-tertiary-container">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]">
                               <span className="material-symbols-outlined text-[13px]">check_circle</span>
                               Submitted
                             </span>
@@ -795,7 +795,7 @@ export default function TeacherDashboardScreen({
                             <button
                               type="button"
                               onClick={() => handleSendReminder(student)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary-fixed hover:bg-primary-fixed-dim text-[#1D3B26] font-label-md text-xs font-bold transition-all border border-[#B8DCAB]"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#CFFFB3] hover:bg-[#bdf39f] text-[#16381C] font-label-md text-xs font-bold transition-all border border-[#ADE25D] shadow-xs"
                               title={`Send email notification reminder to ${student.email}`}
                             >
                               <span className="material-symbols-outlined text-[14px]">mail</span>

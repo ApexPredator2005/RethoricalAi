@@ -66,8 +66,8 @@ export default function Header({
         )}
 
         {/* Connectivity Status */}
-        <div className="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-white bg-white/10 px-2.5 py-1 rounded-lg border border-white/20 text-xs shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-md">
-          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_rgba(52,211,153,0.8)]"></span>
+        <div className="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-[#CFFFB3] bg-white/10 px-2.5 py-1 rounded-lg border border-[#CFFFB3]/40 text-xs shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-md font-medium">
+          <span className="w-2 h-2 rounded-full bg-[#CFFFB3] animate-pulse shadow-[0_0_8px_rgba(207,255,179,0.9)]"></span>
           <span>{role === 'student' ? 'Honor Code • Active' : 'Gradebook Sync • Active'}</span>
         </div>
 
@@ -75,10 +75,10 @@ export default function Header({
         {role === 'teacher' && (
           <button 
             onClick={onOpenNewAssignment}
-            className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-white hover:bg-white/90 text-[#3A5743] font-label-sm text-xs font-bold shadow-[0_2px_10px_rgba(0,0,0,0.25)] active:translate-y-0.5 transition-all border border-white/40"
+            className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FCEC52] hover:bg-[#ebd738] text-[#332A00] font-label-sm text-xs font-bold shadow-[0_2px_10px_rgba(252,236,82,0.35)] active:translate-y-0.5 transition-all border border-[#DEC925]"
             type="button"
           >
-            <span className="material-symbols-outlined text-[16px] text-[#3A5743]">add</span>
+            <span className="material-symbols-outlined text-[16px] text-[#332A00]">add</span>
             <span>Assignment</span>
           </button>
         )}

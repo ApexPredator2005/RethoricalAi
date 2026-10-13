@@ -99,32 +99,36 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
 
       {/* Top Overview Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-space-md">
-        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+        <div className="relative overflow-hidden bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#CFFFB3]"></div>
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
             Assignments Analyzed
           </div>
           <div className="font-display-lg text-display-lg font-bold text-on-surface mt-2">
             {totalSubs}
           </div>
-          <div className="font-label-sm text-label-sm text-tertiary font-semibold mt-2 flex items-center gap-1">
-            <span className="material-symbols-outlined text-[15px]">check_circle</span>
+          <div className="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] text-xs font-bold w-fit shadow-2xs">
+            <span className="material-symbols-outlined text-[14px]">check_circle</span>
             Active Cohort Set
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+        <div className="relative overflow-hidden bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#FCEC52]"></div>
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
             Class Mean Score
           </div>
-          <div className="font-display-lg text-display-lg font-bold text-primary mt-2">
+          <div className="font-display-lg text-display-lg font-bold text-on-surface mt-2">
             {avgScore}<span className="font-body-md text-on-surface-variant font-normal">/100</span>
           </div>
-          <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FCEC52] text-[#332A00] border border-[#DEC925] text-xs font-bold w-fit shadow-2xs">
+            <span className="material-symbols-outlined text-[14px]">trending_up</span>
             Highest: {maxScore} | Lowest: {minScore}
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+        <div className="relative overflow-hidden bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#D9534F]"></div>
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
             Dimension Focus
           </div>
@@ -137,14 +141,16 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
           </div>
         </div>
 
-        <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+        <div className="relative overflow-hidden bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container flex flex-col justify-between">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#CFFFB3]"></div>
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
             Evaluation Agreement
           </div>
           <div className="font-display-lg text-display-lg font-bold text-secondary mt-2">
             94%
           </div>
-          <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
+          <div className="mt-2 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] text-xs font-bold w-fit shadow-2xs">
+            <span className="material-symbols-outlined text-[14px]">verified</span>
             Cross-criteria consistency
           </div>
         </div>

@@ -51,14 +51,14 @@ export default function Sidebar({
               <span className="font-brand text-[21px] font-black text-primary tracking-tight leading-none">
                 Rethorical
               </span>
-              <span className="ml-1 text-[9px] font-sans font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded bg-primary/10 text-primary border border-primary/20 leading-none">
+              <span className="ml-1 text-[9px] font-sans font-extrabold uppercase tracking-widest px-1.5 py-0.5 rounded bg-[#FCEC52] text-[#332A00] border border-[#DEC925] leading-none shadow-2xs">
                 AI
               </span>
             </div>
           </div>
-          <div className="flex items-center gap-1.5 self-start px-space-xs py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider font-semibold truncate max-w-full">
-            <span className={`w-1.5 h-1.5 rounded-full ${role === 'student' ? 'bg-secondary' : 'bg-primary'} shrink-0`}></span>
-            <span className="truncate">{role === 'student' ? `${studentProfile?.grade || currentClassName} • Student` : (currentSubject || currentClassName)}</span>
+          <div className="flex items-center gap-1.5 self-start px-space-xs py-0.5 rounded bg-[#CFFFB3]/25 border border-[#CFFFB3]/60 text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider font-semibold truncate max-w-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#16381C] shrink-0"></span>
+            <span className="truncate text-[#16381C] font-bold">{role === 'student' ? `${studentProfile?.grade || currentClassName} • Student` : (currentSubject || currentClassName)}</span>
           </div>
         </div>
 
@@ -87,8 +87,8 @@ export default function Sidebar({
                 {item.badge && (
                   <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${
                     isActive 
-                      ? 'bg-on-primary text-primary-container' 
-                      : 'bg-primary-fixed text-on-primary-fixed-variant'
+                      ? 'bg-[#FCEC52] text-[#332A00] font-black' 
+                      : 'bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]'
                   }`}>
                     {item.badge}
                   </span>

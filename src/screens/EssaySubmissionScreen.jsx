@@ -390,7 +390,7 @@ export default function EssaySubmissionScreen({
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-tertiary-fixed text-on-tertiary-container flex items-center gap-1">
+            <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#FCEC52] text-[#332A00] border border-[#DEC925] flex items-center gap-1 shadow-2xs">
               <span className="material-symbols-outlined text-[13px]">verified_user</span>
               Academic Integrity Shield
             </span>
@@ -516,7 +516,7 @@ export default function EssaySubmissionScreen({
 
           <div>
             {submissionMode === 'coursework' ? (
-              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-primary-fixed text-primary flex items-center gap-1 font-code-inline">
+              <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] flex items-center gap-1 font-code-inline shadow-2xs">
                 <span className="material-symbols-outlined text-[14px]">lock</span>
                 Teacher-Prescribed Criteria (Locked)
               </span>
@@ -770,7 +770,7 @@ export default function EssaySubmissionScreen({
       {/* ──── MANDATORY COLLEGIATE ACADEMIC INTEGRITY & PERMANENT TURN-IN PLEDGE ──── */}
       <div className={`p-space-lg rounded-2xl border-2 transition-all ${
         honorPledge 
-          ? 'bg-secondary-fixed/20 border-secondary/40 shadow-xs' 
+          ? 'bg-[#CFFFB3]/25 border-[#ADE25D] shadow-xs' 
           : 'bg-surface-container-low border-primary/20 hover:border-primary/40'
       }`}>
         <label className="flex items-start gap-space-md cursor-pointer select-none">

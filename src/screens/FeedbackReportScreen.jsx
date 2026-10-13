@@ -7,11 +7,11 @@ import SnippetsLibraryModal from '../components/SnippetsLibraryModal';
 import AccessibilityToolbar from '../components/AccessibilityToolbar';
 
 const PRESET_QUICK_STAMPS = [
-  { id: 'stamp-1', label: 'Strong Evidence', icon: 'star', color: 'bg-tertiary-fixed text-on-tertiary-container border-tertiary/30' },
+  { id: 'stamp-1', label: 'Strong Evidence', icon: 'star', color: 'bg-[#FCEC52] text-[#332A00] border-[#DEC925] font-bold' },
   { id: 'stamp-2', label: 'Needs Citation', icon: 'warning', color: 'bg-[#FDF2F2] text-[#B93834] border-[#F5C2C0]' },
   { id: 'stamp-3', label: 'Explain Deeper', icon: 'search', color: 'bg-secondary-fixed text-on-secondary-fixed border-secondary/30' },
   { id: 'stamp-4', label: 'Great Transition', icon: 'swap_calls', color: 'bg-surface-container-high text-on-surface border-surface-container-highest' },
-  { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-primary-fixed text-[#1D3B26] border-primary/30' }
+  { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-[#CFFFB3] text-[#16381C] border-[#ADE25D] font-bold' }
 ];
 
 export default function FeedbackReportScreen({ 
@@ -504,7 +504,7 @@ export default function FeedbackReportScreen({
             <div className="flex items-center gap-space-xs">
               <button
                 onClick={onOpenQuiz}
-                className="flex-1 inline-flex items-center justify-center gap-space-xs px-space-md py-space-xs rounded bg-tertiary-fixed text-on-tertiary-container hover:bg-tertiary-fixed-dim transition-colors font-label-md text-label-md font-semibold border border-tertiary/20"
+                className="flex-1 inline-flex items-center justify-center gap-space-xs px-space-md py-space-xs rounded bg-[#FCEC52] hover:bg-[#ebd738] text-[#332A00] transition-colors font-label-md text-label-md font-bold border border-[#DEC925] shadow-xs"
                 type="button"
               >
                 <span className="material-symbols-outlined text-[17px]">quiz</span>

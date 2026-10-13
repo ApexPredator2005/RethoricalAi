@@ -348,14 +348,14 @@ export default function RubricBuilderScreen() {
                 </summary>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-space-sm pt-space-sm">
-                  {/* High Anchor (Hunter Green) */}
-                  <div className="p-space-sm rounded-xl bg-[#E8F2E9] dark:bg-[#132A1C] border border-[#C6DACB] dark:border-[#1E462E] space-y-1">
+                  {/* High Anchor (Tea Green) */}
+                  <div className="p-space-sm rounded-xl bg-[#CFFFB3]/35 border border-[#ADE25D] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-xs font-bold text-[#3A5743] dark:text-[#ADE25D] flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-[#3A5743] dark:bg-[#ADE25D]"></span>
+                      <span className="font-label-sm text-xs font-bold text-[#16381C] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#16381C]"></span>
                         Exemplary / High Anchor
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#3A5743] dark:text-[#ADE25D]">
+                      <span className="font-mono text-xs font-bold text-[#16381C]">
                         {crit.highRange || `${Math.round(crit.weight * 0.9)}–${crit.weight} pts`}
                       </span>
                     </div>
@@ -368,13 +368,13 @@ export default function RubricBuilderScreen() {
                   </div>
 
                   {/* Mid Anchor (Banana Cream) */}
-                  <div className="p-space-sm rounded-xl bg-[#FFFEEB] dark:bg-[#2C2412] border border-[#F5EC9C] dark:border-[#42361B] space-y-1">
+                  <div className="p-space-sm rounded-xl bg-[#FCEC52]/30 border border-[#DEC925] space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-label-sm text-xs font-bold text-[#7A6A00] dark:text-[#FCEC52] flex items-center gap-1">
-                        <span className="w-2 h-2 rounded-full bg-[#D4C322]"></span>
+                      <span className="font-label-sm text-xs font-bold text-[#332A00] flex items-center gap-1">
+                        <span className="w-2 h-2 rounded-full bg-[#332A00]"></span>
                         Proficient / Mid Anchor
                       </span>
-                      <span className="font-mono text-xs font-bold text-[#7A6A00] dark:text-[#FCEC52]">
+                      <span className="font-mono text-xs font-bold text-[#332A00]">
                         {crit.midRange || `${Math.round(crit.weight * 0.7)}–${Math.round(crit.weight * 0.9) - 1} pts`}
                       </span>
                     </div>

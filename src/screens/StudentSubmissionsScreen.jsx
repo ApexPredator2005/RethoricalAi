@@ -452,7 +452,7 @@ export default function StudentSubmissionsScreen({
                 <span>Export All (.ics)</span>
               </button>
             )}
-            <span className="px-2.5 py-1 rounded-full bg-primary-fixed text-primary text-xs font-bold font-code-inline shadow-xs">
+            <span className="px-2.5 py-1 rounded-full bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D] text-xs font-bold font-code-inline shadow-xs">
               {pendingAssignmentsList.length} Active
             </span>
           </div>
@@ -481,26 +481,26 @@ export default function StudentSubmissionsScreen({
                   key={asg.id}
                   className={`p-space-lg rounded-2xl bg-surface-container-lowest border-2 transition-all flex flex-col justify-between space-y-space-md group hover-lift ${
                     isUrgent 
-                      ? 'border-error/30 hover:border-error/70 hover:shadow-lg' 
+                      ? 'border-[#D9534F]/40 hover:border-[#D9534F] hover:shadow-lg' 
                       : isUpcoming
-                      ? 'border-secondary/30 hover:border-secondary/70 hover:shadow-lg'
-                      : 'border-surface-container hover:border-primary/40 hover:shadow-lg'
+                      ? 'border-[#FCEC52] hover:border-[#DEC925] hover:shadow-lg'
+                      : 'border-[#CFFFB3] hover:border-[#ADE25D] hover:shadow-lg'
                   }`}
                 >
                   <div className="space-y-3">
                     {/* Top Badge Row */}
                     <div className="flex items-center justify-between gap-2">
-                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-primary-fixed text-primary font-code-inline">
+                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#CFFFB3]/60 text-[#16381C] border border-[#ADE25D] font-code-inline">
                         {asg.courseCode || '24CB330'}
                       </span>
                       
                       {/* Urgency Badge */}
                       <span className={`px-2 py-0.5 rounded-full text-[11px] font-bold flex items-center gap-1 ${
                         isUrgent
-                          ? 'bg-error-container text-on-error-container animate-pulse'
+                          ? 'bg-[#FDF2F2] text-[#B93834] border border-[#F5C2C0] animate-pulse'
                           : isUpcoming
-                          ? 'bg-secondary-fixed text-on-secondary-fixed'
-                          : 'bg-surface-container text-on-surface-variant'
+                          ? 'bg-[#FCEC52] text-[#332A00] border border-[#DEC925]'
+                          : 'bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]'
                       }`}>
                         <span className="material-symbols-outlined text-[13px]">
                           {isUrgent ? 'alarm_on' : 'schedule'}
@@ -657,7 +657,7 @@ export default function StudentSubmissionsScreen({
                       <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-surface-container text-on-surface-variant border border-surface-container font-code-inline">
                         {sub.subject || '24CB330: Object Oriented Programming'}
                       </span>
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-tertiary-fixed text-on-tertiary-container">
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#CFFFB3] text-[#16381C] border border-[#ADE25D]">
                         <span className="material-symbols-outlined text-[13px]">lock</span>
                         Locked for Grading
                       </span>
