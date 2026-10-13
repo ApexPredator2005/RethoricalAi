@@ -18,12 +18,12 @@ export default function Header({
     : teacherProfile?.institution;
 
   return (
-    <header className="fixed top-0 left-[225px] right-0 h-16 bg-gradient-to-r from-[#142132] via-[#1B2A3D] to-[#162538] shadow-[0_4px_24px_rgba(20,33,50,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] border-b border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent">
+    <header className="fixed top-0 left-[225px] right-0 h-16 bg-[#CFFFB3] shadow-[0_2px_14px_rgba(30,59,34,0.08)] border-b border-[#ADE25D] z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[2px] before:bg-gradient-to-r before:from-[#ADE25D] before:via-[#FCEC52] before:to-[#ADE25D]">
       {/* Search Input Bar */}
       <div className="flex items-center gap-space-md w-full max-w-xl">
         <div className="relative w-full flex items-center">
           <input 
-            className="w-full px-3.5 py-space-xs rounded bg-white/10 hover:bg-white/[0.15] focus:bg-white/[0.20] text-white placeholder:text-white/60 font-label-md text-label-md focus:outline-none border border-white/20 focus:border-white/50 focus:ring-2 focus:ring-white/20 transition-all text-xs sm:text-sm backdrop-blur-md shadow-inner" 
+            className="w-full px-3.5 py-space-xs rounded-lg bg-white/90 hover:bg-white focus:bg-white text-[#16381C] placeholder:text-[#16381C]/50 font-label-md text-label-md focus:outline-none border border-[#ADE25D] focus:border-[#3A5743] focus:ring-2 focus:ring-[#ADE25D]/40 transition-all text-xs sm:text-sm shadow-xs font-medium" 
             placeholder={role === 'student' ? "Search assignments, rubrics, or topics..." : "Search students, roll numbers, or criteria..."} 
             type="text"
             value={searchQuery}
@@ -36,10 +36,10 @@ export default function Header({
           <select
             value={selectedClassId}
             onChange={(e) => onSelectClass(e.target.value)}
-            className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/[0.18] text-white font-label-sm text-xs border border-white/20 focus:outline-none focus:border-white/50 cursor-pointer max-w-[260px] truncate font-medium backdrop-blur-md transition-colors shadow-sm"
+            className="px-2.5 py-1.5 rounded-lg bg-white/90 hover:bg-white text-[#16381C] font-label-sm text-xs border border-[#ADE25D] focus:outline-none focus:border-[#3A5743] cursor-pointer max-w-[260px] truncate font-semibold transition-colors shadow-xs"
           >
             {classes.map((cls) => (
-              <option key={cls.id} value={cls.id} className="bg-[#1B2A3D] text-white">
+              <option key={cls.id} value={cls.id} className="bg-white text-[#16381C]">
                 {role === 'student' 
                   ? `${cls.subject || cls.name} (${cls.name})` 
                   : `${cls.name} • ${cls.subject ? `${cls.subject.split(' ')[0]} ` : ''}(${cls.studentRoster?.length || cls.students || cls.studentCount || 0} Scholars)`}
@@ -55,10 +55,10 @@ export default function Header({
         {activeInstitution && (
           <div 
             onClick={role === 'student' ? onOpenStudentProfileModal : onOpenProfileModal}
-            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-white font-label-sm text-xs font-semibold border border-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.15)] truncate max-w-[240px] cursor-pointer transition-colors backdrop-blur-md" 
+            className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/80 hover:bg-white text-[#16381C] font-label-sm text-xs font-bold border border-[#ADE25D] shadow-xs truncate max-w-[240px] cursor-pointer transition-colors" 
             title={`${activeInstitution} • ${role === 'student' ? 'Student Portal' : 'Faculty'} (Click to view)`}
           >
-            <span className="material-symbols-outlined text-[15px] text-white">
+            <span className="material-symbols-outlined text-[15px] text-[#3A5743]">
               school
             </span>
             <span className="truncate">{activeInstitution}</span>
@@ -66,8 +66,8 @@ export default function Header({
         )}
 
         {/* Connectivity Status */}
-        <div className="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-[#CFFFB3] bg-white/10 px-2.5 py-1 rounded-lg border border-[#CFFFB3]/40 text-xs shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] backdrop-blur-md font-medium">
-          <span className="w-2 h-2 rounded-full bg-[#CFFFB3] animate-pulse shadow-[0_0_8px_rgba(207,255,179,0.9)]"></span>
+        <div className="hidden md:flex items-center gap-space-xs font-label-sm text-label-sm text-[#16381C] bg-white/80 px-2.5 py-1 rounded-lg border border-[#ADE25D] text-xs shadow-xs font-bold">
+          <span className="w-2 h-2 rounded-full bg-[#2E7D32] animate-pulse shadow-[0_0_8px_rgba(46,125,50,0.7)]"></span>
           <span>{role === 'student' ? 'Honor Code • Active' : 'Gradebook Sync • Active'}</span>
         </div>
 
@@ -75,7 +75,7 @@ export default function Header({
         {role === 'teacher' && (
           <button 
             onClick={onOpenNewAssignment}
-            className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FCEC52] hover:bg-[#ebd738] text-[#332A00] font-label-sm text-xs font-bold shadow-[0_2px_10px_rgba(252,236,82,0.35)] active:translate-y-0.5 transition-all border border-[#DEC925]"
+            className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#FCEC52] hover:bg-[#ebd738] text-[#332A00] font-label-sm text-xs font-bold shadow-xs active:translate-y-0.5 transition-all border border-[#DEC925]"
             type="button"
           >
             <span className="material-symbols-outlined text-[16px] text-[#332A00]">add</span>
