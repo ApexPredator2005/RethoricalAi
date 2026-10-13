@@ -237,15 +237,15 @@ export default function RubricBuilderScreen() {
           <span className={`inline-flex items-center gap-1 px-space-sm py-1 rounded text-xs font-bold font-mono tracking-tight ${
             isWeightValid
               ? 'bg-tertiary-fixed text-on-tertiary-container'
-              : 'bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] animate-pulse'
+              : 'bg-[#FDF2F2] text-[#B93834] border border-[#F5C2C0] animate-pulse'
           }`}>
-            <span className={`material-symbols-outlined text-[15px] ${isWeightValid ? '' : 'text-[#C85A32]'}`}>
+            <span className={`material-symbols-outlined text-[15px] ${isWeightValid ? '' : 'text-[#D9534F]'}`}>
               {isWeightValid ? 'check_circle' : 'warning'}
             </span>
             <span>Weights: {totalWeight}%</span>
           </span>
           {!isWeightValid && (
-            <span className="font-label-sm text-xs text-[#A63F1B] font-semibold">
+            <span className="font-label-sm text-xs text-[#B93834] font-semibold">
               (Must equal exactly 100%)
             </span>
           )}

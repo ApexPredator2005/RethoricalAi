@@ -128,8 +128,8 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
           <div className="font-label-sm text-label-sm font-bold text-on-surface-variant uppercase tracking-wider">
             Dimension Focus
           </div>
-          <div className="font-headline-sm text-headline-sm font-bold text-[#A63F1B] mt-2 flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-[#C85A32]"></span>
+          <div className="font-headline-sm text-headline-sm font-bold text-[#B93834] mt-2 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-[#D9534F]"></span>
             Textual Evidence (84%)
           </div>
           <div className="font-label-sm text-label-sm text-on-surface-variant mt-2">
@@ -170,8 +170,8 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
                     <span className="font-label-md text-label-md text-on-surface font-semibold flex items-center gap-2">
                       {crit.name}
                       {pct < 85 && (
-                        <span className="px-2 py-0.5 rounded-full bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] font-label-sm text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#C85A32] animate-pulse"></span>
+                        <span className="px-2 py-0.5 rounded-full bg-[#FDF2F2] text-[#B93834] border border-[#F5C2C0] font-label-sm text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#D9534F] animate-pulse"></span>
                           Priority Focus
                         </span>
                       )}
@@ -183,7 +183,7 @@ export default function AnalyticsDashboardScreen({ submissions = [], onNavigateT
                   <div className="w-full h-2.5 rounded-full bg-surface-container overflow-hidden">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        pct >= 90 ? 'bg-[#3A5743]' : pct >= 85 ? 'bg-[#3B7080]' : 'bg-[#C85A32]'
+                        pct >= 90 ? 'bg-[#3A5743]' : pct >= 85 ? 'bg-[#3B7080]' : 'bg-[#D9534F]'
                       }`}
                       style={{ width: `${pct}%` }}
                     />

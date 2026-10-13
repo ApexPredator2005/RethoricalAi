@@ -18,7 +18,7 @@ export default function Header({
     : teacherProfile?.institution;
 
   return (
-    <header className="fixed top-0 left-[225px] right-0 h-16 bg-gradient-to-r from-[#2B4233] via-[#3A5743] to-[#3B7080] shadow-[0_4px_24px_rgba(43,66,51,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] border-b border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent">
+    <header className="fixed top-0 left-[225px] right-0 h-16 bg-gradient-to-r from-[#142132] via-[#1B2A3D] to-[#162538] shadow-[0_4px_24px_rgba(20,33,50,0.35),inset_0_1px_0_rgba(255,255,255,0.18)] border-b border-white/10 backdrop-blur-xl z-40 flex items-center justify-between px-6 before:absolute before:inset-x-0 before:top-0 before:h-[1.5px] before:bg-gradient-to-r before:from-transparent before:via-white/50 before:to-transparent">
       {/* Search Input Bar */}
       <div className="flex items-center gap-space-md w-full max-w-xl">
         <div className="relative w-full flex items-center">
@@ -39,7 +39,7 @@ export default function Header({
             className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/[0.18] text-white font-label-sm text-xs border border-white/20 focus:outline-none focus:border-white/50 cursor-pointer max-w-[260px] truncate font-medium backdrop-blur-md transition-colors shadow-sm"
           >
             {classes.map((cls) => (
-              <option key={cls.id} value={cls.id} className="bg-[#2B4233] text-white">
+              <option key={cls.id} value={cls.id} className="bg-[#1B2A3D] text-white">
                 {role === 'student' 
                   ? `${cls.subject || cls.name} (${cls.name})` 
                   : `${cls.name} • ${cls.subject ? `${cls.subject.split(' ')[0]} ` : ''}(${cls.studentRoster?.length || cls.students || cls.studentCount || 0} Scholars)`}

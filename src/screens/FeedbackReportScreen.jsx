@@ -8,7 +8,7 @@ import AccessibilityToolbar from '../components/AccessibilityToolbar';
 
 const PRESET_QUICK_STAMPS = [
   { id: 'stamp-1', label: 'Strong Evidence', icon: 'star', color: 'bg-tertiary-fixed text-on-tertiary-container border-tertiary/30' },
-  { id: 'stamp-2', label: 'Needs Citation', icon: 'warning', color: 'bg-[#FAEDE8] text-[#A63F1B] border-[#F0C5B5]' },
+  { id: 'stamp-2', label: 'Needs Citation', icon: 'warning', color: 'bg-[#FDF2F2] text-[#B93834] border-[#F5C2C0]' },
   { id: 'stamp-3', label: 'Explain Deeper', icon: 'search', color: 'bg-secondary-fixed text-on-secondary-fixed border-secondary/30' },
   { id: 'stamp-4', label: 'Great Transition', icon: 'swap_calls', color: 'bg-surface-container-high text-on-surface border-surface-container-highest' },
   { id: 'stamp-5', label: 'Core Thesis Point', icon: 'adjust', color: 'bg-primary-fixed text-[#1D3B26] border-primary/30' }
@@ -364,11 +364,11 @@ export default function FeedbackReportScreen({
             {/* Feature 9: Turn-In Compliance Badge */}
             <span className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold font-code-inline ${
               submission.latePolicyStatus === 'grace_window'
-                ? 'bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5]'
+                ? 'bg-[#FDF2F2] text-[#B93834] border border-[#F5C2C0]'
                 : 'bg-secondary-fixed text-on-secondary-fixed'
             }`}>
               <span className={`material-symbols-outlined text-[13px] ${
-                submission.latePolicyStatus === 'grace_window' ? 'text-[#C85A32]' : ''
+                submission.latePolicyStatus === 'grace_window' ? 'text-[#D9534F]' : ''
               }`}>
                 {submission.latePolicyStatus === 'grace_window' ? 'timelapse' : 'check_circle'}
               </span>
@@ -671,7 +671,7 @@ export default function FeedbackReportScreen({
             onClick={handleToggleRecord}
             className={`px-3.5 py-2 rounded-xl text-xs font-label-sm font-bold flex items-center gap-2 transition-all shadow-xs ${
               isRecording
-                ? 'bg-[#C85A32] text-white animate-pulse'
+                ? 'bg-[#D9534F] text-white animate-pulse'
                 : 'bg-primary text-on-primary hover:bg-primary-dim'
             }`}
           >
@@ -684,13 +684,13 @@ export default function FeedbackReportScreen({
           </button>
 
           {isRecording && (
-            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FAEDE8] text-[#A63F1B] border border-[#F0C5B5] text-xs font-code-inline">
-              <span className="w-2 h-2 rounded-full bg-[#C85A32] animate-ping"></span>
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#FDF2F2] text-[#B93834] border border-[#F5C2C0] text-xs font-code-inline">
+              <span className="w-2 h-2 rounded-full bg-[#D9534F] animate-ping"></span>
               <div className="flex items-end gap-0.5 h-4">
-                <span className="w-1 bg-[#C85A32] animate-bounce h-2"></span>
-                <span className="w-1 bg-[#C85A32] animate-bounce h-4"></span>
-                <span className="w-1 bg-[#C85A32] animate-bounce h-3"></span>
-                <span className="w-1 bg-[#C85A32] animate-bounce h-4"></span>
+                <span className="w-1 bg-[#D9534F] animate-bounce h-2"></span>
+                <span className="w-1 bg-[#D9534F] animate-bounce h-4"></span>
+                <span className="w-1 bg-[#D9534F] animate-bounce h-3"></span>
+                <span className="w-1 bg-[#D9534F] animate-bounce h-4"></span>
               </div>
               <span>Live Waveform Active</span>
             </div>

@@ -81,7 +81,7 @@ export const ORIGINALITY_METRICS = {
     { label: 'Original Critical Synthesis', percentage: 78, color: '#3A5743', desc: 'Unique argumentation and personal prose' },
     { label: 'Cited Textual Passages', percentage: 18, color: '#3B7080', desc: 'Verbatim quotes with proper MLA citations' },
     { label: 'Standard Academic Idioms', percentage: 4, color: '#D4C322', desc: 'Common transitional & contextual phrases' },
-    { label: 'Uncited Match / AI Paraphrase', percentage: 0, color: '#C85A32', desc: 'Zero uncredited text detected' }
+    { label: 'Uncited Match / AI Paraphrase', percentage: 0, color: '#D9534F', desc: 'Zero uncredited text detected' }
   ],
   citationHealth: 'Passed (MLA 9th Edition Standard)',
   sourceOverlapCount: 3

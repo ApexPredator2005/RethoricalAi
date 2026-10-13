@@ -797,8 +797,8 @@ export default function EssaySubmissionScreen({
 
       {/* Error Banner */}
       {errorMessage && (
-        <div className="p-space-md rounded-xl bg-[#FAEDE8] text-[#A63F1B] text-xs font-semibold flex items-center gap-2 animate-fade-in border border-[#F0C5B5]">
-          <span className="material-symbols-outlined text-[18px] text-[#C85A32]">error</span>
+        <div className="p-space-md rounded-xl bg-[#FDF2F2] text-[#B93834] text-xs font-semibold flex items-center gap-2 animate-fade-in border border-[#F5C2C0]">
+          <span className="material-symbols-outlined text-[18px] text-[#D9534F]">error</span>
           <span>{errorMessage}</span>
         </div>
       )}
@@ -821,8 +821,8 @@ export default function EssaySubmissionScreen({
 
         <div className="flex flex-col sm:flex-row items-center gap-3">
           {!honorPledge && (
-            <span className="text-xs font-semibold text-[#A63F1B] flex items-center gap-1">
-              <span className="material-symbols-outlined text-[16px] text-[#C85A32]">lock</span>
+            <span className="text-xs font-semibold text-[#B93834] flex items-center gap-1">
+              <span className="material-symbols-outlined text-[16px] text-[#D9534F]">lock</span>
               Checkbox Required
             </span>
           )}

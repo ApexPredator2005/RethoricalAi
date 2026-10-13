@@ -1,26 +1,26 @@
 /* RethoricalAI - Design System & Stylesheet */
 
 :root {
-  /* Color Palette - Day Grading (Refreshed Forest, Slate & Sun Palette) */
-  --bg-app: #F2F7F2;
-  --bg-paper: #FAFDF9;
+  /* Color Palette - Day Grading (Authentic Paper Mode + Balanced Palette) */
+  --bg-app: #F5F3EC;
+  --bg-paper: #FCFBF7;
   --bg-paper-elevated: #FFFFFF;
-  --bg-sidebar: #E5EFE5;
-  --bg-card: #F4FAF3;
-  --bg-card-hover: #EBF4EB;
+  --bg-sidebar: #EFECE3;
+  --bg-card: #FAF8F2;
+  --bg-card-hover: #F3EFE4;
   
-  --text-primary: #1C2D22;       /* Deep Hunter Ink */
-  --text-secondary: #3B5445;     /* Forest Sage */
-  --text-muted: #5B7264;         /* Slate Sage */
+  --text-primary: #1B2A3D;       /* Deep Ink Navy */
+  --text-secondary: #4A5B6E;     /* Muted Ink */
+  --text-muted: #7B8B9C;         /* Faded Stamp Ink */
   
-  --border-subtle: #D5E5D7;
-  --border-strong: #A8C4AC;
-  --border-paper: #D9E8DC;
+  --border-subtle: #E2DDD0;
+  --border-strong: #C8BFAC;
+  --border-paper: #E6E1D3;
   
-  /* Signature Accents from Palette */
-  --accent-red: #C85A32;         /* Critique Accent: Professor's Terracotta Red Pen */
-  --accent-red-bg: rgba(200, 90, 50, 0.08);
-  --accent-red-border: rgba(200, 90, 50, 0.28);
+  /* Signature Accents */
+  --accent-red: #D9534F;         /* Critique Accent: Warm Crimson Pen */
+  --accent-red-bg: rgba(217, 83, 79, 0.08);
+  --accent-red-border: rgba(217, 83, 79, 0.28);
   
   --accent-gold: #D4C322;        /* Soft Praise Accent: Banana Cream Tint */
   --accent-gold-bg: rgba(252, 236, 82, 0.18);
@@ -30,8 +30,8 @@
   --accent-blue-bg: rgba(59, 112, 128, 0.09);
   --accent-blue-border: rgba(59, 112, 128, 0.28);
   
-  --margin-red-line: rgba(200, 90, 50, 0.35);
-  --ruled-line-color: rgba(28, 45, 34, 0.06);
+  --margin-red-line: rgba(217, 83, 79, 0.35);
+  --ruled-line-color: rgba(27, 42, 61, 0.06);
 
   /* Fonts */
   --font-serif: 'Source Serif 4', Georgia, serif;
