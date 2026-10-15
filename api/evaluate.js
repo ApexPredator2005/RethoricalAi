@@ -55,12 +55,16 @@ export default async function handler(req, res) {
     req.socket?.remoteAddress || 
     'anonymous_client';
 
-  // 2. Enforce Strict Rate Limiting (5 requests per 15 mins)
-  const rateLimitStatus = checkRateLimit(clientIp);
-  res.setHeader('X-RateLimit-Limit', MAX_REQUESTS_PER_WINDOW);
+  // 2. Strict Rate Limiting (Enforced when ENABLE_SECURITY_AUDIT=true, disabled by default)
+  const enableSecurityAudit = process.env.ENABLE_SECURITY_AUDIT === 'true';
+  const rateLimitStatus = enableSecurityAudit 
+    ? checkRateLimit(clientIp) 
+    : { allowed: true, remaining: 999, retryAfterSeconds: 0 };
+
+  res.setHeader('X-RateLimit-Limit', enableSecurityAudit ? MAX_REQUESTS_PER_WINDOW : 'unlimited');
   res.setHeader('X-RateLimit-Remaining', rateLimitStatus.remaining);
 
-  if (!rateLimitStatus.allowed) {
+  if (enableSecurityAudit && !rateLimitStatus.allowed) {
     res.setHeader('Retry-After', rateLimitStatus.retryAfterSeconds);
     return res.status(429).json({
       error: 'Rate limit exceeded',

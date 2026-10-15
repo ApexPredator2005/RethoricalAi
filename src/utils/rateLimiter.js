@@ -31,6 +31,33 @@ export const RATE_LIMIT_CONFIGS = {
 };
 
 /**
+ * Security Audit Mode State
+ * When disabled (default: false), strict lockout rate limits are bypassed for development and testing.
+ */
+let securityAuditActive = false;
+
+export function isSecurityAuditActive() {
+  try {
+    const override = localStorage.getItem('rethorical_security_audit_active');
+    if (override !== null) {
+      return override === 'true';
+    }
+  } catch {
+    // fallback
+  }
+  return securityAuditActive;
+}
+
+export function setSecurityAuditActive(active) {
+  securityAuditActive = Boolean(active);
+  try {
+    localStorage.setItem('rethorical_security_audit_active', String(active));
+  } catch (err) {
+    console.warn('Storage unavailable:', err);
+  }
+}
+
+/**
  * Retrieve attempt history for a specific key
  */
 function getAttempts(key) {
@@ -63,6 +90,18 @@ function saveAttempts(key, timestamps) {
  * @returns {{ allowed: boolean, remainingAttempts: number, lockoutSeconds: number, resetTimeMs: number }}
  */
 export function checkRateLimit(key, maxAttempts = 5, windowMs = 15 * 60 * 1000) {
+  // If security audit mode is turned off, bypass lockout checks
+  if (!isSecurityAuditActive()) {
+    return {
+      allowed: true,
+      remainingAttempts: maxAttempts,
+      totalAttempts: 0,
+      lockoutSeconds: 0,
+      resetTimeMs: 0,
+      message: ''
+    };
+  }
+
   const now = Date.now();
   const windowStart = now - windowMs;
   
